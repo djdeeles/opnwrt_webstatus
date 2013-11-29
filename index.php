@@ -12,28 +12,35 @@ include 'login.php';
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
-	<link rel="shortcut icon" href="../favicon.ico">
-	<script src="http://code.jquery.com/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>	
-	<script src="js/analytics.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$('[data-toggle="modal"]').click(function(e) {
-			e.preventDefault();
-			var url = $(this).attr('href');
-			if (url.indexOf('#') == 0) {
-				$(url).modal('open');
-			} else {
-				$.get(url, function(data) {
-					$('<div class="modal hide fade">' + data + '</div>').modal();
-				}).success(function() { $('input:text:visible:first').focus(); });
+	<link rel="shortcut icon" href="favicon.ico">
+	<style type="text/css">
+		@media (min-width: 980px) {
+			body {
+			padding-top: 42px;
+			padding-bottom: 42px;
 			}
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">		
+		$(document).ready(function() {
+			$('[data-toggle="modal"]').click(function(e) {
+				e.preventDefault();
+				var url = $(this).attr('href');
+				if (url.indexOf('#') == 0) {
+					$(url).modal('open');
+				} else {
+					$.get(url, function(data) {
+						$('<div class="modal hide fade">' + data + '</div>').modal();
+					}).success(function() { $('input:text:visible:first').focus(); });
+				}
+			});
 		});
-	});
-	$(function() {
-		function loadInfo() {
-			$.getJSON("data.php?refresh", 
-				function(result) {
+		$(function() {
+			function loadInfo() {
+				$.getJSON("data.php?refresh", 
+					function(result) {
 		//mem
 		var totalMem = result[0];
 		$("#totalMem").html(totalMem);
@@ -104,53 +111,51 @@ include 'login.php';
 		$('#loadPercentBarDiv').removeClass().addClass("progress progress-" + loadPercentBarDiv + " progress-striped active");			
 		var loadSpan = result[29];
 		$('#loadSpan1, #loadSpan2, #loadSpan3').removeClass().addClass("label label-" + loadSpan);
-		//uptime and localtime		
-		var uptime = result[30];
-		$("#uptime").html(uptime);		
-		var localtime = result[31];
-		$("#localtime").html(localtime);
-		//connections
-		var connections = result[32];
-		$("#connections").html(connections);		
-		var connPercent = result[33];				
-		$("#connPercent").html("(Connections " + connPercent + "%)");
-		$("#connPercentBar").css("width", connPercent + "%");
-		var connPercentBarDiv = result[34];
-		$('#connPercentBarDiv').removeClass().addClass("progress progress-" + connPercentBarDiv + " progress-striped active");
-		var connSpan = result[35];
-		$('#connSpan1, #connSpan2, #connSpan3, #connSpan4').removeClass().addClass("label label-" + connSpan);
-		//threads		
-		var runningthreads = result[36];
-		$("#runningthreads").html(runningthreads);
-		//transfer
-		var rx = result[37];
-		$("#rx").html(rx + " Kb/s");
-		var rxPercent = result[38];
-		$("#rxPercent").html("(" + rxPercent + "%)");
-		$("#rxPercentBar").css("width", rxPercent + "%");
-		var rxPercentBarDiv = result[39];
-		$('#rxPercentBarDiv').removeClass().addClass("progress progress-" + rxPercentBarDiv + " progress-striped active");
-		var RecieveSpan = result[40];
-		$('#RecieveSpan').removeClass().addClass("label label-" + RecieveSpan);
-		var tx = result[41];
-		$("#tx").html(tx + " Kb/s");
-		var txPercent = result[42];
-		$("#txPercent").html("(" + txPercent + "%)");
-		$("#txPercentBar").css("width", txPercent + "%");
-		var txPercentBarDiv = result[43];
-		$('#txPercentBarDiv').removeClass().addClass("progress progress-" + txPercentBarDiv + " progress-striped active");
-		var SendSpan = result[44];
-		$('#SendSpan').removeClass().addClass("label label-" + SendSpan);
-		//ping
-		var usping = result[45];
-		$("#usping").html(usping);
-		var euping = result[46];
-		$("#euping").html(euping);
-		var gtping = result[47];
-		$("#gtping").html(gtping);
-		var apping = result[48];
-		$("#apping").html(apping);
-	});
+        //uptime and localtime                
+        var uptime = result[30];
+        $("#uptime").html(uptime); 
+        //connections
+        var connections = result[31];
+        $("#connections").html(connections);                
+        var connPercent = result[32];                                
+        $("#connPercent").html("(Connections " + connPercent + "%)");
+        $("#connPercentBar").css("width", connPercent + "%");
+        var connPercentBarDiv = result[33];
+        $('#connPercentBarDiv').removeClass().addClass("progress progress-" + connPercentBarDiv + " progress-striped active");
+        var connSpan = result[34];
+        $('#connSpan1, #connSpan2, #connSpan3, #connSpan4').removeClass().addClass("label label-" + connSpan);
+        //threads                
+        var runningthreads = result[35];
+        $("#runningthreads").html(runningthreads);
+        //transfer
+        var rx = result[36];
+        $("#rx").html(rx + " Kb/s");
+        var rxPercent = result[37];
+        $("#rxPercent").html("(" + rxPercent + "%)");
+        $("#rxPercentBar").css("width", rxPercent + "%");
+        var rxPercentBarDiv = result[38];
+        $('#rxPercentBarDiv').removeClass().addClass("progress progress-" + rxPercentBarDiv + " progress-striped active");
+        var RecieveSpan = result[39];
+        $('#RecieveSpan').removeClass().addClass("label label-" + RecieveSpan);
+        var tx = result[40];
+        $("#tx").html(tx + " Kb/s");
+        var txPercent = result[41];
+        $("#txPercent").html("(" + txPercent + "%)");
+        $("#txPercentBar").css("width", txPercent + "%");
+        var txPercentBarDiv = result[42];
+        $('#txPercentBarDiv').removeClass().addClass("progress progress-" + txPercentBarDiv + " progress-striped active");
+        var SendSpan = result[43];
+        $('#SendSpan').removeClass().addClass("label label-" + SendSpan);
+        //ping
+        var usping = result[44];
+        $("#usping").html(usping);
+        var euping = result[45];
+        $("#euping").html(euping);
+        var gtping = result[46];
+        $("#gtping").html(gtping);
+        var apping = result[47];
+        $("#apping").html(apping);
+    });
 }
 setInterval(loadInfo, <?=$refreshRate?>);
 loadInfo();
@@ -169,30 +174,28 @@ loadInfo();
 				<a class="brand" href="<?=$workingdir?>">aCC Server</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li <?=echoActiveClassIfRequestMatches("status")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
+						<li <?=echoActiveClassIfRequestMatches("")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-align-right"></i>Stats</a>
 							<ul class="dropdown-menu">
 								<li <?=echoActiveClassIfRequestMatches("stats")?> ><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Stats</a></li>
-								<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/status/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
+								<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down"></i>Downloads</a>
 							<ul class="dropdown-menu">
 								<li <?=echoActiveClassIfRequestMatches("file.php")?> ><a href="content.php?iframe=<?=$host?>/file.php"><i class="icon-folder-open"></i>File Manager</a></li>
-								<li <?=echoActiveClassIfRequestMatches("share")?> ><a href="content.php?iframe=<?=$host?>/share/"><i class="icon-download"></i>Downloads</a></li>
-								<li <?=echoActiveClassIfRequestMatches("9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
-								<li <?=echoActiveClassIfRequestMatches("torrentwatchx")?> ><a href="content.php?iframe=<?=$host?>/torrentwatchx/"><i class="icon-inbox"></i>TorrentWatchX</a></li>
-								<li <?=echoActiveClassIfRequestMatches("8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
+								<li <?=echoActiveClassIfRequestMatches(":9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
+								<li <?=echoActiveClassIfRequestMatches(":8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
 							</ul>
 						</li>						
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog"></i>Management</a>
 							<ul class="dropdown-menu">
-								<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router/"><i class="icon-cog"></i>Router</a></li>
-								<li <?=echoActiveClassIfRequestMatches("shell")?> ><a href="content.php?iframe=<?=$host?>/shell/"><i class="icon-align-left"></i>Shell</a></li>
-								<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer/"><i class="icon-list-alt"></i>Adminer</a></li>
+								<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router"><i class="icon-cog"></i>Router</a></li>
+								<li <?=echoActiveClassIfRequestMatches("shell.php")?> ><a href="content.php?iframe=<?=$host?>/shell.php"><i class="icon-align-left"></i>Shell</a></li>
+								<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer"><i class="icon-list-alt"></i>Adminer</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -204,7 +207,7 @@ loadInfo();
 							<?php if ($loggedin == true) { ?>
 							<a href="?logout"><i class="icon-user"></i>Sign Out</a>
 							<?php } else { ?>
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i>Sign In<span class="caret"></span></a>						
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i>Sign In<span class="caret"></span></a>                                                
 							<div class="dropdown-menu" style="padding: 10px; padding-bottom: 0px;">
 								<form method="post" id="login_form">
 									<input style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username"><br/>
@@ -212,7 +215,7 @@ loadInfo();
 									<input style="float: left; margin-right: 10px;" type="checkbox" name="remember" id="remember" value="yes"><label class="string optional" for="remember"> Remember me</label>
 									<input class="btn btn-primary btn-block" type="submit" id="submit" name="Submit" value="Sign In">
 									<div id="msgbox"><?=$error?></div>
-								</form>					
+								</form>                                        
 							</div>
 							<?php } ?>
 						</li>
@@ -225,7 +228,7 @@ loadInfo();
 		<div class="jumbotron">
 			<img src="img/cc.png" width="100" alt="aCC Server">
 			<h1>Status</h1>
-			<h2 class="lead"><?=$hostname?></h2>	
+			<h2 class="lead"><?=$hostname?></h2>        
 		</div>
 		<div class="jumbotron">
 			<?php if ($loggedin == true) {
@@ -236,7 +239,7 @@ loadInfo();
 				<div class='btn' id='apping'><span class='server'>Ap: </span><font color='green'>___</font></div>
 				<div class='btn-group'>", serviceControl(Http,lighttpd,lighttpd), "</div>
 				<div class='btn-group'>", serviceControl(Ftp,vsftpd,vsftpd), "</div>
-				<div class='btn-group'>", serviceControl(Dns,dnsmasq,dnsmasq), "</div>				
+				<div class='btn-group'>", serviceControl(Dns,dnsmasq,dnsmasq), "</div>                                
 				<div class='btn-group'>", serviceControl(SSH,dropbear,dropbear), "</div>
 				<div class='btn-group'>", serviceControl(Ntpd,sysntpd,ntpd), "</div>
 				<div class='btn-group'>", serviceControl(Cron,cron,crond), "</div>
@@ -249,7 +252,7 @@ loadInfo();
 				<div class='btn-group'>", serviceControl(pyLoad,pyload,'python /usr/share/python/pyload/pyLoadCore.py'), "</div>
 				<div class='btn-group'>", serviceControl(DLNa,minidlna,minidlna), "</div>
 				";
-			} else { echo "<h4>You need to login to see detailed info.</h4>"; } ?>			
+			} else { echo "<h4>You need to login to see detailed info.</h4>"; } ?>                        
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
@@ -296,7 +299,7 @@ loadInfo();
 				<p><span id="swapSpan3" class="label label-inverse">Swap Available: <span id="availSwap"><?=$availSwap?></span></span></p>
 			</div>
 		</div>
-		<div class="row-fluid">				
+		<div class="row-fluid">                                
 			<div class="span4">
 				<h2><b>Disk 1 </b><span class="percentage" id="diskPercent1">(<?=$diskPercent1?>%)</span></h2>
 				<div id="diskPercent1BarDiv" class="progress progress-info progress-striped active">
@@ -320,23 +323,27 @@ loadInfo();
 				<div id="connPercentBarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="connPercentBar"></div>
 				</div>
-				<p><span id="connSpan3" class="label label-inverse">Connections: <span id="connections"><?=$connections?></span></span></p>	
-				<p><span id="connSpan1" class="label label-inverse">Uptime: <span id ="uptime"><?=$uptime?></span></span></p>
-				<p><span id="connSpan2" class="label label-inverse">Local Time: <span id="localtime"><?=$localtime?></span></span></p>			
+				<p><span id="connSpan3" class="label label-inverse">Connections: <span id="connections"><?=$connections?></span></span></p>        
+				<p><span id="connSpan1" class="label label-inverse">Uptime: <span id ="uptime"><?=$uptime?></span></span></p>                       
 				<p><span id="connSpan4" class="label label-inverse">Threads: <span id="runningthreads"><?=$runningthreads?></span></span></p>
 			</div>
 		</div>
 		<?php if ($loggedin == true) { ?>
-		<p><a href="?logread" title="Read Logs" data-toggle="modal" class="btn">Read Logs</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="?listonline" title="List Online" data-toggle="modal" class="btn">List Online</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="?sysinfo" title="System Info" data-toggle="modal" class="btn">System Info</a></p>
+		<hr> 
+		<div class="row-fluid">
+			<p class="span2"><a href="?logread" title="Read Logs" data-toggle="modal" class="btn">Read Logs</a></p>
+			<p class="span2"><a href="?listonline" title="List Online" data-toggle="modal" class="btn">List Online</a></p>
+			<p class="span2"><a href="?dlna" title="DLNA Info" data-toggle="modal" class="btn">DLNA Info</a></p>
+		</div>
 		<?php } ?>
-		<hr>		
+		<hr>                
 		<div class="footer">
 			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.
 				<br><?php echo "Your IP Address: ". $_SERVER["REMOTE_ADDR"]; ?></small><br/>
 				<small>Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small></div>
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>

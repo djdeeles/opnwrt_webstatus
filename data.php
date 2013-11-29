@@ -3,10 +3,10 @@ error_reporting(0);
 include 'functions.php';
 
 $hostname = "aCC Server";
-$refreshRate = "5000";
+$refreshRate = "5000"; // ms
 $version = "v1.2";
-$rxlimit = "384";
-$txlimit = "64";
+$rxlimit = "1280"; // kb/s
+$txlimit = "128"; // kb/s
 
 $workingdir = dirname($_SERVER['PHP_SELF']);
 $host = $_SERVER['HTTP_HOST'];
@@ -27,7 +27,7 @@ if (isset($_GET['service'])) {
 //list online
 if (isset($_GET['listonline']))
 { 
-	@exec("nmap -sPnR 192.168.1.*",$response);
+	@exec("nmap -sP 192.168.1.1-50",$response);
 	echo "<div class='modal-header'>
 	<h3>Online Clients</h3>
 	</div>
@@ -60,17 +60,11 @@ if (isset($_GET['logread']))
 	exit;
 }
 
-// system info
-if (isset($_GET['sysinfo']))
+// dlna info
+if (isset($_GET['dlna']))
 { 
-	@exec("sh /root/sysinfo.sh",$response);
-	echo "<div class='modal-header'>
-	<h3>System Info</h3>
-	</div>
-	<div class='modal-body'>";
-	foreach ($response as $value) {
-		echo $value . '<br/>';
-	}
+	echo "<div class='modal-body'>";
+	echo file_get_contents("http://192.168.1.1:8200");
 	echo "</div>
 	<div class='modal-footer'>
 	<a class='btn' data-dismiss='modal'>Close</a>

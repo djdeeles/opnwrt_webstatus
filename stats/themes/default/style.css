@@ -1,0 +1,23 @@
+body {margin: 0; padding: 0; color:#000; font-family: 'Trebuchet MS', Verdana, sans-serif; font-size: 13px; } 
+a { color:#000; text-decoration: none; }
+#wrap {width: 960px; padding:10px 0; margin:0 auto; }
+#sidebar {width: 160px; float: left; } 
+#sidebar ul.iface {margin: 0; padding: 0; list-style-type: none;} 
+#sidebar .active .page { display: table; } 
+#sidebar .page { display: none; } 
+#sidebar li.iface {margin-bottom:5px; padding: 5px; font-size: 1.25em; font-weight: bold; border:1px solid #C8C8C8;} 
+#sidebar ul.page {margin-top: 5px; padding: 0; list-style-type: none; } 
+#sidebar li.page { padding-left:5px; font-size: 0.75em; line-height:1.5em; font-weight: normal ;  } 
+#content {margin-left: 160px; width: 720px; } 
+#header {padding: 0px 8px 3px 8px; font-size: 1.25em; font-weight: bold; text-align: left; border-bottom:1px solid #C8C8C8; } 
+#footer {padding: 10px 8px 5px 8px; font-size: 0.75em; font-weight: bold; text-align: right; } 
+#main {padding: 10px 10px 10px 10px; } 
+#main table { border:1px solid #C8C8C8; } 
+#main td { font-size: 0.85em; padding:3px; } 
+#main td.numeric_odd {text-align: right; } 
+#main tr:hover { border:0px; background-color: #E1E1E1; } 
+#main td.numeric_even {text-align: right; }
+#main td.label_odd { background-color: #E1E1E1; font-weight: bold; border:1px solid #C8C8C8; border-left:0px; } 
+#main td.label_even { font-weight: bold; } 
+#main th.label { font-weight: bold;  background-color: #E1E1E1; border-bottom:1px solid #C8C8C8; } 
+#main caption, object { font-size: 1.25em; font-weight: bold; margin:0px 0px 4px 0px; text-align: left; }

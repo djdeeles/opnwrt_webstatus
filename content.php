@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>aCC Server</title>
-	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="shortcut icon" href="favicon.ico">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
@@ -13,7 +13,6 @@
 	<script src="http://code.jquery.com/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/iframe.js"></script>
-	<script src="js/analytics.js"></script>
 </head>
 <body>
 	<div id="toolbar">
@@ -28,32 +27,30 @@
 					<a class="brand" href="">aCC Server</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li <?=echoActiveClassIfRequestMatches("status")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
+							<li <?=echoActiveClassIfRequestMatches("")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-align-right"></i>Stats</a>
 								<ul class="dropdown-menu">
 									<li <?=echoActiveClassIfRequestMatches("stats")?> ><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Stats</a></li>
-									<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/status/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
+									<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-globe"></i>Downloads</a>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down"></i>Downloads</a>
 								<ul class="dropdown-menu">
 									<li <?=echoActiveClassIfRequestMatches("file.php")?> ><a href="content.php?iframe=<?=$host?>/file.php"><i class="icon-folder-open"></i>File Manager</a></li>
-									<li <?=echoActiveClassIfRequestMatches("share")?> ><a href="content.php?iframe=<?=$host?>/share/"><i class="icon-download"></i>Downloads</a></li>
-									<li <?=echoActiveClassIfRequestMatches("9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
-									<li <?=echoActiveClassIfRequestMatches("torrentwatchx")?> ><a href="content.php?iframe=<?=$host?>/torrentwatchx/"><i class="icon-inbox"></i>TorrentWatchX</a></li>
-									<li <?=echoActiveClassIfRequestMatches("8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
+									<li <?=echoActiveClassIfRequestMatches(":9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
+									<li <?=echoActiveClassIfRequestMatches(":8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
 								</ul>
 							</li>						
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog"></i>Management</a>
 								<ul class="dropdown-menu">
-									<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router/"><i class="icon-cog"></i>Router</a></li>
-									<li <?=echoActiveClassIfRequestMatches("shell")?> ><a href="content.php?iframe=<?=$host?>/shell/"><i class="icon-align-left"></i>Shell</a></li>
-									<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer/"><i class="icon-list-alt"></i>Adminer</a></li>
+									<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router"><i class="icon-cog"></i>Router</a></li>
+									<li <?=echoActiveClassIfRequestMatches("shell.php")?> ><a href="content.php?iframe=<?=$host?>/shell.php"><i class="icon-align-left"></i>Shell</a></li>
+									<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer"><i class="icon-list-alt"></i>Adminer</a></li>
 								</ul>
-							</li>						
+							</li>
 						</ul>
 						<ul class="nav pull-right" data-no-collapse="true">
 							<li class="dropdown">

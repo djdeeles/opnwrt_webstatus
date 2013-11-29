@@ -36,9 +36,9 @@ function ping($hostname, $host, $timeout ) {
 	socket_send($socket, $package, strlen($package), 0);
 	if (socket_read($socket, 255)) {
 		$result = round((microtime(1) - $timer) * 1000, 0);
-		if ($result < 100){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
-		else if ($result < 250){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
-		else if ($result > 250){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
+		if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
+		else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
+		else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
 	}
 	else {
 		$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
@@ -99,9 +99,7 @@ function formatMem($size){
 	switch (true){
 		case ($size > 1073741824): $size /= 1073741824; $suffix = ' TB';
 		break;
-		case ($size > 1048576): $size /= 1048576; $suffix = ' GB';    
-		break;
-		case ($size > 102400): $size /= 1024; $suffix = ' MB';
+		case ($size > 1048576): $size /= 1048576; $suffix = ' GB';
 		break;
 		default: $suffix = ' Kb';
 	}
@@ -110,7 +108,7 @@ function formatMem($size){
 function echoActiveClassIfRequestMatches($requestUri)
 {
 	$current_file_name = basename($_SERVER['REQUEST_URI']);
-	if ($current_file_name == $requestUri)
+	if (strpos($current_file_name,$requestUri) !== false or $current_file_name == $requestUri)
 		echo 'class="active"';
 }
 function get_string_between($string, $start, $end){
@@ -136,10 +134,18 @@ function getdata() {
 	$totalSwap = $m["SwapTotal"];
 	$availSwap = $m["SwapFree"];
 	$usedSwap =  $totalSwap - $availSwap;
-	if ($totalSwap > "0" ) { $swapPercent = round($usedSwap/$totalSwap*100, 0); } else { $swapPercent = "0"; }
-	$usedSwap = formatMem($usedSwap);
-	$totalSwap  = formatMem($totalSwap);
-	$availSwap = formatMem($availSwap);
+	if ($totalSwap > "0" ) 	{ 
+		$swapPercent = round($usedSwap/$totalSwap*100, 0); 
+		$usedSwap = formatMem($usedSwap);
+		$totalSwap  = formatMem($totalSwap);
+		$availSwap = formatMem($availSwap);
+	} 
+	else { 
+		$swapPercent = "0"; 
+		$usedSwap ="Swap Off"; 
+		$totalSwap="Swap Off"; 
+		$availSwap="Swap Off";
+	}
 //Disk1 Info
 	$totalDisk1 = disk_total_space("/overlay");
 	$availDisk1 = disk_free_space("/overlay");
@@ -165,8 +171,6 @@ function getdata() {
 	$uptime = explode(' up ', $loadresult);
 	$uptime = explode(',  load', $uptime[1]);
 	$uptime = $uptime[0];
-	$localtime = explode("up", $loadresult[1]);
-	$localtime = date("H:i:s d/m/Y");
 	$loadPercent = $avgs[1]*100;
 	if( $loadPercent > 100){ $loadPercent = "100";}
 //Connection Info
@@ -182,10 +186,14 @@ function getdata() {
 	$out = str_replace(' ', '', $out);
 	$rout = explode("rx ", $out[3]);
 	$tout = explode("rx ", $out[4]);
-	$rx = (int)get_string_between($rout[0], "rx", "KB/s");
+
+	$rx = get_string_between($rout[0], "rx", "/s");
+	if(strpos($rx,'MB') == true) { $rx = intval($rx * 1024); } else { $rx = (int)$rx; }
 	$rxpercent = round($rx/$GLOBALS['rxlimit']*100,0);
 	if( $rxpercent > 100){ $rxpercent = "100";}
-	$tx = (int)get_string_between($tout[0], "tx", "KB/s");
+
+	$tx = get_string_between($tout[0], "tx", "/s");
+	if(strpos($tx,'MB') == true) { $tx = intval($tx * 1024); } else { $tx = (int)$tx; }
 	$txpercent = round($tx/$GLOBALS['txlimit']*100,0);
 	if( $txpercent > 100){ $txpercent = "100";}
 //result
@@ -220,7 +228,6 @@ function getdata() {
 		color($loadPercent,"1"),
 		color($loadPercent,"2"),
 		$uptime,
-		$localtime,
 		$connections,
 		$connPercent,
 		color($connPercent,"1"),

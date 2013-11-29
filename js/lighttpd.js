@@ -1,6 +1,6 @@
 		function BeginPoll()
 		{
-			$.get('/status/lighttpd/status', null, LoadData);
+			$.get('/server-status', null, LoadData);
 		}
 		function LoadData(data, textStatus)
 		{
