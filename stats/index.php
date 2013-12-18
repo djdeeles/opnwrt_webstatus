@@ -1,4 +1,5 @@
 <?php
+$start =  microtime(true);
     //
     // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
     //
@@ -194,7 +195,9 @@
     }
     ?>
     </div>
-    <div id="footer"><a href="http://www.cetincone.tk/">aCC Stats</a> 1.5.2</div>
+    <div id="footer"><a href="http://www.cetincone.tk/">aCC Stats</a> 1.5.2 <br/>
+        <small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?></small>
+    </div>
   </div>
 </div>
 

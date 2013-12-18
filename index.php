@@ -9,9 +9,9 @@ include 'login.php';
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?=$hostname?> Status</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-	<link href="css/custom.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+	<link href="css/custom.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<style type="text/css">
 		@media (min-width: 980px) {
@@ -21,8 +21,8 @@ include 'login.php';
 			}
 		}
 	</style>
-	<script src="http://code.jquery.com/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script type="text/javascript">		
 		$(document).ready(function() {
 			$('[data-toggle="modal"]').click(function(e) {
@@ -185,6 +185,7 @@ loadInfo();
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down"></i>Downloads</a>
 							<ul class="dropdown-menu">
+								<li <?=echoActiveClassIfRequestMatches("public")?> ><a href="content.php?iframe=<?=$host?>/public"><i class="icon-folder-open"></i>Public Files</a></li>
 								<li <?=echoActiveClassIfRequestMatches("file.php")?> ><a href="content.php?iframe=<?=$host?>/file.php"><i class="icon-folder-open"></i>File Manager</a></li>
 								<li <?=echoActiveClassIfRequestMatches(":9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
 								<li <?=echoActiveClassIfRequestMatches(":8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>

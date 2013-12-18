@@ -142,9 +142,9 @@ function getdata() {
 	} 
 	else { 
 		$swapPercent = "0"; 
-		$usedSwap ="Swap Off"; 
-		$totalSwap="Swap Off"; 
-		$availSwap="Swap Off";
+		$usedSwap ="N/A"; 
+		$totalSwap="N/A"; 
+		$availSwap="N/A";
 	}
 //Disk1 Info
 	$totalDisk1 = disk_total_space("/overlay");
@@ -155,13 +155,21 @@ function getdata() {
 	$availDisk1 = formatSize($availDisk1);
 	$usedDisk1 = formatSize($usedDisk1);
 //Disk2 Info
-	$totalDisk2 = disk_total_space("/mnt/data");
-	$availDisk2 = disk_free_space("/mnt/data");
+	$totalDisk2 = disk_total_space("/mnt/data2");
+	$availDisk2 = disk_free_space("/mnt/data2");
 	$usedDisk2 =  $totalDisk2 - $availDisk2;
 	$diskPercent2 = round($usedDisk2/$totalDisk2*100, 0);
 	$totalDisk2 = formatSize($totalDisk2); 
 	$availDisk2 = formatSize($availDisk2);
 	$usedDisk2 = formatSize($usedDisk2);
+
+	if ($usedDisk1 == $usedDisk2 ) 	{ 
+		$totalDisk2 = "N/A"; 
+		$availDisk2 = "N/A";
+		$usedDisk2  = "N/A";
+		$diskPercent2 = "0";
+	} 
+	
 //Uptime Info
 	$loadresult = @exec("uptime");
 	preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$loadresult,$avgs);
@@ -241,8 +249,8 @@ function getdata() {
 		$txpercent,
 		color($txpercent,"1"),
 		color($txpercent,"2"),
-		ping(US, "google-public-dns-a.google.com"),
-		ping(EU, "bbc.co.uk"),
+		ping(US, "8.8.8.8"),
+		ping(EU, "194.236.188.144"),
 		ping(Gateway, "gateway"),
 		ping(Ap, "192.168.1.2", "100000")
 		);

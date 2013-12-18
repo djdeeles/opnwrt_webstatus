@@ -35,8 +35,8 @@ $_CONFIG['thumbnails'] = false;
 // Default: $_CONFIG['thumbnails_width'] = 200;
 // Default: $_CONFIG['thumbnails_height'] = 200;
 //
-$_CONFIG['thumbnails_width'] = 300;
-$_CONFIG['thumbnails_height'] = 300;
+$_CONFIG['thumbnails_width'] = 200;
+$_CONFIG['thumbnails_height'] = 200;
 
 //
 // Mobillidele mõeldud kasutajaliides. true/false
@@ -192,7 +192,7 @@ $_CONFIG['require_login'] = true;
 // For example: $_CONFIG['users'] = array(array("username", "password", "admin"));
 // Default: $_CONFIG['users'] = array();
 //
-$_CONFIG['users'] = array(array("admin", "051984", "admin"),array("djdeeles", "051984", "user"));
+$_CONFIG['users'] = array(array("admin", "051984", "admin"),array("djdeeles", "051984", "admin"));
 
 //
 // Seaded uploadimiseks, uute kaustade loomiseks ja kustutamiseks.

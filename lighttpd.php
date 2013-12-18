@@ -18,7 +18,6 @@ include 'login.php';
 	<script src="http://code.jquery.com/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>	
 	<script src="js/lighttpd.js"></script>	
-	<script src="js/analytics.js"></script>
 </head>
 <body>
 	<?php if ($loggedin == true) { ?>

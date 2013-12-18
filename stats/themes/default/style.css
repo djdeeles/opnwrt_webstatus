@@ -10,7 +10,7 @@ a { color:#000; text-decoration: none; }
 #sidebar li.page { padding-left:5px; font-size: 0.75em; line-height:1.5em; font-weight: normal ;  } 
 #content {margin-left: 160px; width: 720px; } 
 #header {padding: 0px 8px 3px 8px; font-size: 1.25em; font-weight: bold; text-align: left; border-bottom:1px solid #C8C8C8; } 
-#footer {padding: 10px 8px 5px 8px; font-size: 0.75em; font-weight: bold; text-align: right; } 
+#footer {padding: 10px 8px 5px 8px; font-size: 0.85em; text-align: right; } 
 #main {padding: 10px 10px 10px 10px; } 
 #main table { border:1px solid #C8C8C8; } 
 #main td { font-size: 0.85em; padding:3px; } 
