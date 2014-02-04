@@ -1,0 +1,38 @@
+<?php
+function ping($hostname, $host, $timeout ) {
+	if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
+	$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+	$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+	socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeoutsec, 'usec' => $timeoutms));
+	socket_connect($socket, $host, null);
+	$timer = microtime(1);
+	socket_send($socket, $package, strlen($package), 0);
+	if (socket_read($socket, 255)) {
+		$result = round((microtime(1) - $timer) * 1000, 0);
+		if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
+		else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
+		else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
+	}
+	else {
+		$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
+	}
+	return $colorresult;
+}
+
+
+	exec("vnstat -i eth0.2 -tr 2",$out);
+	$out = str_replace(' ', '', $out);
+	$rout = explode("rx ", $out[3]);
+	$tout = explode("rx ", $out[4]);
+
+	$rx = get_string_between($rout[0], "rx", "/s");
+	if(strpos($rx,'MB') == true) { $rx = intval($rx * 1024); } else { $rx = (int)$rx; }
+	$rxpercent = round($rx/$GLOBALS['rxlimit']*100,0);
+	if( $rxpercent > 100){ $rxpercent = "100";}
+
+	$tx = get_string_between($tout[0], "tx", "/s");
+	if(strpos($tx,'MB') == true) { $tx = intval($tx * 1024); } else { $tx = (int)$tx; }
+	$txpercent = round($tx/$GLOBALS['txlimit']*100,0);
+	if( $txpercent > 100){ $txpercent = "100";}
+	
+?>

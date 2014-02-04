@@ -7,7 +7,7 @@ function servicestate($process)
 }
 function service($servicename, $saction)  
 { 
-	@exec("/etc/init.d/$servicename $saction");
+	exec("/etc/init.d/$servicename $saction");
 	header('Location: '.dirname($_SERVER['PHP_SELF']));
 	exit;
 }
@@ -25,37 +25,17 @@ function serviceControl($name, $servicename, $pid)
 			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><i class='icon-play'></i>Start service</a></li>
 		</ul>";
 	}
-}
+} 
 function ping($hostname, $host, $timeout ) {
-	if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
-	$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
-	$socket  = socket_create(AF_INET, SOCK_RAW, 1);
-	socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeoutsec, 'usec' => $timeoutms));
-	socket_connect($socket, $host, null);
-	$timer = microtime(1);
-	socket_send($socket, $package, strlen($package), 0);
-	if (socket_read($socket, 255)) {
-		$result = round((microtime(1) - $timer) * 1000, 0);
-		if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
-		else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
-		else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
-	}
-	else {
-		$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
-	}
-	return $colorresult;
-}
-/*
-function ping($hostname, $host) {
 	exec("ping -W1 -c1 $host",$result);
 	$result = (int)get_string_between($result[1], "time=", "ms");
 	if ($result == 0) { $colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; }
-	else if ($result < 100){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
-	else if ($result < 250){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
-	else { $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }
+	else if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
+	else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
+	else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
 
 	return $colorresult;
-}*/
+}
 function color($percent, $field){
 	if ( $field =="1" ) {
 		switch (true){
@@ -134,7 +114,7 @@ function getdata() {
 	$totalSwap = $m["SwapTotal"];
 	$availSwap = $m["SwapFree"];
 	$usedSwap =  $totalSwap - $availSwap;
-	if ($totalSwap > "0" ) 	{ 
+	if ($totalSwap > 0 ) 	{ 
 		$swapPercent = round($usedSwap/$totalSwap*100, 0); 
 		$usedSwap = formatMem($usedSwap);
 		$totalSwap  = formatMem($totalSwap);
@@ -155,8 +135,8 @@ function getdata() {
 	$availDisk1 = formatSize($availDisk1);
 	$usedDisk1 = formatSize($usedDisk1);
 //Disk2 Info
-	$totalDisk2 = disk_total_space("/mnt/data2");
-	$availDisk2 = disk_free_space("/mnt/data2");
+	$totalDisk2 = disk_total_space("/mnt/data");
+	$availDisk2 = disk_free_space("/mnt/data");
 	$usedDisk2 =  $totalDisk2 - $availDisk2;
 	$diskPercent2 = round($usedDisk2/$totalDisk2*100, 0);
 	$totalDisk2 = formatSize($totalDisk2); 
@@ -171,7 +151,7 @@ function getdata() {
 	} 
 	
 //Uptime Info
-	$loadresult = @exec("uptime");
+	$loadresult = exec("uptime");
 	preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$loadresult,$avgs);
 	$load1M = "$avgs[1]";
 	$load5M = "$avgs[2]";
@@ -182,26 +162,25 @@ function getdata() {
 	$loadPercent = $avgs[1]*100;
 	if( $loadPercent > 100){ $loadPercent = "100";}
 //Connection Info
-	$connresult = @exec("wc -l /proc/net/nf_conntrack");
+	$connresult = exec("wc -l /proc/net/nf_conntrack");
 	$connections = explode(" ", $connresult);
 	$connections = $connections[0];
 	$totalconnections = "16384";
 	$connPercent = round($connections/$totalconnections*100, 0);
 //Process Info
-	$runningthreads = @exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
+	$runningthreads = exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
 //Transfer info
-	exec("vnstat -i eth0.2 -tr 2",$out);
-	$out = str_replace(' ', '', $out);
-	$rout = explode("rx ", $out[3]);
-	$tout = explode("rx ", $out[4]);
-
-	$rx = get_string_between($rout[0], "rx", "/s");
-	if(strpos($rx,'MB') == true) { $rx = intval($rx * 1024); } else { $rx = (int)$rx; }
+	$transfertime =  microtime(true);
+	$rxstart = exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
+	$txstart = exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
+	usleep(250000);
+	$transfertime = microtime(true) - $transfertime;
+	$rxend = exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
+	$txend = exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
+	$tx = round((($txend - $txstart) / $transfertime) / 1024, 2);
+	$rx = round((($rxend - $rxstart) / $transfertime) / 1024, 2);
 	$rxpercent = round($rx/$GLOBALS['rxlimit']*100,0);
 	if( $rxpercent > 100){ $rxpercent = "100";}
-
-	$tx = get_string_between($tout[0], "tx", "/s");
-	if(strpos($tx,'MB') == true) { $tx = intval($tx * 1024); } else { $tx = (int)$tx; }
 	$txpercent = round($tx/$GLOBALS['txlimit']*100,0);
 	if( $txpercent > 100){ $txpercent = "100";}
 //result
@@ -251,7 +230,7 @@ function getdata() {
 		color($txpercent,"2"),
 		ping(US, "8.8.8.8"),
 		ping(EU, "194.236.188.144"),
-		ping(Gateway, "gateway"),
+		ping(Gateway, "94.54.96.1"),
 		ping(Ap, "192.168.1.2", "100000")
 		);
 	return $results;

@@ -3,8 +3,9 @@ error_reporting(0);
 include 'functions.php';
 
 $hostname = "aCC Server";
-$refreshRate = "5000"; // ms
-$version = "v1.2";
+$refreshRate = "2500"; // ms
+$version = "v1.3";
+$interface = "eth0.2"; // interface to display data rate
 $rxlimit = "1280"; // kb/s
 $txlimit = "128"; // kb/s
 
@@ -13,8 +14,11 @@ $host = $_SERVER['HTTP_HOST'];
 
 //Refresh
 if (isset($_GET['refresh'])) {
+	//$datatime =  microtime(true);
 	$results = getdata();
 	echo json_encode($results);
+	//$datatime = round((microtime(true) - $datatime), 2);
+	//echo "<b>Page generated in</b> $datatime seconds.";
 }
 
 //Service start stop
