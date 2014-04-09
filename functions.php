@@ -2,12 +2,12 @@
 
 function servicestate($process)
 {
-	exec("/bin/pidof $process",$response);
+	@exec("/bin/pidof $process",$response);
 	if ($response){ return true; } else	{ return false; }
 }
 function service($servicename, $saction)  
 { 
-	exec("/etc/init.d/$servicename $saction");
+	@exec("/etc/init.d/$servicename $saction");
 	header('Location: '.dirname($_SERVER['PHP_SELF']));
 	exit;
 }
@@ -27,7 +27,7 @@ function serviceControl($name, $servicename, $pid)
 	}
 } 
 function ping($hostname, $host, $timeout ) {
-	exec("ping -W1 -c1 $host",$result);
+	@exec("ping -W1 -c1 $host",$result);
 	$result = (int)get_string_between($result[1], "time=", "ms");
 	if ($result == 0) { $colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; }
 	else if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
@@ -99,6 +99,12 @@ function get_string_between($string, $start, $end){
 	$len = strpos($string,$end,$ini) - $ini;
 	return substr($string,$ini,$len);
 }
+
+function vpninfo(){	
+	$interface = get_string_between(@exec("ifconfig pptp-vpn,$vpn")[1], "inet addr:", "  ");
+	return $interface;
+}
+
 function getdata() {
 //Memory Info
 	foreach(file("/proc/meminfo") as $ri)
@@ -151,7 +157,7 @@ function getdata() {
 	} 
 	
 //Uptime Info
-	$loadresult = exec("uptime");
+	$loadresult = @exec("uptime");
 	preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$loadresult,$avgs);
 	$load1M = "$avgs[1]";
 	$load5M = "$avgs[2]";
@@ -162,27 +168,39 @@ function getdata() {
 	$loadPercent = $avgs[1]*100;
 	if( $loadPercent > 100){ $loadPercent = "100";}
 //Connection Info
-	$connresult = exec("wc -l /proc/net/nf_conntrack");
+	$connresult = @exec("wc -l /proc/net/nf_conntrack");
 	$connections = explode(" ", $connresult);
 	$connections = $connections[0];
 	$totalconnections = "16384";
 	$connPercent = round($connections/$totalconnections*100, 0);
 //Process Info
-	$runningthreads = exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
+	$runningthreads = @exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
 //Transfer info
 	$transfertime =  microtime(true);
-	$rxstart = exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
-	$txstart = exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
+	$WANrxstart = @exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
+	$WANtxstart = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
+	$LANrxstart = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
+	$LANtxstart = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
 	usleep(250000);
 	$transfertime = microtime(true) - $transfertime;
-	$rxend = exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
-	$txend = exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
-	$tx = round((($txend - $txstart) / $transfertime) / 1024, 2);
-	$rx = round((($rxend - $rxstart) / $transfertime) / 1024, 2);
-	$rxpercent = round($rx/$GLOBALS['rxlimit']*100,0);
-	if( $rxpercent > 100){ $rxpercent = "100";}
-	$txpercent = round($tx/$GLOBALS['txlimit']*100,0);
-	if( $txpercent > 100){ $txpercent = "100";}
+	$WANrxend = @exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
+	$WANtxend = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
+	$LANrxend = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
+	$LANtxend = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
+	//wan
+	$WANtx = round((($WANtxend - $WANtxstart) / $transfertime) / 1024, 2);
+	$WANrx = round((($WANrxend - $WANrxstart) / $transfertime) / 1024, 2);
+	$WANrxpercent = round($WANrx/$GLOBALS['WANrxlimit']*100,0);
+	if( $WANrxpercent > 100){ $WANrxpercent = "100";}
+	$WANtxpercent = round($WANtx/$GLOBALS['WANtxlimit']*100,0);
+	if( $WANtxpercent > 100){ $WANtxpercent = "100";}
+	//lan
+	$LANtx = round((($LANtxend - $LANtxstart) / $transfertime) / 1024, 2);
+	$LANrx = round((($LANrxend - $LANrxstart) / $transfertime) / 1024, 2);
+	$LANrxpercent = round($WANrx/$GLOBALS['LANrxlimit']*100,0);
+	if( $LANrxpercent > 100){ $LANrxpercent = "100";}
+	$LANtxpercent = round($LANtx/$GLOBALS['LANtxlimit']*100,0);
+	if( $LANtxpercent > 100){ $LANtxpercent = "100";}
 //result
 	$results = array($totalMem,
 		$usedMem,
@@ -220,14 +238,23 @@ function getdata() {
 		color($connPercent,"1"),
 		color($connPercent,"2"),
 		$runningthreads,
-		$rx,
-		$rxpercent,
-		color($rxpercent,"1"),
-		color($rxpercent,"2"),
-		$tx,
-		$txpercent,
-		color($txpercent,"1"),
-		color($txpercent,"2"),
+		$WANrx,
+		$WANrxpercent,
+		color($WANrxpercent,"1"),
+		color($WANrxpercent,"2"),
+		$WANtx,
+		$WANtxpercent,
+		color($WANtxpercent,"1"),
+		color($WANtxpercent,"2"),
+		$LANrx,
+		$LANrxpercent,
+		color($LANrxpercent,"1"),
+		color($LANrxpercent,"2"),
+		$LANtx,
+		$LANtxpercent,
+		color($LANtxpercent,"1"),
+		color($LANtxpercent,"2"),
+		//ping(VPN, vpninfo()),
 		ping(US, "8.8.8.8"),
 		ping(EU, "194.236.188.144"),
 		ping(Gateway, "94.54.96.1"),

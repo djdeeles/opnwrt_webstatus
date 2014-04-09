@@ -16,8 +16,8 @@ include 'login.php';
 	<style type="text/css">
 		@media (min-width: 980px) {
 			body {
-			padding-top: 42px;
-			padding-bottom: 42px;
+				padding-top: 42px;
+				padding-bottom: 42px;
 			}
 		}
 	</style>
@@ -42,8 +42,8 @@ include 'login.php';
 			loadInfo();
 		});
 		function loadInfo() {
-				$.getJSON("data.php?refresh", 
-					function(result) {
+			$.getJSON("data.php?refresh", 
+				function(result) {
 			//mem
 			var totalMem = result[0];
 			$("#totalMem").html(totalMem);
@@ -130,36 +130,55 @@ include 'login.php';
 	        //threads                
 	        var runningthreads = result[35];
 	        $("#runningthreads").html(runningthreads);
-	        //transfer
-	        var rx = result[36];
-	        $("#rx").html(rx + " Kb/s");
-	        var rxPercent = result[37];
-	        $("#rxPercent").html("(" + rxPercent + "%)");
-	        $("#rxPercentBar").css("width", rxPercent + "%");
-	        var rxPercentBarDiv = result[38];
-	        $('#rxPercentBarDiv').removeClass().addClass("progress progress-" + rxPercentBarDiv + " progress-striped active");
-	        var RecieveSpan = result[39];
-	        $('#RecieveSpan').removeClass().addClass("label label-" + RecieveSpan);
-	        var tx = result[40];
-	        $("#tx").html(tx + " Kb/s");
-	        var txPercent = result[41];
-	        $("#txPercent").html("(" + txPercent + "%)");
-	        $("#txPercentBar").css("width", txPercent + "%");
-	        var txPercentBarDiv = result[42];
-	        $('#txPercentBarDiv').removeClass().addClass("progress progress-" + txPercentBarDiv + " progress-striped active");
-	        var SendSpan = result[43];
-	        $('#SendSpan').removeClass().addClass("label label-" + SendSpan);
+	        //WAN transfer
+	        var WANrx = result[36];
+	        $("#WANrx").html(WANrx + " Kb/s");
+	        var WANrxPercent = result[37];
+	        $("#WANrxPercentBar").css("width", WANrxPercent + "%");
+	        var WANrxPercentBarDiv = result[38];
+	        $('#WANrxPercentBarDiv').removeClass().addClass("progress progress-" + WANrxPercentBarDiv + " progress-striped active");
+	        var WANRecieveSpan = result[39];
+	        $('#WANRecieveSpan').removeClass().addClass("label label-" + WANRecieveSpan);
+	        var WANtx = result[40];
+	        $("#WANtx").html(WANtx + " Kb/s");
+	        var WANtxPercent = result[41];
+	        $("#WANtxPercentBar").css("width", WANtxPercent + "%");
+	        var WANtxPercentBarDiv = result[42];
+	        $('#WANtxPercentBarDiv').removeClass().addClass("progress progress-" + WANtxPercentBarDiv + " progress-striped active");
+	        var WANSendSpan = result[43];
+	        $('#WANSendSpan').removeClass().addClass("label label-" + WANSendSpan);	        
+	        $("#WANPercent").html("(" + Math.round((WANtxPercent + WANrxPercent)/2) + "%)");
+	        //LAN transfer
+	        var LANrx = result[44];
+	        $("#LANrx").html(LANrx + " Kb/s");
+	        var LANrxPercent = result[45];
+	        $("#LANrxPercentBar").css("width", LANrxPercent + "%");
+	        var LANrxPercentBarDiv = result[46];
+	        $('#LANrxPercentBarDiv').removeClass().addClass("progress progress-" + LANrxPercentBarDiv + " progress-striped active");
+	        var LANRecieveSpan = result[47];
+	        $('#LANRecieveSpan').removeClass().addClass("label label-" + LANRecieveSpan);
+	        var LANtx = result[48];
+	        $("#LANtx").html(LANtx + " Kb/s");
+	        var LANtxPercent = result[49];
+	        $("#LANtxPercentBar").css("width", LANtxPercent + "%");
+	        var LANtxPercentBarDiv = result[50];
+	        $('#LANtxPercentBarDiv').removeClass().addClass("progress progress-" + LANtxPercentBarDiv + " progress-striped active");
+	        var LANSendSpan = result[51];
+	        $('#LANSendSpan').removeClass().addClass("label label-" + LANSendSpan);	        
+	        $("#LANPercent").html("(" + Math.round((LANtxPercent + LANrxPercent)/2) + "%)");
 	        //ping
-	        var usping = result[44];
+	        var usping = result[52];
 	        $("#usping").html(usping);
-	        var euping = result[45];
+	        var euping = result[53];
 	        $("#euping").html(euping);
-	        var gtping = result[46];
+	        var gtping = result[54];
 	        $("#gtping").html(gtping);
-	        var apping = result[47];
+	        var apping = result[55];
 	        $("#apping").html(apping);
+	        var refreshtime = result[56];
+	        $("#refreshtime").html(refreshtime);
 	    });
-	}
+}
 </script>
 </head>
 <body>
@@ -258,76 +277,84 @@ include 'login.php';
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<h2><b>Recieve </b><span class="percentage" id="rxPercent">(<?=$rxpercent?>%)</span></h2>
-				<div id="rxPercentBarDiv" class="progress progress-info progress-striped active">
-					<div class="bar" style="width: 0%;" id="rxPercentBar"></div>
-				</div>
-				<p><span id="RecieveSpan" class="label label-inverse">Rx: <span id="rx"><?=$rx?> Kb/s</span></span></p>
+				<h2><b>Wan </b><span class="percentage" id="WANPercent"></span></h2>
+				<span id="WANRecieveSpan" class="label label-inverse" style="float:left; margin-right:5px; width:120px;">Rx: <span id="WANrx"></span></span>
+				<div id="WANrxPercentBarDiv" class="progress progress-info progress-striped active">
+					<div class="bar" style="width: 0%;" id="WANrxPercentBar"></div>
+				</div>				
+				<span id="WANSendSpan" class="label label-inverse" style="float:left; margin-right:5px; width:120px;">Tx: <span id="WANtx"></span></span>
+				<div id="WANtxPercentBarDiv" class="progress progress-info progress-striped active">
+					<div class="bar" style="width: 0%;" id="WANtxPercentBar"></div>
+				</div>				
 			</div>
 			<div class="span6">
-				<h2><b>Send </b><span class="percentage" id="txPercent">(<?=$txpercent?>%)</span></h2>
-				<div id="txPercentBarDiv" class="progress progress-info progress-striped active">
-					<div class="bar" style="width: 0%;" id="txPercentBar"></div>
+				<h2><b>Lan </b><span class="percentage" id="LANPercent"></span></h2>
+				<span id="LANRecieveSpan" class="label label-inverse" style="float:left; margin-right:5px; width:120px;">Rx: <span id="LANrx"></span></span>
+				<div id="LANrxPercentBarDiv" class="progress progress-info progress-striped active">
+					<div class="bar" style="width: 0%;" id="LANrxPercentBar"></div>
+					</div>
+				<span id="LANSendSpan" class="label label-inverse" style="float:left; margin-right:5px; width:120px;">Tx: <span id="LANtx"></span></span>
+				<div id="LANtxPercentBarDiv" class="progress progress-info progress-striped active">
+					<div class="bar" style="width: 0%;" id="LANtxPercentBar"></div>
 				</div>
-				<p><span id="SendSpan" class="label label-inverse">Tx: <span id="tx"><?=$tx?> Kb/s</span></span></p>
 			</div>
 		</div>
 		<div class="row-fluid">
 			<div class="span4">
-				<h2><b>Load </b><span class="percentage" id="loadPercent">(<?=$loadPercent?>%)</span></h2>
+				<h2><b>Load </b><span class="percentage" id="loadPercent"></span></h2>
 				<div id="loadPercentBarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="loadPercentBar"></div>
 				</div>
-				<p><span id="loadSpan1" class="label label-inverse">Load 1 Minute: <span id="load1M"><?=$load1M?></span></span></p>
-				<p><span id="loadSpan2" class="label label-inverse">Load 5 Minute: <span id="load5M"><?=$load5M?></span></span></p>
-				<p><span id="loadSpan3" class="label label-inverse">Load 15 Minute: <span id="load15M"><?=$load15M?></span></span></p>
+				<p><span id="loadSpan1" class="label label-inverse">Load 1 Minute: <span id="load1M"></span></span></p>
+				<p><span id="loadSpan2" class="label label-inverse">Load 5 Minute: <span id="load5M"></span></span></p>
+				<p><span id="loadSpan3" class="label label-inverse">Load 15 Minute: <span id="load15M"></span></span></p>
 			</div>
 			<div class="span4">
-				<h2><b>Ram </b><span class="percentage" id="memPercent">(<?=$memPercent?>%)</span></h2>
+				<h2><b>Ram </b><span class="percentage" id="memPercent"></span></h2>
 				<div id="memPercentBarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="memPercentBar"></div>
 				</div>
-				<p><span id="memSpan1" class="label label-inverse">Ram Total: <span id="totalMem"><?=$totalMem?></span></span></p>
-				<p><span id="memSpan2" class="label label-inverse">Ram Used: <span id="usedMem"><?=$usedMem?></span></span></p>
-				<p><span id="memSpan3" class="label label-inverse">Ram Available: <span id="availMem"><?=$availMem?></span></span></p>
+				<p><span id="memSpan1" class="label label-inverse">Ram Total: <span id="totalMem"></span></span></p>
+				<p><span id="memSpan2" class="label label-inverse">Ram Used: <span id="usedMem"></span></span></p>
+				<p><span id="memSpan3" class="label label-inverse">Ram Available: <span id="availMem"></span></span></p>
 			</div>
 			<div class="span4">
-				<h2><b>Swap </b><span class="percentage" id="swapPercent">(<?=$swapPercent?>%)</span></h2>
+				<h2><b>Swap </b><span class="percentage" id="swapPercent"></span></h2>
 				<div id="swapPercentBarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="swapPercentBar"></div>
 				</div>
-				<p><span id="swapSpan1" class="label label-inverse">Swap Total: <span id="totalSwap"><?=$totalSwap?></span></span></p>
-				<p><span id="swapSpan2" class="label label-inverse">Swap Used: <span id="usedSwap"><?=$usedSwap?></span></span></p>
-				<p><span id="swapSpan3" class="label label-inverse">Swap Available: <span id="availSwap"><?=$availSwap?></span></span></p>
+				<p><span id="swapSpan1" class="label label-inverse">Swap Total: <span id="totalSwap"></span></span></p>
+				<p><span id="swapSpan2" class="label label-inverse">Swap Used: <span id="usedSwap"></span></span></p>
+				<p><span id="swapSpan3" class="label label-inverse">Swap Available: <span id="availSwap"></span></span></p>
 			</div>
 		</div>
 		<div class="row-fluid">                                
 			<div class="span4">
-				<h2><b>Disk 1 </b><span class="percentage" id="diskPercent1">(<?=$diskPercent1?>%)</span></h2>
+				<h2><b>Disk 1 </b><span class="percentage" id="diskPercent1"></span></h2>
 				<div id="diskPercent1BarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="diskPercent1Bar"></div>
 				</div>
-				<p><span id="disk1Span1" class="label label-inverse">Disk Total: <span id="totalDisk1"><?=$totalDisk1?></span></span></p>
-				<p><span id="disk1Span2" class="label label-inverse">Disk Used: <span id="usedDisk1"><?=$usedDisk1?></span></span></p>
-				<p><span id="disk1Span3" class="label label-inverse">Disk Available: <span id="availDisk1"><?=$availDisk1?></span></span></p>
+				<p><span id="disk1Span1" class="label label-inverse">Disk Total: <span id="totalDisk1"></span></span></p>
+				<p><span id="disk1Span2" class="label label-inverse">Disk Used: <span id="usedDisk1"></span></span></p>
+				<p><span id="disk1Span3" class="label label-inverse">Disk Available: <span id="availDisk1"></span></span></p>
 			</div>
 			<div class="span4">
-				<h2><b>Disk 2 </b><span class="percentage" id="diskPercent2">(<?=$diskPercent2?>%)</span></h2>
+				<h2><b>Disk 2 </b><span class="percentage" id="diskPercent2"></span></h2>
 				<div id="diskPercent2BarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="diskPercent2Bar"></div>
 				</div>
-				<p><span id="disk2Span1" class="label label-inverse">Disk Total: <span id="totalDisk2"><?=$totalDisk2?></span></span></p>
-				<p><span id="disk2Span2" class="label label-inverse">Disk Used: <span id="usedDisk2"><?=$usedDisk2?></span></span></p>
-				<p><span id="disk2Span3" class="label label-inverse">Disk Available: <span id="availDisk2"><?=$availDisk2?></span></span></p>
+				<p><span id="disk2Span1" class="label label-inverse">Disk Total: <span id="totalDisk2"></span></span></p>
+				<p><span id="disk2Span2" class="label label-inverse">Disk Used: <span id="usedDisk2"></span></span></p>
+				<p><span id="disk2Span3" class="label label-inverse">Disk Available: <span id="availDisk2"></span></span></p>
 			</div>
 			<div class="span4">
-				<h2><b>Stats </b><span class="percentage" id="connPercent">(Connections <?=$connPercent?>%)</span></h2>
+				<h2><b>Stats </b><span class="percentage" id="connPercent"></span></h2>
 				<div id="connPercentBarDiv" class="progress progress-info progress-striped active">
 					<div class="bar" style="width: 0%;" id="connPercentBar"></div>
 				</div>
-				<p><span id="connSpan3" class="label label-inverse">Connections: <span id="connections"><?=$connections?></span></span></p>        
-				<p><span id="connSpan1" class="label label-inverse">Uptime: <span id ="uptime"><?=$uptime?></span></span></p>                       
-				<p><span id="connSpan4" class="label label-inverse">Threads: <span id="runningthreads"><?=$runningthreads?></span></span></p>
+				<p><span id="connSpan3" class="label label-inverse">Connections: <span id="connections"></span></span></p>        
+				<p><span id="connSpan1" class="label label-inverse">Uptime: <span id ="uptime"></span></span></p>                       
+				<p><span id="connSpan4" class="label label-inverse">Threads: <span id="runningthreads"></span></span></p>
 			</div>
 		</div>
 		<?php if ($loggedin == true) { ?>
@@ -340,7 +367,7 @@ include 'login.php';
 		<?php } ?>
 		<hr>                
 		<div class="footer">
-			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.
+			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.
 				<br><?php echo "Your IP Address: ". $_SERVER["REMOTE_ADDR"]; ?></small><br/>
 				<small>Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small></div>
 			</div>

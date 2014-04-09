@@ -6,19 +6,21 @@ $hostname = "aCC Server";
 $refreshRate = "2500"; // ms
 $version = "v1.3";
 $interface = "eth0.2"; // interface to display data rate
-$rxlimit = "1280"; // kb/s
-$txlimit = "128"; // kb/s
+$WANrxlimit = "1280"; // kb/s
+$WANtxlimit = "128"; // kb/s
+$LANrxlimit = "12500"; // kb/s
+$LANtxlimit = "12500"; // kb/s
 
 $workingdir = dirname($_SERVER['PHP_SELF']);
 $host = $_SERVER['HTTP_HOST'];
 
 //Refresh
 if (isset($_GET['refresh'])) {
-	//$datatime =  microtime(true);
+	$datatime =  microtime(true);
 	$results = getdata();
+	$datatime = round((microtime(true) - $datatime), 2);
+	array_push($results, $datatime);	
 	echo json_encode($results);
-	//$datatime = round((microtime(true) - $datatime), 2);
-	//echo "<b>Page generated in</b> $datatime seconds.";
 }
 
 //Service start stop
