@@ -26,7 +26,7 @@ function normalized_require_once($lib) {
 
 if (array_key_exists("version", $_REQUEST)) {
 
-	echo json_encode(array("code" => 0, "version" => "0.24.0", "href" => APP_ABS_HREF));
+	echo json_encode(array("code" => 0, "version" => "0.24.1", "href" => APP_ABS_HREF));
 	exit;
 }
 

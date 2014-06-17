@@ -1,5 +1,5 @@
 /*
-h5ai 0.24.0
+h5ai 0.24.1
 http://larsjung.de/h5ai/
 
 File types mapped to file extensions
@@ -67,7 +67,7 @@ File types mapped to file extensions
 	"tiff":				[".tiff"],
 	"unknown":			[],
 	"vcal":				[".vcal"],
-	"video":			[".avi", ".flv", ".mkv", ".mov", ".m4v", ".mp4", ".mpg", ".rm", ".swf", ".vob", ".wmv"],
+	"video":			[".avi", ".flv", ".mkv", ".mov", ".m4v", ".mp4", ".mpg", ".rm", ".swf", ".ts", ".vob", ".wmv"],
 	"xml":				[".xml"],
 	"zip":				[".7z", ".bz2", ".jar", ".lzma", ".war", ".z", ".Z", ".zip"]
 }
