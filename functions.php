@@ -1,12 +1,28 @@
 <?php
+require_once ("conn.php");
 
+function logger($action)
+{
+	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING'];
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$userid = 0;
+	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
+}
+function checkuser($username, $password){
+	$result = mysql_query("SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
+	if(mysql_num_rows($result))
+		return true;
+	else
+		return false;
+}
 function servicestate($process)
 {
-	@exec("/bin/pidof $process",$response);
+	@exec("pidof $process",$response);
 	if ($response){ return true; } else	{ return false; }
 }
 function service($servicename, $saction)  
-{ 
+{ 	
+	logger('service');
 	@exec("/etc/init.d/$servicename $saction");
 	header('Location: '.dirname($_SERVER['PHP_SELF']));
 	exit;
@@ -27,13 +43,22 @@ function serviceControl($name, $servicename, $pid)
 	}
 } 
 function ping($hostname, $host, $timeout ) {
-	@exec("ping -W1 -c1 $host",$result);
-	$result = (int)get_string_between($result[1], "time=", "ms");
-	if ($result == 0) { $colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; }
-	else if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
-	else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
-	else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
-
+	if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
+	$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+	$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+	socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeoutsec, 'usec' => $timeoutms));
+	socket_connect($socket, $host, null);
+	$timer = microtime(1);
+	socket_send($socket, $package, strlen($package), 0);
+	if (socket_read($socket, 255)) {
+		$result = round((microtime(1) - $timer) * 1000, 0);
+		if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
+		else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
+		else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
+	}
+	else {
+		$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
+	}
 	return $colorresult;
 }
 function color($percent, $field){
@@ -258,7 +283,8 @@ function getdata() {
 		ping(US, "8.8.8.8"),
 		ping(EU, "194.236.188.144"),
 		ping(Gateway, "94.54.96.1"),
-		ping(Ap, "192.168.1.2", "100000")
+		//ping(Ap, "192.168.1.2", "500000")
+		"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
 	return $results;
 }

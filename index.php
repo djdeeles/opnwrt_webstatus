@@ -1,7 +1,7 @@
 <?php 
 $start =  microtime(true);
-include 'data.php';
-include 'login.php';
+include_once 'data.php';
+include_once 'login.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -190,7 +190,7 @@ include 'login.php';
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="<?=$workingdir?>">aCC Server</a>
+				<a class="brand" href="<?=$workingdir?>"><?=$hostname?></a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li <?=echoActiveClassIfRequestMatches("")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>

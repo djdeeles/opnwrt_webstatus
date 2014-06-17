@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-include 'functions.php';
+include_once 'functions.php';
 
 $hostname = "aCC Server";
 $refreshRate = "2500"; // ms

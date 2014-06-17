@@ -1,4 +1,5 @@
 <?php
+include_once 'functions.php';
 
 if( session_id() == null ) { session_start(); }
 
@@ -6,6 +7,7 @@ if (isset($_GET['logout'])) {
 	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $host));
 	session_destroy();
 	$loggedin = false ;
+	logger('logout');
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 	return;
 }
@@ -31,34 +33,18 @@ $password = sha1($_POST["password"]);
 $logininfo = $username." ".$password;
 
 if (!empty($_POST)){
-	if ( checkuser($username, $password) == true ) {   
+	if (checkuser($username, $password) == true ) {   
 		$_SESSION['authenticated'] = true;
 		$loggedin = true ;
+		logger('login');
 		if (isset($_POST['remember'])) { setcookie("authentication", $logininfo, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
 		$error = 'Incorrect username or password';
+		logger('wrong password');
 		$loggedin = false ;
 	}
-}
-
-function checkuser($username, $password){
-	$con = mysql_connect("localhost","djdeeles","051984");
-
-	if(! $con)
-	{
-		die('Connection Failed'.mysql_error());
-	}
-
-	mysql_select_db("status",$con);
-
-	$query="SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true";
-	$result=mysql_query($query,$con);
-	if(mysql_num_rows($result))
-		return true;
-	else
-		return false;
 }
 
 /*
