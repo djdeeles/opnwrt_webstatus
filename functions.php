@@ -5,24 +5,29 @@ function logger($action)
 {
 	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING'];
 	$ip = $_SERVER['REMOTE_ADDR'];
-	$userid = 0;
+	$userid = $_SESSION['userid'];
 	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
 }
 function checkuser($username, $password){
 	$result = mysql_query("SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
-	if(mysql_num_rows($result))
-		return true;
-	else
-		return false;
+	if(mysql_num_rows($result)) {
+		$user = mysql_fetch_row($result);
+		return $user;
+	} 
+	else {
+		return 0;
+	}
 }
 function checklogin() {
 	if ($_SESSION['authenticated'] == true) {
 		$loggedin = true;		
 	}
 	else {
-		$logincookie = explode(' ', $_COOKIE["authentication"] );
-		if ( checkuser($logincookie[0], $logincookie[1]) == true ) {
+		$logincookie = unserialize($_COOKIE["authentication"]);
+		$user = checkuser($logincookie[1], $logincookie[2]);
+		if ($user[0] > 0 && $user[0] != null && $user[0] != 0) {
 			$_SESSION['authenticated'] = true;
+			$_SESSION['userid'] = $user[0];
 			$loggedin = true;
 		}
 		else {

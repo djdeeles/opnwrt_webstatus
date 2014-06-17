@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-include_once 'functions.php';
+require_once 'functions.php';
 
 $hostname = "aCC Server";
 $refreshRate = "2500"; // ms
@@ -24,10 +24,13 @@ if (isset($_GET['refresh'])) {
 }
 
 //Service start stop
-if (isset($_GET['service']) && checklogin ()) {
+if (isset($_GET['service']) && $loggedin) {
 	$servicename = $_GET['service'];
 	$saction = $_GET['saction'];
 	service($servicename, $saction);
+}
+elseif ($_GET['service']) {
+	logger("Unauthenticated user for service");
 }
 
 //list online

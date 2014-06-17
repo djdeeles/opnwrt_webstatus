@@ -1,30 +1,29 @@
 <?php
-include_once 'functions.php';
+require_once 'functions.php';
 
 if( session_id() == null ) { session_start(); }
 
 if (isset($_GET['logout'])) {
+	logger('logout');
 	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $host));
 	session_destroy();
-	$loggedin = false ;
-	logger('logout');
+	$loggedin = false;
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 	return;
 }
 
-$loggedin = checklogin();
-
-$username = $_POST["username"];
-$password = sha1($_POST["password"]);
-$logininfo = $username." ".$password;
-
 if (!empty($_POST)){
-	if (checkuser($username, $password) == true ) {   
+	$username = $_POST["username"];
+	$password = sha1($_POST["password"]);
+	$user = checkuser($username, $password);
+	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
-		$loggedin = true ;
+		$_SESSION['userid'] = $user[0];
+		$logininfo = array($user[0],$username,$password);
+		$loggedin = true;
 		logger('login');
-		if (isset($_POST['remember'])) { setcookie("authentication", $logininfo, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
-		header("Location: ". $_SERVER['HTTP_REFERER']);
+		if (isset($_POST['remember'])) { setcookie("authentication", serialize($logininfo), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
+		//header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
 		$error = 'Incorrect username or password';
@@ -33,43 +32,6 @@ if (!empty($_POST)){
 	}
 }
 
-/*
-if( session_id() == null ) { session_start(); }
+$loggedin = checklogin();
 
-if (isset($_GET['logout'])) {
-	setcookie("authentication", null, time()-1);
-	session_destroy();
-	$loggedin = false ;
-	header("Location: ". $_SERVER['HTTP_REFERER']);
-	return;
-}
-
-$secretusername = "root";
-$secretpassword = "051984";
-$logininfo = sha1(secretusername&secretpassword);
-
-if ($_SESSION['authenticated'] == true ) { 
-	$loggedin = true; 
-	return; 
-}
-else if ($_COOKIE["authentication"] == $logininfo ) {
-	$_SESSION['authenticated'] = true;
-	$loggedin = true;
-	return;
-} 
-
-if (!empty($_POST)){
-	if ($_POST['username'] == $secretusername && $_POST['password'] == $secretpassword ) {   
-		$_SESSION['authenticated'] = true;
-		$loggedin = true ;
-		if (isset($_POST['remember'])) { setcookie("authentication", $logininfo, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
-		header("Location: ". $_SERVER['HTTP_REFERER']);
-	}
-	else {
-		$error = 'Incorrect username or password';
-		$loggedin = false ;
-	}
-}
-
-*/
 ?>
