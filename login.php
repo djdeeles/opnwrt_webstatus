@@ -12,21 +12,7 @@ if (isset($_GET['logout'])) {
 	return;
 }
 
-if ($_SESSION['authenticated'] == true) {
-	$loggedin = true; 
-	return; 
-}
-else {
-	$logincookie = explode(' ', $_COOKIE["authentication"] );
-	if ( checkuser($logincookie[0], $logincookie[1]) == true ) {
-		$_SESSION['authenticated'] = true;
-		$loggedin = true;
-		return;
-	}
-	else {
-		$loggedin = false ;
-	}
-}
+$loggedin = checklogin();
 
 $username = $_POST["username"];
 $password = sha1($_POST["password"]);

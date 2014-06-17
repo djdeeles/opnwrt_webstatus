@@ -24,7 +24,7 @@ if (isset($_GET['refresh'])) {
 }
 
 //Service start stop
-if (isset($_GET['service'])) {
+if (isset($_GET['service']) && checklogin ()) {
 	$servicename = $_GET['service'];
 	$saction = $_GET['saction'];
 	service($servicename, $saction);

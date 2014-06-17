@@ -15,6 +15,22 @@ function checkuser($username, $password){
 	else
 		return false;
 }
+function checklogin() {
+	if ($_SESSION['authenticated'] == true) {
+		$loggedin = true;		
+	}
+	else {
+		$logincookie = explode(' ', $_COOKIE["authentication"] );
+		if ( checkuser($logincookie[0], $logincookie[1]) == true ) {
+			$_SESSION['authenticated'] = true;
+			$loggedin = true;
+		}
+		else {
+			$loggedin = false;
+		}
+	}
+	return $loggedin;
+}
 function servicestate($process)
 {
 	@exec("pidof $process",$response);
