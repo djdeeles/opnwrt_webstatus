@@ -1,5 +1,6 @@
 <?php
 require_once 'functions.php';
+$host = $_SERVER['HTTP_HOST'];
 
 if( session_id() == null ) { session_start(); }
 
@@ -18,12 +19,12 @@ if (!empty($_POST)){
 	$user = checkuser($username, $password);
 	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
-		$_SESSION['userid'] = $user[0];
-		$logininfo = array($user[0],$username,$password);
+		$_SESSION['user'] = $user; 
 		$loggedin = true;
 		logger('login');
-		if (isset($_POST['remember'])) { setcookie("authentication", serialize($logininfo), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
-		//header("Location: ". $_SERVER['HTTP_REFERER']);
+		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
+		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
 		$error = 'Incorrect username or password';

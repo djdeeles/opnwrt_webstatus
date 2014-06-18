@@ -11,6 +11,7 @@ $WANtxlimit = "128"; // kb/s
 $LANrxlimit = "12500"; // kb/s
 $LANtxlimit = "12500"; // kb/s
 
+$userid = $_SESSION['user'][0];
 $workingdir = dirname($_SERVER['PHP_SELF']);
 $host = $_SERVER['HTTP_HOST'];
 
@@ -39,14 +40,14 @@ if (isset($_GET['listonline']))
 	@exec("nmap -sP 192.168.1.1-50",$response);
 	echo "<div class='modal-header'>
 	<h3>Online Clients</h3>
-	</div>
-	<div class='modal-body'>";
+</div>
+<div class='modal-body'>";
 	foreach ($response as $value) {
 		echo $value . '<br/>';
 	}
 	echo "</div>
 	<div class='modal-footer'>
-	<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }
@@ -57,47 +58,46 @@ if (isset($_GET['logread']))
 	@exec("logread",$response);
 	echo "<div class='modal-header'>
 	<h3>Logs</h3>
-	</div>
-	<div class='modal-body'>";
+</div>
+<div class='modal-body'>";
 	foreach ($response as $key => $value) {
 		echo '<b>' . $key . '</b> ' . $value . '<br/>';
 	}
 	echo "</div>
 	<div class='modal-footer'>
-	<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }
 
 // dlna info
-if (isset($_GET['dlna']))
-{ 
+if (isset($_GET['dlna'])) { 
 	echo "<div class='modal-body'>";
 	echo file_get_contents("http://192.168.1.1:8200");
 	echo "</div>
 	<div class='modal-footer'>
-	<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }
 
 //Refresh
+if (!isset($_COOKIE['dynamicUpdates']))	{ 
+	setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+	header("Location: ". $_SERVER['HTTP_REFERER']);
+}
 if (isset($_GET['refreshtoggle'])) {   
-	if (!isset($_COOKIE['dynamicUpdates']) or $_COOKIE['dynamicUpdates'] == true) { 
-		setcookie("dynamicUpdates", "0", time()+60*60*24*30, "/", ".".preg_replace('/^www\./','', $host)); 
-		header("Location: ". $workingdir);
+	if ($_COOKIE['dynamicUpdates'] == true) { 
+		setoption($userid,"refresh",0);
+		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
 	}
 	else { 
-		setcookie("dynamicUpdates", "1", time()+60*60*24*30, "/", ".".preg_replace('/^www\./','', $host));
-		header("Location: ". $workingdir);
+		setoption($userid,"refresh",1);
+		setcookie("dynamicUpdates", 1, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
 	}
+	header("Location: ". $workingdir);
 }
-if (!isset($_COOKIE['dynamicUpdates']) or $_COOKIE['dynamicUpdates'] == true) { 
-	$refreshtoggle = "<span class='label label-success'>On</span>"; 
-}
-else { 
-	$refreshtoggle = "<span class='label label-inverse'>Off</span>";
-	$refreshRate = "86400000";
-}
+if ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
+else { $refreshtoggle = "<span class='label label-inverse'>Off</span>"; $refreshRate = "86400000"; }
 
 ?>

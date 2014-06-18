@@ -1,7 +1,7 @@
-<?php 
+<?php  
 $start =  microtime(true);
+require_once 'login.php';
 include_once 'data.php';
-include_once 'login.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -226,7 +226,7 @@ include_once 'login.php';
 					<ul class="nav pull-right" data-no-collapse="true">
 						<li class="dropdown">
 							<?php if ($loggedin == true) { ?>
-							<a href="?logout"><i class="icon-user"></i>Sign Out</a>
+							<a href="?logout"><i class="icon-user"></i>Sign Out(<?php echo $_SESSION['user'][1]; ?>)</a>
 							<?php } else { ?>
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i>Sign In<span class="caret"></span></a>                                                
 							<div class="dropdown-menu" style="padding: 10px; padding-bottom: 0px;">

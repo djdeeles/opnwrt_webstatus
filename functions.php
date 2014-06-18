@@ -3,9 +3,9 @@ require_once ("conn.php");
 
 function logger($action)
 {
-	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING'];
+	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$ip = $_SERVER['REMOTE_ADDR'];
-	$userid = $_SESSION['userid'];
+	$userid = $_SESSION['user'][0];
 	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
 }
 function checkuser($username, $password){
@@ -27,7 +27,7 @@ function checklogin() {
 		$user = checkuser($logincookie[1], $logincookie[2]);
 		if ($user[0] > 0 && $user[0] != null && $user[0] != 0) {
 			$_SESSION['authenticated'] = true;
-			$_SESSION['userid'] = $user[0];
+			$_SESSION['user'] = $user;
 			$loggedin = true;
 		}
 		else {
@@ -35,6 +35,14 @@ function checklogin() {
 		}
 	}
 	return $loggedin;
+}
+function setoption($userid, $option, $value){
+	$query = mysql_query("UPDATE Options SET $option=$value WHERE id=$userid");
+	if(!$query){ return false; } else { return true; }
+}
+function getoption($userid, $option){
+	$value = mysql_query("SELECT $option FROM Options WHERE userid=$userid");
+	return mysql_fetch_row($value);  
 }
 function servicestate($process)
 {
@@ -134,8 +142,9 @@ function formatMem($size){
 function echoActiveClassIfRequestMatches($requestUri)
 {
 	$current_file_name = basename($_SERVER['REQUEST_URI']);
-	if (strpos($current_file_name,$requestUri) !== false or $current_file_name == $requestUri)
+	if (/*strpos($current_file_name,$requestUri,null) !== false or*/ $current_file_name == $requestUri){
 		echo 'class="active"';
+	}
 }
 function get_string_between($string, $start, $end){
 	$string = " ".$string;
