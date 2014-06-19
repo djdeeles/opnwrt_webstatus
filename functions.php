@@ -310,9 +310,9 @@ function getdata() {
 		color($LANtxpercent,"1"),
 		color($LANtxpercent,"2"),
 		//ping(VPN, vpninfo()),
-		ping(US, "8.8.8.8"),
-		ping(EU, "194.236.188.144"),
-		ping(Gateway, "94.54.96.1"),
+		ping(US, "8.8.8.8",null),
+		ping(EU, "194.236.188.144",null),
+		ping(Gateway, "94.54.96.1",null),
 		//ping(Ap, "192.168.1.2", "500000")
 		"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
