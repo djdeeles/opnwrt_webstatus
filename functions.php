@@ -1,6 +1,8 @@
 <?php
 require_once ("conn.php");
 
+$userid = $_SESSION['user'][0];
+
 function logger($action)
 {
 	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];

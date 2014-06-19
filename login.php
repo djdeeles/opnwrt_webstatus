@@ -1,12 +1,11 @@
 <?php
-require_once 'functions.php';
-$host = $_SERVER['HTTP_HOST'];
+require_once 'functions.php'; 
 
 if( session_id() == null ) { session_start(); }
 
 if (isset($_GET['logout'])) {
 	logger('logout');
-	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $host));
+	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST']));
 	session_destroy();
 	$loggedin = false;
 	header("Location: ". $_SERVER['HTTP_REFERER']);
@@ -22,8 +21,8 @@ if (!empty($_POST)){
 		$_SESSION['user'] = $user; 
 		$loggedin = true;
 		logger('login');
-		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
-		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
+		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST'])); 
+		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST'])); }
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {

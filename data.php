@@ -11,10 +11,6 @@ $WANtxlimit = "128"; // kb/s
 $LANrxlimit = "12500"; // kb/s
 $LANtxlimit = "12500"; // kb/s
 
-$userid = $_SESSION['user'][0];
-$workingdir = dirname($_SERVER['PHP_SELF']);
-$host = $_SERVER['HTTP_HOST'];
-
 //Refresh
 if (isset($_GET['refresh'])) {
 	$datatime =  microtime(true);
@@ -83,19 +79,19 @@ if (isset($_GET['dlna'])) {
 
 //Refresh
 if (!isset($_COOKIE['dynamicUpdates']))	{ 
-	setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+	setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST'])); 
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
 if (isset($_GET['refreshtoggle'])) {   
 	if ($_COOKIE['dynamicUpdates'] == true) { 
 		setoption($userid,"refresh",0);
-		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
+		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST']));
 	}
 	else { 
 		setoption($userid,"refresh",1);
-		setcookie("dynamicUpdates", 1, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
+		setcookie("dynamicUpdates", 1, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $_SERVER['HTTP_HOST']));
 	}
-	header("Location: ". $workingdir);
+	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
 if ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
 else { $refreshtoggle = "<span class='label label-inverse'>Off</span>"; $refreshRate = "86400000"; }
