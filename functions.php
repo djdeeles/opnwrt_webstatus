@@ -5,7 +5,7 @@ $userid = $_SESSION['user'][0];
 
 function logger($action)
 {
-	$uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+	$uri = $host.$_SERVER['REQUEST_URI'];
 	$ip = $_SERVER['REMOTE_ADDR'];
 	$userid = $_SESSION['user'][0];
 	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
