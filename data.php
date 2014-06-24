@@ -96,7 +96,8 @@ if (isset($_GET['refreshtoggle'])) {
 	}
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
-if ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
+if ( $_COOKIE['dynamicUpdates'] == true && $loggedin ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
+elseif ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; $refreshRate = "60000"; }
 else { $refreshtoggle = "<span class='label label-inverse'>Off</span>"; $refreshRate = "86400000"; }
 
 ?>
