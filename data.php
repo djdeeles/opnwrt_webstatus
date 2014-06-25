@@ -1,18 +1,7 @@
 <?php
-error_reporting(0);
-require_once 'functions.php';
-
-$hostname = "aCC Server";
-$refreshRate = "2500"; // ms
-$version = "v1.3";
-$interface = "eth0.2"; // interface to display data rate
-$WANrxlimit = "1280"; // kb/s
-$WANtxlimit = "128"; // kb/s
-$LANrxlimit = "12500"; // kb/s
-$LANtxlimit = "12500"; // kb/s
-
-$host = $_SERVER['HTTP_HOST'];
-$workingdir = dirname($_SERVER['PHP_SELF']);
+//error_reporting(0);
+require 'functions.php';
+require 'config.php';
 
 //Refresh
 if (isset($_GET['refresh'])) {
@@ -82,7 +71,12 @@ if (isset($_GET['dlna'])) {
 
 //Refresh
 if (!isset($_COOKIE['dynamicUpdates']))	{ 
-	setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+	if($loggedin) { 
+		setcookie("dynamicUpdates", getoption($userid,"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+	}
+	else {
+		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+	}
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
 if (isset($_GET['refreshtoggle'])) {   
