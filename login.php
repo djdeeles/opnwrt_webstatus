@@ -1,5 +1,6 @@
 <?php
-require_once 'functions.php'; 
+require_once 'config.php';
+require_once 'functions.php';
 
 if( session_id() == null ) { session_start(); }
 
@@ -32,6 +33,6 @@ if (!empty($_POST)){
 	}
 }
 
-$loggedin = checklogin();
+$loggedin = checklogin($host);
 
 ?>

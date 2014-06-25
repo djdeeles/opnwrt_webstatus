@@ -1,7 +1,7 @@
 <?php  
 $start =  microtime(true);
-require_once 'login.php';
-include_once 'data.php';
+require 'login.php';
+require 'data.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -273,7 +273,7 @@ include_once 'data.php';
 				<div class='btn-group'>", serviceControl(pyLoad,pyload,'python /usr/share/python/pyload/pyLoadCore.py'), "</div>
 				<div class='btn-group'>", serviceControl(DLNa,minidlna,minidlna), "</div>
 				";
-			} else { echo "<h4>You need to login to see detailed info.</h4>"; } ?>                        
+			} ?>                        
 		</div>
 		<div class="row-fluid">
 			<div class="span6">

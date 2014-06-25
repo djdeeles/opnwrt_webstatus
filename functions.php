@@ -1,7 +1,6 @@
 <?php
-require_once ("conn.php");
-
-$userid = $_SESSION['user'][0];
+require_once 'conn.php';
+require 'config.php';
 
 function logger($action)
 {
@@ -20,7 +19,7 @@ function checkuser($username, $password){
 		return 0;
 	}
 }
-function checklogin() {
+function checklogin($host) {
 	if ($_SESSION['authenticated'] == true) {
 		$loggedin = true;		
 	}
@@ -31,6 +30,8 @@ function checklogin() {
 			$_SESSION['authenticated'] = true;
 			$_SESSION['user'] = $user;
 			$loggedin = true;
+			setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
+			header("Location: ". $_SERVER['HTTP_REFERER']);
 		}
 		else {
 			$loggedin = false;
