@@ -19,7 +19,7 @@ function checkuser($username, $password){
 		return 0;
 	}
 }
-function checklogin($host) {
+function checklogin() {
 	if ($_SESSION['authenticated'] == true) {
 		$loggedin = true;		
 	}
@@ -30,7 +30,7 @@ function checklogin($host) {
 			$_SESSION['authenticated'] = true;
 			$_SESSION['user'] = $user;
 			$loggedin = true;
-			setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host));
+			setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $GLOBALS['host']));
 			header("Location: ". $_SERVER['HTTP_REFERER']);
 		}
 		else {

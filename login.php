@@ -33,6 +33,6 @@ if (!empty($_POST)){
 	}
 }
 
-$loggedin = checklogin($host);
+$loggedin = checklogin();
 
 ?>
