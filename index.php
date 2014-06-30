@@ -229,7 +229,7 @@ require 'data.php';
 		<hr>                
 		<div class="footer">
 			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.
-				<br><?php echo "Your IP Address: ". $_SERVER["REMOTE_ADDR"]; ?></small><br/>
+				<br><?php echo "Your IP Address: " . $_SERVER["REMOTE_ADDR"] . ping(" ",$_SERVER["REMOTE_ADDR"],"500000"); ?></small><br/>
 				<small>Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small></div>
 			</div>
 		</div>
