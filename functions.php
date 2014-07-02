@@ -157,12 +157,24 @@ function get_string_between($string, $start, $end){
 	$len = strpos($string,$end,$ini) - $ini;
 	return substr($string,$ini,$len);
 }
-
+function read_file($filename){
+    $buffer = array();
+    $source_file = fopen( $filename, "r" ) or die("Couldn't open $filename");
+    while (!feof($source_file)) {
+        $buffer[] = fread($source_file, 4096);  // use a buffer of 4KB
+    }
+    return $buffer;
+}
+function multiexplode ($delimiters,$string) {
+    
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
 function vpninfo(){	
 	$interface = get_string_between(@exec("ifconfig pptp-vpn,$vpn")[1], "inet addr:", "  ");
 	return $interface;
 }
-
 function getdata() {
 //Memory Info
 	foreach(file("/proc/meminfo") as $ri)
