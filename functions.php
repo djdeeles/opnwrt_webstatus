@@ -52,6 +52,15 @@ function servicestate($process)
 	@exec("pidof $process",$response);
 	if ($response){ return true; } else	{ return false; }
 }
+function servicestatus($servicename) {
+	$dir = '/etc/rc.d/';
+	if( glob("{$dir}/***{$servicename}") ) {
+		echo "<li><a href='?service=$servicename&saction=disable' title='disable' onclick=\"return confirm('Are you sure you want to disable service ?')\"><i class='icon-remove'></i>Disable service</a></li>";
+	}
+	else {
+		echo "<li><a href='?service=$servicename&saction=enable' title='enable' onclick=\"return confirm('Are you sure you want to enable service ?')\"><i class='icon-ok'></i>Enable service</a></li>";
+	}
+}
 function service($servicename, $saction)  
 { 	
 	logger('service');
@@ -62,16 +71,20 @@ function service($servicename, $saction)
 function serviceControl($name, $servicename, $pid)  
 { 
 	if (servicestate($pid)) { 
-		echo "<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><i class='icon-cog'></i></a>
+		echo "
+		<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><i class='icon-cog'></i></a>
 		<ul class='dropdown-menu'>
 			<li><a href='?service=$servicename&saction=stop' title='$saction' onclick=\"return confirm('Are you sure you want to stop service ?')\"><i class='icon-stop'></i>Stop service</a></li>
-			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><i class='icon-refresh'></i>Restart service</a></li>
-		</ul>";
+			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><i class='icon-refresh'></i>Restart service</a></li>";
+		servicestatus($servicename);
+		echo "</ul>";
 	} 
-	else { echo "<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><i class='icon-cog'></i></a>
+	else { echo "
+		<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><i class='icon-cog'></i></a>
 		<ul class='dropdown-menu'>
-			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><i class='icon-play'></i>Start service</a></li>
-		</ul>";
+			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><i class='icon-play'></i>Start service</a></li>";
+		servicestatus($servicename);
+		echo "</ul>";
 	}
 } 
 function ping($hostname, $host, $timeout ) {
