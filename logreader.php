@@ -25,7 +25,7 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
 <body> 
   <div class="container">
     <div class="jumbotron" id="content">
-    <select onchange="if (this.value) window.location.href='logreader.php?logtype=' + this.value">
+    <select onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
           <option value="1"<?php echo $logtype == '1' ? 'selected' : ''?>>lighttpd</option>
           <option value="2"<?php echo $logtype == '2' ? 'selected' : ''?>>php_errors</option>
           <option value="3"<?php echo $logtype == '3' ? 'selected' : ''?>>minidlna</option>
