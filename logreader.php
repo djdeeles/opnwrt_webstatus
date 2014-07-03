@@ -25,7 +25,9 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
 <body> 
   <div class="container">
     <div class="jumbotron" id="content">
-    <select onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
+    <div style="float:right;text-align:right; margin-bottom:10px;">
+        <span style="font-weight:bold;">Select error type: </span>
+        <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
           <option value="1"<?php echo $logtype == '1' ? 'selected' : ''?>>lighttpd</option>
           <option value="2"<?php echo $logtype == '2' ? 'selected' : ''?>>php_errors</option>
           <option value="3"<?php echo $logtype == '3' ? 'selected' : ''?>>minidlna</option>
@@ -33,6 +35,7 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
           <option value="5"<?php echo $logtype == '5' ? 'selected' : ''?>>adblock</option>
           <option value="6"<?php echo $logtype == '6' ? 'selected' : ''?>>log2db</option>
         </select>
+    </div>
     <table id='tbl' class='table'>
       <th><b>Id</b></th>
       <th><b>Error</b></th>
@@ -40,21 +43,25 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
       <?php
         //getting table contents
         $start  = ($page-1)*$per_page;
-        $result = mysql_query("select * from System_Logs where logtype=$logtype order by id limit $start,$per_page");
+        $result = mysql_query("select * from System_Logs where logtype=$logtype order by id desc limit $start,$per_page");
 
-        while($row = mysql_fetch_array($result))
-        {
-          $id         = $row['id'];
-          $log        = $row['log'];
-          $errordate  = $row['errordate'];
+        if(mysql_num_rows($result) > 0) {
+          while($row = mysql_fetch_array($result))
+          {
+            $id         = $row['id'];
+            $log        = $row['log'];
+            $errordate  = $row['errordate'];
 
-          echo "
-          <tr>
-            <td>$id</td>
-            <td>$log</td>
-            <td>$errordate</td>
-          </tr>";
-        } //End while
+            echo "
+            <tr>
+              <td>$id</td>
+              <td>$log</td>
+              <td>$errordate</td>
+            </tr>";
+          } //End while
+        } else {
+          echo "<tr><td colspan='3'>No Result</td></tr>";
+        }
       ?>
       </table>
     </div>
