@@ -47,6 +47,7 @@ foreach(glob("/www/log/*.log") as $filename)
 		}
 		
 		if(!$query)	{ 
+			mysql_query("INSERT INTO System_Logs (logtype,log) VALUES ('6','$mysql_error')");
 			echo "Fail <font color='red'>$filename </font><br/>
 			<p>$mysql_error</p>";
 		}
@@ -55,5 +56,5 @@ foreach(glob("/www/log/*.log") as $filename)
 			file_put_contents($filename, "");
 		}
 	}
-} 
+}
 ?>

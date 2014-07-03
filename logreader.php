@@ -31,6 +31,7 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
           <option value="3"<?php echo $logtype == '3' ? 'selected' : ''?>>minidlna</option>
           <option value="4"<?php echo $logtype == '4' ? 'selected' : ''?>>wifimanager</option>
           <option value="5"<?php echo $logtype == '5' ? 'selected' : ''?>>adblock</option>
+          <option value="6"<?php echo $logtype == '6' ? 'selected' : ''?>>log2db</option>
         </select>
     <table id='tbl' class='table'>
       <th><b>Id</b></th>
