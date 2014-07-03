@@ -63,6 +63,7 @@ require 'data.php';
 								<li <?=echoActiveClassIfRequestMatches("stats")?> ><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Network Stats</a></li>
 								<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
 								<li <?=echoActiveClassIfRequestMatches("apc.php")?> ><a href="content.php?iframe=<?=$host?>/apc.php"><i class="icon-align-left"></i>APC Status</a></li>
+								<li <?=echoActiveClassIfRequestMatches("logreader.php")?> ><a href="content.php?iframe=<?=$host?>/logreader.php"><i class="icon-inbox"></i>Log Reader</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">

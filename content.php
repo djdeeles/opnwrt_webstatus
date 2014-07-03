@@ -33,6 +33,7 @@
 								<li <?=echoActiveClassIfRequestMatches("stats")?> ><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Network Stats</a></li>
 								<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
 								<li <?=echoActiveClassIfRequestMatches("apc.php")?> ><a href="content.php?iframe=<?=$host?>/apc.php"><i class="icon-align-left"></i>APC Status</a></li>
+								<li <?=echoActiveClassIfRequestMatches("logreader.php")?> ><a href="content.php?iframe=<?=$host?>/logreader.php"><i class="icon-inbox"></i>Log Reader</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -56,7 +57,7 @@
 					<ul class="nav pull-right" data-no-collapse="true">
 						<li class="dropdown">
 							<?php if ($loggedin == true) { ?>
-							<a href="?logout"><i class="icon-user"></i>Sign Out</a>
+							<a href="?logout"><i class="icon-user"></i>Sign Out(<?php echo $_SESSION['user'][1]; ?>)</a>
 							<?php } else { ?>
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i>Sign In<span class="caret"></span></a>						
 							<div class="dropdown-menu" style="padding: 10px; padding-bottom: 0px;">
