@@ -1,12 +1,16 @@
 <?php 
-include('conn.php');
-include('data.php');
+require_once 'conn.php';
+require('data.php');
 $per_page = 10; 
 $logtype  = 2; // bu biryerden seçilecek
 $page     = 1;
 
 if ($_GET['page']) { $page= $_GET['page']; }
 if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
+if (isset($_GET['log2db'])) { 
+  include('log2db.php');
+	header("Location: ". $_SERVER['HTTP_REFERER']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,23 +27,25 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
   <script src="js/bootstrap.min.js" type="text/javascript"></script>  
 </head>
 <body> 
-  <div class="container">
-    <div class="jumbotron" id="content">
-    <div style="float:right;text-align:right; margin-bottom:10px;">
-        <span style="font-weight:bold;">Select error type: </span>
-        <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
-          <option value="1"<?php echo $logtype == '1' ? 'selected' : ''?>>lighttpd</option>
-          <option value="2"<?php echo $logtype == '2' ? 'selected' : ''?>>php_errors</option>
-          <option value="3"<?php echo $logtype == '3' ? 'selected' : ''?>>minidlna</option>
-          <option value="4"<?php echo $logtype == '4' ? 'selected' : ''?>>wifimanager</option>
-          <option value="5"<?php echo $logtype == '5' ? 'selected' : ''?>>adblock</option>
-          <option value="6"<?php echo $logtype == '6' ? 'selected' : ''?>>log2db</option>
-        </select>
-    </div>
+  <div class="container" style="margin-top:20px;">
+    <div style="float:left;margin-bottom:10px;">
+      <span style="font-weight:bold;">Select error type: </span>
+      <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
+        <option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
+        <option value="2"<?php echo $logtype == '2' ? ' selected="selected"' : ''?>>php_errors</option>
+        <option value="3"<?php echo $logtype == '3' ? ' selected="selected"' : ''?>>minidlna</option>
+        <option value="4"<?php echo $logtype == '4' ? ' selected="selected"' : ''?>>wifimanager</option>
+        <option value="5"<?php echo $logtype == '5' ? ' selected="selected"' : ''?>>adblock</option>
+        <option value="6"<?php echo $logtype == '6' ? ' selected="selected"' : ''?>>log2db</option>
+      </select>    
+    </div>    
+    <a style="float:right;" href="<?php echo $_SERVER['PHP_SELF']; ?>?log2db" title="Refresh Logs" data-toggle="modal" class="btn btn-small">Refresh Logs</a>
     <table id='tbl' class='table'>
-      <th><b>Id</b></th>
-      <th><b>Error</b></th>
-      <th><b>Date</b></th>
+      <tr>
+        <th><b>Id</b></th>
+        <th><b>Error</b></th>
+        <th><b>Date</b></th>
+      </tr>
       <?php
         //getting table contents
         $start  = ($page-1)*$per_page;
@@ -63,10 +69,9 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
           echo "<tr><td colspan='3'>No Result</td></tr>";
         }
       ?>
-      </table>
-    </div>
+    </table>
     <div class="pagination">  
-      <ul id="pagination">
+      <ul>
         <?php
           //getting number of rows and calculating no of pages
           $result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
@@ -91,8 +96,6 @@ if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
         ?>
       </ul> 
     </div>
-    <div id="loading"></div>
   </div>
-</div>
 </body>
 </html>

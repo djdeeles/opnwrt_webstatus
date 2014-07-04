@@ -1,6 +1,6 @@
 <?php
-include_once 'conn.php';
-include_once 'functions.php';
+require_once 'conn.php';
+require_once 'functions.php';
 
 // Open directory, and proceed to read its contents  
 foreach(glob("/www/log/*.log") as $filename)  
