@@ -210,3 +210,12 @@ a.pwd {
   font-weight: bold;
 }
 */
+
+.logs table { border:1px solid #C8C8C8; } 
+.logs th { background-color: #fff !important; } 
+.logs td,th { font-size: 0.85em; padding:3px !important; } 
+.logs tr:hover { border:0px; background-color: #fff !important; } 
+.logs tr:nth-child(even) {background: #F0F0F0}
+.logs tr:nth-child(odd) {background: #ddd}
+
+

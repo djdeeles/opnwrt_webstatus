@@ -2,7 +2,7 @@
 require_once 'conn.php';
 require('data.php');
 $per_page = 10; 
-$logtype  = 2; // bu biryerden seçilecek
+$logtype  = 0;
 $page     = 1;
 
 if ($_GET['page']) { $page= $_GET['page']; }
@@ -31,6 +31,7 @@ if (isset($_GET['log2db'])) {
     <div style="float:left;margin-bottom:10px;">
       <span style="font-weight:bold;">Select error type: </span>
       <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
+        <option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>select log type</option>
         <option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
         <option value="2"<?php echo $logtype == '2' ? ' selected="selected"' : ''?>>php_errors</option>
         <option value="3"<?php echo $logtype == '3' ? ' selected="selected"' : ''?>>minidlna</option>
@@ -40,7 +41,7 @@ if (isset($_GET['log2db'])) {
       </select>    
     </div>    
     <a style="float:right;" href="<?php echo $_SERVER['PHP_SELF']; ?>?log2db" title="Refresh Logs" data-toggle="modal" class="btn btn-small">Refresh Logs</a>
-    <table id='tbl' class='table'>
+    <table class='table logs'>
       <tr>
         <th><b>Id</b></th>
         <th><b>Error</b></th>
@@ -77,22 +78,21 @@ if (isset($_GET['log2db'])) {
           $result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
           $count  = mysql_fetch_row($result);
           $pages  = ceil($count[0]/$per_page);
-          
-          //show prev & first
-          if ($page > 1) { echo '<li class="prev"><a href="logreader.php?logtype='.$logtype.'&page=1">First</a></li>
-                                 <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.($page -1).'">Prev</a></li>'; }
-          
-          //Show page links
-          for($i=1; $i<=$pages; $i++)
-          {
-            if( $i > ($page + 3) or $i < ($page - 3) ) { continue; }
-            elseif ($i == $page ) { echo '<li class="active"><a href="#">'.$i.'</a></li>'; }
-            else { echo '<li><a href="logreader.php?logtype='.$logtype.'&page='.$i.'">'.$i.'</a></li>'; }
+          if ($pages > 1) {              
+            //show prev & first
+            if ($page > 1) { echo '<li class="prev"><a href="logreader.php?logtype='.$logtype.'&page=1">First</a></li>
+                                   <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.($page -1).'">Prev</a></li>'; }
+            //Show page links
+            for($i=1; $i<=$pages; $i++)
+            {
+              if( $i > ($page + 3) or $i < ($page - 3) ) { continue; }
+              elseif ($i == $page ) { echo '<li class="active"><a href="#">'.$i.'</a></li>'; }
+              else { echo '<li><a href="logreader.php?logtype='.$logtype.'&page='.$i.'">'.$i.'</a></li>'; }
+            }
+            //show next & last
+            if ($page < $pages) { echo '<li class="Next"><a href="logreader.php?logtype='.$logtype.'&page='.($page +1).'">Next</a></li>
+                                        <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.$pages.'">Last('.$pages.')</a></li>'; }
           }
-
-          //show next & last
-          if ($page < $pages) { echo '<li class="Next"><a href="logreader.php?logtype='.$logtype.'&page='.($page +1).'">Next</a></li>
-                                      <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.$pages.'">Last('.$pages.')</a></li>'; }
         ?>
       </ul> 
     </div>
