@@ -29,21 +29,21 @@ foreach(glob("/www/log/*.log") as $filename)
 	        $dateparse = array("[","] ");
 	        break;
 	    default:
-	    	continue;
+	    	break 2;
 		}
 		
 		foreach (file($filename) as $line) {
 			if($logtype != 1) { 
 				$line = multiexplode($dateparse,$line); 
-				$errordate = date('Y-m-d H:i:s',strtotime($line[1]));
-				$errorlog = mysql_real_escape_string($line[2]);
+				$logdate = date('Y-m-d H:i:s',strtotime($line[1]));
+				$log = mysql_real_escape_string($line[2]);
 			} 
 			else {
 				$line = explode($dateparse,$line);
-				$errordate = date('Y-m-d H:i:s',strtotime($line[0]));
-				$errorlog = mysql_real_escape_string($line[1]);
+				$date = date('Y-m-d H:i:s',strtotime($line[0]));
+				$log = mysql_real_escape_string($line[1]);
 			}
-			$query = mysql_query("INSERT INTO System_Logs (logtype,log,errordate) VALUES ($logtype,'$errorlog','$errordate')") or $mysql_error = mysql_error();
+			$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
 		}
 		
 		if(!$query)	{ 

@@ -1,4 +1,5 @@
 <?php 
+$start =  microtime(true);
 require_once 'conn.php';
 require_once 'login.php';
 require('data.php');
@@ -11,7 +12,7 @@ if ($loggedin) {
 	if ($_GET['page']) { $page= $_GET['page']; }
 	if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
 	if (isset($_GET['log2db'])) { 
-	  include('log2db.php');
+	  	include('log2db.php');
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 }
@@ -27,13 +28,13 @@ function displaylogs() {
       {
         $id         = $row['id'];
         $log        = $row['log'];
-        $errordate  = $row['errordate'];
+        $logdate  = $row['logdate'];
 
         echo "
         <tr>
           <td>$id</td>
           <td>$log</td>
-          <td>$errordate</td>
+          <td>$logdate</td>
         </tr>";
       } //End while
     } else {
@@ -80,7 +81,7 @@ function pagination() {
 <body> 
   <div class="container" style="margin-top:20px;">
     <div style="float:left;margin-bottom:10px;">
-      <span style="font-weight:bold;">Select error type: </span>
+      <span style="font-weight:bold;">Select log type: </span>
       <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
         <option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>select log type</option>
         <option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
@@ -95,7 +96,7 @@ function pagination() {
     <table class='table logs'>
       <tr>
         <th><b>Id</b></th>
-        <th><b>Error</b></th>
+        <th><b>Log</b></th>
         <th><b>Date</b></th>
       </tr>
       	<?php if($loggedin) { displaylogs(); } else { echo "<tr><td colspan='3'>Please Login</td></tr>"; } ?>
@@ -105,6 +106,7 @@ function pagination() {
         <?php if($loggedin) { pagination(); } ?>
       </ul> 
     </div>
+    <span><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></span>
   </div>
 </body>
 </html>
