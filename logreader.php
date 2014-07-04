@@ -1,15 +1,66 @@
 <?php 
 require_once 'conn.php';
+require_once 'login.php';
 require('data.php');
 $per_page = 10; 
 $logtype  = 0;
 $page     = 1;
 
-if ($_GET['page']) { $page= $_GET['page']; }
-if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
-if (isset($_GET['log2db'])) { 
-  include('log2db.php');
-	header("Location: ". $_SERVER['HTTP_REFERER']);
+if ($loggedin) {
+
+	if ($_GET['page']) { $page= $_GET['page']; }
+	if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
+	if (isset($_GET['log2db'])) { 
+	  include('log2db.php');
+		header("Location: ". $_SERVER['HTTP_REFERER']);
+	}
+}
+
+function displaylogs() {
+	global $page,$logtype,$per_page;
+	//getting table contents
+    $start  = ($page-1)*$per_page;
+    $result = mysql_query("select * from System_Logs where logtype=$logtype order by id desc limit $start,$per_page");
+
+    if(mysql_num_rows($result) > 0) {
+      while($row = mysql_fetch_array($result))
+      {
+        $id         = $row['id'];
+        $log        = $row['log'];
+        $errordate  = $row['errordate'];
+
+        echo "
+        <tr>
+          <td>$id</td>
+          <td>$log</td>
+          <td>$errordate</td>
+        </tr>";
+      } //End while
+    } else {
+      echo "<tr><td colspan='3'>No Result</td></tr>";
+    }
+}
+function pagination() {
+	global $page,$logtype,$per_page;
+	//getting number of rows and calculating no of pages
+	$result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
+	$count  = mysql_fetch_row($result);
+	$pages  = ceil($count[0]/$per_page);
+	if ($pages > 1) {              
+	//show prev & first
+	if ($page > 1) { echo '<li class="prev"><a href="logreader.php?logtype='.$logtype.'&page=1">First</a></li>
+	                       <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.($page -1).'">Prev</a></li>'; }
+	//Show page links
+	for($i=1; $i<=$pages; $i++)
+	{
+	  if( $i > ($page + 3) or $i < ($page - 3) ) { continue; }
+	  elseif ($i == $page ) { echo '<li class="active"><a href="#">'.$i.'</a></li>'; }
+	  else { echo '<li><a href="logreader.php?logtype='.$logtype.'&page='.$i.'">'.$i.'</a></li>'; }
+	}
+	//show next & last
+	if ($page < $pages) { echo '<li class="Next"><a href="logreader.php?logtype='.$logtype.'&page='.($page +1).'">Next</a></li>
+	                            <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.$pages.'">Last('.$pages.')</a></li>'; }
+	}
 }
 ?>
 
@@ -47,53 +98,11 @@ if (isset($_GET['log2db'])) {
         <th><b>Error</b></th>
         <th><b>Date</b></th>
       </tr>
-      <?php
-        //getting table contents
-        $start  = ($page-1)*$per_page;
-        $result = mysql_query("select * from System_Logs where logtype=$logtype order by id desc limit $start,$per_page");
-
-        if(mysql_num_rows($result) > 0) {
-          while($row = mysql_fetch_array($result))
-          {
-            $id         = $row['id'];
-            $log        = $row['log'];
-            $errordate  = $row['errordate'];
-
-            echo "
-            <tr>
-              <td>$id</td>
-              <td>$log</td>
-              <td>$errordate</td>
-            </tr>";
-          } //End while
-        } else {
-          echo "<tr><td colspan='3'>No Result</td></tr>";
-        }
-      ?>
+      	<?php if($loggedin) { displaylogs(); } else { echo "<tr><td colspan='3'>Please Login</td></tr>"; } ?>
     </table>
     <div class="pagination">  
       <ul>
-        <?php
-          //getting number of rows and calculating no of pages
-          $result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
-          $count  = mysql_fetch_row($result);
-          $pages  = ceil($count[0]/$per_page);
-          if ($pages > 1) {              
-            //show prev & first
-            if ($page > 1) { echo '<li class="prev"><a href="logreader.php?logtype='.$logtype.'&page=1">First</a></li>
-                                   <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.($page -1).'">Prev</a></li>'; }
-            //Show page links
-            for($i=1; $i<=$pages; $i++)
-            {
-              if( $i > ($page + 3) or $i < ($page - 3) ) { continue; }
-              elseif ($i == $page ) { echo '<li class="active"><a href="#">'.$i.'</a></li>'; }
-              else { echo '<li><a href="logreader.php?logtype='.$logtype.'&page='.$i.'">'.$i.'</a></li>'; }
-            }
-            //show next & last
-            if ($page < $pages) { echo '<li class="Next"><a href="logreader.php?logtype='.$logtype.'&page='.($page +1).'">Next</a></li>
-                                        <li class="prev"><a href="logreader.php?logtype='.$logtype.'&page='.$pages.'">Last('.$pages.')</a></li>'; }
-          }
-        ?>
+        <?php if($loggedin) { pagination(); } ?>
       </ul> 
     </div>
   </div>
