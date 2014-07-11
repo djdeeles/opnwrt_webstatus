@@ -40,7 +40,7 @@ foreach(glob("/www/log/*.log") as $filename)
 			} 
 			else {
 				$line = explode($dateparse,$line);
-				$date = date('Y-m-d H:i:s',strtotime($line[0]));
+				$logdate = date('Y-m-d H:i:s',strtotime($line[0]));
 				$log = mysql_real_escape_string($line[1]);
 			}
 			$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
