@@ -70,9 +70,14 @@ function pagination() {
 }
 function sortdata($asortby,$sortname) {
 	global $page,$logtype,$sort,$sortby;
-	if ($sort=="desc"){	$asort = "asc"; } elseif ($sort=="asc") { $asort="desc"; }	
-	if ($sortby==$asortby){ $headerstyle = "style='color:orange;'"; }
-	$header = "<a $headerstyle href='logreader.php?logtype=$logtype"."&page=$page"."&sortby=$asortby"."&sort=$asort'>$sortname"."</a>";
+	if ($sort=="desc"){	
+		$asort = "asc"; 
+		if ($sortby==$asortby){ $headerstyle = "style='color:orange;'"; $carret = "<span class='caret caret'></span>"; }
+	} elseif ($sort=="asc") { 
+		$asort="desc"; 		
+		if ($sortby==$asortby){ $headerstyle = "style='color:orange;'"; $carret = "<span class='caret caret-reversed'></span>"; }
+	}	
+	$header = "<a $headerstyle href='logreader.php?logtype=$logtype"."&page=$page"."&sortby=$asortby"."&sort=$asort'>$sortname $carret"."</a>";
 	echo $header;
 }
 ?>

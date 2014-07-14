@@ -218,4 +218,13 @@ a.pwd {
 .logs tr:nth-child(even) {background: #F0F0F0}
 .logs tr:nth-child(odd) {background: #ddd}
 
+.caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid #aaa;
+}
+.caret {
+
+    border-top: 4px solid #aaa;
+    vertical-align: middle;
+    margin-top: -3px;
 
