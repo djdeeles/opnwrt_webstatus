@@ -40,6 +40,8 @@ function displaylogs() {
 				          <td>$logdate</td>
 				        </tr>";
       } //End while
+    } else {
+      $logs = "<tr><td colspan='3'>No Result</td></tr>";
     }
     echo $logs;
 }
@@ -93,7 +95,7 @@ function sortdata($asortby,$sortname) {
     <div style="float:left;margin-bottom:10px;">
       <span style="font-weight:bold;">Select log type: </span>
       <select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
-        <option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>select log type</option>
+        <option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>></option>
         <option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
         <option value="2"<?php echo $logtype == '2' ? ' selected="selected"' : ''?>>php_errors</option>
         <option value="3"<?php echo $logtype == '3' ? ' selected="selected"' : ''?>>minidlna</option>
@@ -120,7 +122,7 @@ function sortdata($asortby,$sortname) {
       	<?php pagination(); ?>
       </ul> 
     </div>
-    <?php }  else { echo "<p style='float:left;width:100%;font-weight:bold;'>No Result</p>"; } ?>    
+    <?php } ?>    
     <p style="float:left;width:100%;"><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></p>
   </div>
 </body>
