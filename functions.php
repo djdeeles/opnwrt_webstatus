@@ -342,7 +342,8 @@ function getdata() {
 		ping(EU, "194.236.188.144",null),
 		ping(Gateway, "94.54.96.1",null),
 		//ping(Ap, "192.168.1.2", "500000")
-		"<span class='server'>Ap: </span><font color='green'>N/A</font>"
+		"<span class='server'>Ap: </span><font color='green'>N/A</font>",
+		ping(" ",$_SERVER["REMOTE_ADDR"],"500000")
 		);
 	return $results;
 }
