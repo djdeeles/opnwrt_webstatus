@@ -29,31 +29,36 @@ foreach(glob("/www/log/*.log") as $filename)
 	        $dateparse = array("[","] ");
 	        break;
 	    default:
-	    	break 2;
+	    	$logtype = "0";
+	    	break;
 		}
-		
-		foreach (file($filename) as $line) {
-			if($logtype != 1) { 
-				$line = multiexplode($dateparse,$line); 
-				$logdate = date('Y-m-d H:i:s',strtotime($line[1]));
-				$log = mysql_real_escape_string($line[2]);
-			} 
-			else {
-				$line = explode($dateparse,$line);
-				$logdate = date('Y-m-d H:i:s',strtotime($line[0]));
-				$log = mysql_real_escape_string($line[1]);
+		if($logtype != "0") {
+			foreach (file($filename) as $line) {
+				if($logtype == "1") {
+					$line = explode($dateparse,$line);
+					$logdate = date('Y-m-d H:i:s',strtotime($line[0]));
+					$log = mysql_real_escape_string($line[1]);
+				}
+				else{ 
+					$line = multiexplode($dateparse,$line); 
+					$logdate = date('Y-m-d H:i:s',strtotime($line[1]));
+					$log = mysql_real_escape_string($line[2]);
+				} 
+				$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
 			}
-			$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
+			
+			if(!$query)	{ 
+				mysql_query("INSERT INTO System_Logs (logtype,log) VALUES ('6','$mysql_error')");
+				echo "Fail <font color='red'>$filename </font><br/>
+				<p>$mysql_error</p>";
+			}
+			else { 
+				echo "Success <font color='green'>$filename </font><br/>";
+				file_put_contents($filename, "");
+			}
 		}
-		
-		if(!$query)	{ 
-			mysql_query("INSERT INTO System_Logs (logtype,log) VALUES ('6','$mysql_error')");
-			echo "Fail <font color='red'>$filename </font><br/>
-			<p>$mysql_error</p>";
-		}
-		else { 
-			echo "Success <font color='green'>$filename </font><br/>";
-			file_put_contents($filename, "");
+		else {
+			echo "<font color='green'>Nothing to log :)</font><br/>";
 		}
 	}
 }
