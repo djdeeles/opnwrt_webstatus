@@ -22,6 +22,12 @@ elseif ($_GET['service']) {
 	logger("Unauthenticated user for service");
 }
 
+//Clean minidlna cache
+if (isset($_GET['cleanminidlna']) && $loggedin) {
+	rrmdir("/etc/minidlna");	
+	header('Location: '.dirname($_SERVER['PHP_SELF'])."?service=minidlna&saction=restart");
+}
+
 //list online
 if (isset($_GET['listonline']))
 { 

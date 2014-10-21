@@ -76,17 +76,23 @@ function serviceControl($name, $servicename, $pid)
 		<ul class='dropdown-menu'>
 			<li><a href='?service=$servicename&saction=stop' title='$saction' onclick=\"return confirm('Are you sure you want to stop service ?')\"><i class='icon-stop'></i>Stop service</a></li>
 			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><i class='icon-refresh'></i>Restart service</a></li>";
-		servicestatus($servicename);
+			if($servicename=="minidlna") { 
+				echo "<li><a href='?cleanminidlna' title='Clean Cache' onclick=\"return confirm('Are you sure you want to clean minidlna cache ?')\"><i class='icon-trash'></i>Clean cache</a></li>";
+			}
+			servicestatus($servicename);
 		echo "</ul>";
 	} 
 	else { echo "
 		<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><i class='icon-cog'></i></a>
 		<ul class='dropdown-menu'>
 			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><i class='icon-play'></i>Start service</a></li>";
-		servicestatus($servicename);
+			servicestatus($servicename);
 		echo "</ul>";
 	}
-} 
+}
+function rrmdir($path) {
+    return is_file($path)? @unlink($path): array_map(__NAMESPACE__ . '\rrmdir',glob($path.'/*'))==@rmdir($path);
+}
 function ping($hostname, $host, $timeout ) {
 	if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
 	$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
@@ -341,8 +347,8 @@ function getdata() {
 		ping(US, "8.8.8.8",null),
 		ping(EU, "194.236.188.144",null),
 		ping(Gateway, "94.54.96.1",null),
-		//ping(Ap, "192.168.1.2", "500000")
-		"<span class='server'>Ap: </span><font color='green'>N/A</font>",
+		ping(Ap, "192.168.1.2", "500000"),
+		//"<span class='server'>Ap: </span><font color='green'>N/A</font>",
 		ping(" ",$_SERVER["REMOTE_ADDR"],"500000")
 		);
 	return $results;
