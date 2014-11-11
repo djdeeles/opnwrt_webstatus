@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
-require 'functions.php';
-require 'config.php';
+require_once 'functions.php';
+require_once 'config.php';
 
 //Refresh
 if (isset($_GET['refresh'])) {
@@ -31,15 +31,23 @@ if (isset($_GET['cleanminidlna']) && $loggedin) {
 //list online
 if (isset($_GET['listonline']))
 { 
-	@exec("nmap -sP 192.168.1.1-50",$response);
+
+	$datatime =  microtime(true);
+	$response = @shell_exec("nmap -sP 192.168.1.1-50");
+	$clients = explode("Nmap scan report for ", get_string_between($response, "EET", " Nmap done"));
+	$result = explode("Nmap done: ", $response);
 	echo "<div class='modal-header'>
 	<h3>Online Clients</h3>
 </div>
 <div class='modal-body'>";
-	foreach ($response as $value) {
-		echo $value . '<br/>';
+	$clientid = "0";
+	foreach ($clients as $client) {   
+		if($clientid == "0" ) { $clientid++; continue; }
+		$client = preg_replace('/\s+MAC.*$/', '', $client);
+		echo '<b>'. $clientid . '.</b> ' . $client . '<br/>';
+		$clientid++;
 	}
-	echo "</div>
+	echo "<p style='margin:8px 0;text-align:right;'><b>" . (count($clients)-1) . " Hosts up.</b><br/><small>Scanned in " . round((microtime(true) - $datatime), 2) . " seconds.</small></p></div>
 	<div class='modal-footer'>
 		<a class='btn' data-dismiss='modal'>Close</a>
 	</div>";
@@ -57,6 +65,7 @@ if (isset($_GET['logread']))
 	foreach ($response as $key => $value) {
 		echo '<b>' . $key . '</b> ' . $value . '<br/>';
 	}
+
 	echo "</div>
 	<div class='modal-footer'>
 		<a class='btn' data-dismiss='modal'>Close</a>
