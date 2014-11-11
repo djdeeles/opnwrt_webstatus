@@ -1,6 +1,6 @@
 <?php
 require_once 'conn.php';
-require 'config.php';
+require_once 'config.php';
 
 function logger($action)
 {
@@ -344,9 +344,9 @@ function getdata() {
 		color($LANtxpercent,"1"),
 		color($LANtxpercent,"2"),
 		//ping(VPN, vpninfo()),
-		ping(US, "8.8.8.8",null),
-		ping(EU, "194.236.188.144",null),
-		ping(Gateway, "94.54.96.1",null),
+		ping(US, "8.8.4.4",null),
+		ping(EU, "80.231.131.1",null),
+		ping(Gateway, "gateway",null),
 		ping(Ap, "192.168.1.2", "500000"),
 		//"<span class='server'>Ap: </span><font color='green'>N/A</font>",
 		ping(" ",$_SERVER["REMOTE_ADDR"],"500000")

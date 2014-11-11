@@ -1,7 +1,7 @@
 <?php  
 $start =  microtime(true);
-require 'login.php';
-require 'data.php';
+require_once 'login.php';
+require_once 'data.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

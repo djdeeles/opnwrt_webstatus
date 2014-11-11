@@ -68,5 +68,24 @@ function ping($hostname, $host, $timeout ) {
 		}
 	}
 
+
+//list online
+if (isset($_GET['listonline']))
+{ 
+	@exec("nmap -sP 192.168.1.1-50",$response);
+	echo "<div class='modal-header'>
+	<h3>Online Clients</h3>
+</div>
+<div class='modal-body'>";
+	foreach ($response as $value) {
+		echo $value . '<br/>';
+	}
+	echo "</div>
+	<div class='modal-footer'>
+		<a class='btn' data-dismiss='modal'>Close</a>
+	</div>";
+	exit;
+}
+
 	
 ?>
