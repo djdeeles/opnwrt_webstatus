@@ -12,5 +12,6 @@ $WANrxlimit = "1280"; // kb/s
 $WANtxlimit = "128"; // kb/s
 $LANrxlimit = "12500"; // kb/s
 $LANtxlimit = "12500"; // kb/s
+$connectionlimit = "4096";
 
 ?>

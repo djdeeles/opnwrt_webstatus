@@ -21,7 +21,7 @@ require_once 'data.php';
 			}
 		}
 	</style>
-	<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/loader.js" type="text/javascript"></script>
 	<script type="text/javascript">		

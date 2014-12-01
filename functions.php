@@ -222,8 +222,8 @@ function getdata() {
 		$availSwap="N/A";
 	}
 //Disk1 Info
-	$totalDisk1 = disk_total_space("/overlay");
-	$availDisk1 = disk_free_space("/overlay");
+	$totalDisk1 = disk_total_space("/");
+	$availDisk1 = disk_free_space("/");
 	$usedDisk1 =  $totalDisk1 - $availDisk1;
 	$diskPercent1 = round($usedDisk1/$totalDisk1*100, 0);
 	$totalDisk1 = formatSize($totalDisk1);
@@ -260,8 +260,7 @@ function getdata() {
 	$connresult = @exec("wc -l /proc/net/nf_conntrack");
 	$connections = explode(" ", $connresult);
 	$connections = $connections[0];
-	$totalconnections = "16384";
-	$connPercent = round($connections/$totalconnections*100, 0);
+	$connPercent = round($connections/$GLOBALS['connectionlimit']*100, 0);
 //Process Info
 	$runningthreads = @exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
 //Transfer info
