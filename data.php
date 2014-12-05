@@ -5,6 +5,9 @@ require_once 'config.php';
 
 //Refresh
 if (isset($_GET['refresh'])) {
+	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache");
 	$datatime =  microtime(true);
 	$results = getdata();
 	$datatime = round((microtime(true) - $datatime), 2);
@@ -33,8 +36,8 @@ if (isset($_GET['listonline']))
 { 
 
 	$datatime =  microtime(true);
-	$response = @shell_exec("nmap -sP 192.168.1.1-50");
-	$clients = explode("Nmap scan report for ", get_string_between($response, "EET", " Nmap done"));
+	$response = @shell_exec("nmap -sPn 192.168.1.1-255 -T5 --host-timeout 5s");
+	$clients = explode("Nmap scan report for ", get_string_between($response, "EET", "Nmap done"));
 	$result = explode("Nmap done: ", $response);
 	echo "<div class='modal-header'>
 	<h3>Online Clients</h3>
