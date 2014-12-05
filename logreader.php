@@ -26,6 +26,10 @@ if ($loggedin) {
 	    $idsToDelete = implode($del, ', ');
 		$result = mysql_query("DELETE FROM System_Logs WHERE id in ($idsToDelete)");
 	}
+
+	if($_GET["cleanoldrec"]) {
+		$result = mysql_query("DELETE FROM System_Logs WHERE logdate < DATE_SUB(NOW(), INTERVAL 6 MONTH);");
+	}
 }
 
 
@@ -35,8 +39,7 @@ function displaylogs() {
 	//getting table contents
     $start  = ($page-1)*$per_page;
     $result = mysql_query("select * from System_Logs where logtype=$logtype order by $sortby $sort limit $start,$per_page");
-
-    if(mysql_num_rows($result) > 0) {
+    if( mysql_num_rows($result) > 0) {
       while($row = mysql_fetch_array($result))
       {
         $id         = $row['id'];
@@ -51,13 +54,13 @@ function displaylogs() {
 				        </tr>";
       } //End while
     } else {
-      $logs = "<tr><td colspan='3'>No Result</td></tr>";
+      $logs = "<tr><td colspan='4'>No Result</td></tr>";
     }
     echo $logs;
 }
 
 function pagination() {
-	global $page,$logtype,$per_page,$sortby,$sort;
+	global $page,$logtype,$per_page,$sortby,$sort,$count;
 	//getting number of rows and calculating no of pages
 	$result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
 	$count  = mysql_fetch_row($result);
@@ -144,23 +147,27 @@ function sortdata($asortby,$sortname) {
     <?php 	
     	if(!$loggedin) { echo "<p style='float:left;width:100%;font-weight:bold;'>Please Login</p>"; }
     	elseif($logtype != 0 && $loggedin) { 
-    ?>    
+    ?>
     <input type='submit' value='Delete Selected' class="btn btn-small" style="float:right; margin-left:10px;" onclick="return confirm('Are you sure you want to delete selected entries ?')">
+    <a style="float:right; margin-left:10px;" href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby&cleanoldrec"; ?>" title="Refresh Logs" data-toggle="modal" class="btn btn-small" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
     <a style="float:right;" href="<?php echo $_SERVER['PHP_SELF']; ?>?log2db" title="Refresh Logs" data-toggle="modal" class="btn btn-small" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
     <table class='table logs'>
       <tr>
         <th width="4%"><?php sortdata("id","Id"); ?></th>
         <th width="79%"><?php sortdata("log","Log"); ?></th>
         <th width="14%"><?php sortdata("logdate","Date"); ?></th>
-        <th width="3%" align="center"><input type='checkbox' name='select-all' id='select-all'></th>
+        <th width="3%" align="center"><input type='checkbox' name='select-all' id='select-all' style='margin:0;'></th>
       </tr>
       	<?php displaylogs(); ?>
     </table>
     </form>
-    <div class="pagination">  
+    <div class="pagination" style="float:left;">  
       <ul>
       	<?php pagination(); ?>
       </ul> 
+    </div>    
+    <div class="pagination" style="float:right;">  
+      Total records: <?php echo $count[0]; ?>
     </div>
     <?php } ?>    
     <p style="float:left;width:100%;"><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></p>
