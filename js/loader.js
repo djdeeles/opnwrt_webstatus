@@ -104,7 +104,7 @@ function loadInfo() {
 	    $('#WANtxPercentBarDiv').removeClass().addClass("progress progress-" + WANtxPercentBarDiv + " progress-striped active");
 	    var WANSendSpan = result[43];
 	    $('#WANSendSpan').removeClass().addClass("label label-" + WANSendSpan);	        
-	    $("#WANPercent").html("(" + Math.round((WANtxPercent + WANrxPercent)/2) + "%)");
+	    //$("#WANPercent").html("(" + Math.round((WANtxPercent + WANrxPercent)/2) + "%)");
 	    //LAN transfer
 	    var LANrx = result[44];
 	    $("#LANrx").html(LANrx + " Kb/s");
@@ -122,7 +122,7 @@ function loadInfo() {
 	    $('#LANtxPercentBarDiv').removeClass().addClass("progress progress-" + LANtxPercentBarDiv + " progress-striped active");
 	    var LANSendSpan = result[51];
 	    $('#LANSendSpan').removeClass().addClass("label label-" + LANSendSpan);	        
-	    $("#LANPercent").html("(" + Math.round((LANtxPercent + LANrxPercent)/2) + "%)");
+	    //$("#LANPercent").html("(" + Math.round((LANtxPercent + LANrxPercent)/2) + "%)");
 	    //ping
 	    var usping = result[52];
 	    $("#usping").html(usping);
