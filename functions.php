@@ -113,7 +113,7 @@ function ping($hostname, $host, $timeout ) {
 	return $colorresult;
 }
 function color($percent, $field){
-	if ( $field =="1" ) {
+	if ( $field =="label" ) {
 		switch (true){
 			case ($percent > 85): $type = 'danger';
 			break;
@@ -124,7 +124,7 @@ function color($percent, $field){
 			default: $type = 'info';
 		}
 	}
-	else if ( $field == "2" ) {
+	else if ( $field == "progress" ) {
 		switch (true){
 			case ($percent > 85): $type = 'important';
 			break;
@@ -285,7 +285,7 @@ function getdata() {
 	//lan
 	$LANtx = round((($LANtxend - $LANtxstart) / $transfertime) / 1024, 2);
 	$LANrx = round((($LANrxend - $LANrxstart) / $transfertime) / 1024, 2);
-	$LANrxpercent = round($WANrx/$GLOBALS['LANrxlimit']*100,0);
+	$LANrxpercent = round($LANrx/$GLOBALS['LANrxlimit']*100,0);
 	if( $LANrxpercent > 100){ $LANrxpercent = "100";}
 	$LANtxpercent = round($LANtx/$GLOBALS['LANtxlimit']*100,0);
 	if( $LANtxpercent > 100){ $LANtxpercent = "100";}
@@ -294,54 +294,54 @@ function getdata() {
 		$usedMem,
 		$availMem,
 		$memPercent,
-		color($memPercent,"1"),
-		color($memPercent,"2"),
+		color($memPercent,"label"),
+		color($memPercent,"progress"),
 		$totalSwap,
 		$usedSwap,
 		$availSwap,
 		$swapPercent,
-		color($swapPercent,"1"),
-		color($swapPercent,"2"),
+		color($swapPercent,"label"),
+		color($swapPercent,"progress"),
 		$totalDisk1,
 		$usedDisk1,
 		$availDisk1,
 		$diskPercent1,
-		color($diskPercent1,"1"),
-		color($diskPercent1,"2"),
+		color($diskPercent1,"label"),
+		color($diskPercent1,"progress"),
 		$totalDisk2,
 		$usedDisk2,
 		$availDisk2,
 		$diskPercent2,
-		color($diskPercent2,"1"),
-		color($diskPercent2,"2"),
+		color($diskPercent2,"label"),
+		color($diskPercent2,"progress"),
 		$load1M,
 		$load5M,
 		$load15M,
 		$loadPercent,
-		color($loadPercent,"1"),
-		color($loadPercent,"2"),
+		color($loadPercent,"label"),
+		color($loadPercent,"progress"),
 		$uptime,
 		$connections,
 		$connPercent,
-		color($connPercent,"1"),
-		color($connPercent,"2"),
+		color($connPercent,"label"),
+		color($connPercent,"progress"),
 		$runningthreads,
 		$WANrx,
 		$WANrxpercent,
-		color($WANrxpercent,"1"),
-		color($WANrxpercent,"2"),
+		color($WANrxpercent,"label"),
+		color($WANrxpercent,"progress"),
 		$WANtx,
 		$WANtxpercent,
-		color($WANtxpercent,"1"),
-		color($WANtxpercent,"2"),
+		color($WANtxpercent,"label"),
+		color($WANtxpercent,"progress"),
 		$LANrx,
 		$LANrxpercent,
-		color($LANrxpercent,"1"),
-		color($LANrxpercent,"2"),
+		color($LANrxpercent,"label"),
+		color($LANrxpercent,"progress"),
 		$LANtx,
 		$LANtxpercent,
-		color($LANtxpercent,"1"),
-		color($LANtxpercent,"2"),
+		color($LANtxpercent,"label"),
+		color($LANtxpercent,"progress"),
 		//ping(VPN, vpninfo()),
 		ping(US, "8.8.4.4",null),
 		ping(EU, "80.231.131.1",null),
