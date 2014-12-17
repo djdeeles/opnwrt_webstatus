@@ -78,7 +78,9 @@ require_once 'data.php';
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog"></i>Management</a>
 							<ul class="dropdown-menu">
+								<li <?=echoActiveClassIfRequestMatches("modem")?> ><a href="content.php?iframe=modem.<?=$host?>/RgSwInfo.asp"><i class="icon-globe"></i>Modem</a></li>
 								<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router"><i class="icon-cog"></i>Router</a></li>
+								<li <?=echoActiveClassIfRequestMatches("ap")?> ><a href="content.php?iframe=ap.<?=$host?>"><i class="icon-filter"></i>Access Point</a></li>
 								<li <?=echoActiveClassIfRequestMatches("shell.php")?> ><a href="content.php?iframe=<?=$host?>/shell.php"><i class="icon-align-left"></i>Shell</a></li>
 								<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer"><i class="icon-list-alt"></i>Adminer</a></li>
 							</ul>
