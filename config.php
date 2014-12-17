@@ -10,8 +10,8 @@ $version = "v1.3";
 $interface = "eth0.2"; // interface to display data rate
 $WANrxlimit = "1280"; // kb/s
 $WANtxlimit = "128"; // kb/s
-$LANrxlimit = "12500"; // kb/s
-$LANtxlimit = "12500"; // kb/s
+$LANrxlimit = "125000"; // kb/s
+$LANtxlimit = "125000"; // kb/s
 $connectionlimit = "4096";
 
 ?>
