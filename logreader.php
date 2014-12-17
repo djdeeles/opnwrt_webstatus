@@ -27,8 +27,8 @@ if ($loggedin) {
 		$result = mysql_query("DELETE FROM System_Logs WHERE id in ($idsToDelete)");
 	}
 
-	if($_GET["cleanoldrec"]) {
-		$result = mysql_query("DELETE FROM System_Logs WHERE logdate < DATE_SUB(NOW(), INTERVAL 6 MONTH);");
+	if(isset($_GET['cleanoldrec'])) {
+		mysql_query("DELETE FROM System_Logs WHERE logdate < DATE_SUB(NOW(), INTERVAL 6 MONTH)");
 	}
 }
 
@@ -149,7 +149,7 @@ function sortdata($asortby,$sortname) {
     	elseif($logtype != 0 && $loggedin) { 
     ?>
     <input type='submit' value='Delete Selected' class="btn btn-small" style="float:right; margin-left:10px;" onclick="return confirm('Are you sure you want to delete selected entries ?')">
-    <a style="float:right; margin-left:10px;" href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby&cleanoldrec"; ?>" title="Refresh Logs" data-toggle="modal" class="btn btn-small" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
+    <a style="float:right; margin-left:10px;" href="<?php echo "logreader.php?cleanoldrec&logtype=$logtype"."&page=$page"."&sortby=$sortby"; ?>" title="Refresh Logs" data-toggle="modal" class="btn btn-small" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
     <a style="float:right;" href="<?php echo $_SERVER['PHP_SELF']; ?>?log2db" title="Refresh Logs" data-toggle="modal" class="btn btn-small" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
     <table class='table logs'>
       <tr>
