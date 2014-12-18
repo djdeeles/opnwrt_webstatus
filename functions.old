@@ -1,5 +1,11 @@
 <?php
-
+function echoActiveClassIfRequestMatches($url)
+{
+	$current_file_name = basename($_SERVER['REQUEST_URI']);
+	if (@strpos($current_file_name,$url,null) !== false or $current_file_name === $url) { 
+		echo 'class="active"';
+	}
+}
 function ping($hostname, $host, $timeout ) {
 	@exec("ping -W1 -c1 $host",$result);
 	$result = (int)get_string_between($result[1], "time=", "ms");

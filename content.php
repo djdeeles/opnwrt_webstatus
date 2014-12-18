@@ -13,6 +13,17 @@
 	<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/iframe.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+		   var url = window.location;
+		   //$('ul.nav a[href="' + this.location.pathname + '"]').parent().addClass('active');
+		   var active = $('ul.nav a').filter(function() {
+		      return this.href == url;
+		   });
+		   active.parent().addClass('active');
+		   active.parent().parent().parent().addClass('active');
+		});
+	</script>
 </head>
 <body>
 	<div id="toolbar" class="navbar navbar-fixed-top">
@@ -23,36 +34,36 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="">aCC Server</a>
+				<a class="brand" href="<?=$workingdir?>">aCC Server</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li <?=echoActiveClassIfRequestMatches("")?> ><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
+						<li><a href="<?=$workingdir?>"><i class="icon-home"></i>Home</a></li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-align-right"></i>Stats</a>
 							<ul class="dropdown-menu">
-								<li <?=echoActiveClassIfRequestMatches("stats")?> ><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Network Stats</a></li>
-								<li <?=echoActiveClassIfRequestMatches("lighttpd.php")?> ><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
-								<li <?=echoActiveClassIfRequestMatches("apc.php")?> ><a href="content.php?iframe=<?=$host?>/apc.php"><i class="icon-align-left"></i>APC Status</a></li>
-								<li <?=echoActiveClassIfRequestMatches("logreader.php")?> ><a href="content.php?iframe=<?=$host?>/logreader.php"><i class="icon-inbox"></i>Log Reader</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/stats/"><i class="icon-signal"></i>Network Stats</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/lighttpd.php"><i class="icon-globe"></i>Lighttpd Status</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/apc.php"><i class="icon-align-left"></i>APC Status</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/logreader.php"><i class="icon-inbox"></i>Log Reader</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down"></i>Downloads</a>
 							<ul class="dropdown-menu">
-								<li <?=echoActiveClassIfRequestMatches("public")?> ><a href="content.php?iframe=<?=$host?>/public"><i class="icon-folder-open"></i>Public Files</a></li>
-								<li <?=echoActiveClassIfRequestMatches("file.php")?> ><a href="content.php?iframe=<?=$host?>/file.php"><i class="icon-folder-open"></i>File Manager</a></li>
-								<li <?=echoActiveClassIfRequestMatches(":9091")?> ><a href="content.php?iframe=<?=$host?>:9091"><i class="icon-tasks"></i>Torrent</a></li>
-								<li <?=echoActiveClassIfRequestMatches(":8000")?> ><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/public"><i class="icon-folder-open"></i>Public Files</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/file.php"><i class="icon-folder-open"></i>File Manager</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/torrent"><i class="icon-tasks"></i>Torrent</a></li>
+								<li><a href="content.php?iframe=<?=$host?>:8000"><i class="icon-download-alt"></i>pyLoad</a></li>
 							</ul>
 						</li>						
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog"></i>Management</a>
 							<ul class="dropdown-menu">
-								<li <?=echoActiveClassIfRequestMatches("modem")?> ><a href="content.php?iframe=modem.<?=$host?>/RgSwInfo.asp"><i class="icon-globe"></i>Modem</a></li>
-								<li <?=echoActiveClassIfRequestMatches("router")?> ><a href="content.php?iframe=<?=$host?>/router"><i class="icon-cog"></i>Router</a></li>
-								<li <?=echoActiveClassIfRequestMatches("ap")?> ><a href="content.php?iframe=ap.<?=$host?>"><i class="icon-filter"></i>Access Point</a></li>
-								<li <?=echoActiveClassIfRequestMatches("shell.php")?> ><a href="content.php?iframe=<?=$host?>/shell.php"><i class="icon-align-left"></i>Shell</a></li>
-								<li <?=echoActiveClassIfRequestMatches("adminer")?> ><a href="content.php?iframe=<?=$host?>/adminer"><i class="icon-list-alt"></i>Adminer</a></li>
+								<li><a href="content.php?iframe=modem.<?=$host?>/RgSwInfo.asp"><i class="icon-globe"></i>Modem</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/router"><i class="icon-cog"></i>Router</a></li>
+								<li><a href="content.php?iframe=ap.<?=$host?>"><i class="icon-filter"></i>Access Point</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/shell.php"><i class="icon-align-left"></i>Shell</a></li>
+								<li><a href="content.php?iframe=<?=$host?>/adminer"><i class="icon-list-alt"></i>Adminer</a></li>
 							</ul>
 						</li>
 					</ul>

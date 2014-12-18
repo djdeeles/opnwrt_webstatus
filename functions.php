@@ -161,13 +161,6 @@ function formatMem($size){
 	}
 	return round($size, 2).$suffix;
 }
-function echoActiveClassIfRequestMatches($requestUri)
-{
-	$current_file_name = basename($_SERVER['REQUEST_URI']);
-	if (/*strpos($current_file_name,$requestUri,null) !== false or*/ $current_file_name == $requestUri){
-		echo 'class="active"';
-	}
-}
 function get_string_between($string, $start, $end){
 	$string = " ".$string;
 	$ini = strpos($string,$start);
