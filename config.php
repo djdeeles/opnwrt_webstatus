@@ -1,6 +1,6 @@
 <?php
 
-$host = $_SERVER['HTTP_HOST'];
+$host = str_replace("www.", "", $_SERVER['HTTP_HOST']);
 $workingdir = dirname($_SERVER['PHP_SELF']);
 $userid = $_SESSION['user'][0];
 
