@@ -26,7 +26,9 @@ function registerEvents()
 
 function resizeIframe()
 {
-	$("#iframe").height( WindowHeight() - getObjHeight(document.getElementById("toolbar")) );
+	var toolbar = getObjHeight(document.getElementById("toolbar"));
+	$("#iframe").height( WindowHeight() - toolbar);
+	$("#iframe").css("margin-top", toolbar+1);
 }
 
 function WindowHeight()

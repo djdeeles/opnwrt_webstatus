@@ -27,7 +27,7 @@ if (!empty($_POST)){
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
-		$error = 'Incorrect username or password';
+		$error = '<div class="alert alert-danger" role="alert">Incorrect username or password.</div>';
 		logger('wrong password');
 		$loggedin = false ;
 	}

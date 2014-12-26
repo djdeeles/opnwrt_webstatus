@@ -83,9 +83,10 @@ function pagination() {
 	$count  = mysql_fetch_row($result);
 	$pages  = ceil($count[0]/$per_page);
 	if ($search) { $ifsearch = "&search=$search"; }
-	if ($pages > 1) {              
+	if ($pages > 1) {
+		$pagination = "<ul class='pagination' style='float:left;'>";
 		//show prev & first
-		if ($page > 1) { $pagination = "<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=1"."&sortby=$sortby"."&sort=$sort".$ifsearch."'>First</a></li>
+		if ($page > 1) { $pagination .= "<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=1"."&sortby=$sortby"."&sort=$sort".$ifsearch."'>First</a></li>
 			<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=".($page -1)."&sortby=$sortby"."&sort=$sort".$ifsearch."'>«</a></li>"; }
 		//Show page links
 		for($i=1; $i<=$pages; $i++)
@@ -97,6 +98,7 @@ function pagination() {
 		//show next & last
 		if ($page < $pages) { $pagination .= "<li class='Next'><a href='logreader.php?logtype=$logtype"."&page=".($page +1)."&sortby=$sortby"."&sort=$sort".$ifsearch."'>»</a></li>
 			<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=$pages"."&sortby=$sortby"."&sort=$sort".$ifsearch."'>Last(".$pages.")</a></li>"; }
+		$pagination .= "</ul>";
 	}
 	echo $pagination;
 }
@@ -123,10 +125,10 @@ function sortdata($asortby,$sortname) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?=$hostname?> Logreader</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
 	<link href="css/custom.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="favicon.ico">
-	<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
+	<!--<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>-->
+	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function(){
@@ -146,22 +148,22 @@ function sortdata($asortby,$sortname) {
 	    });
 		});
 
-	    function validate() {
-	       obj = document.search;
-	        if (obj.search.value.length < 4) {
-	            alert("Minimum 4 characters needed.");
-	            return false;
-	        } else {
-	            return true;
-	        }
-	    }
+		function validate() {
+			obj = document.search;
+			if (obj.search.value.length < 4) {
+				alert("Minimum 4 characters needed.");
+				return false;
+			} else {
+				return true;
+			}
+		}
 	</script>
 </head>
 <body> 
 	<div class="container" style="margin-top:20px;">
-		<?php if($alert) { echo "<div class='alert alert-block'>$alert <button type='button' class='close' data-dismiss='alert'>×</button></div>"; } ?>
+		<?php if($alert) { echo "<div class='alert alert-warning alert-dismissible' role='alert'>$alert <button type='button' class='close' aria-label='Close' data-dismiss='alert'><span aria-hidden='true'>&times;</span></button></div>"; } ?>
 		<div style="float:left;margin-bottom:10px;">
-			<select style="margin: 0;" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
+			<select class="form-control" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
 				<option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>Select log type</option>
 				<option value="6"<?php echo $logtype == '6' ? ' selected="selected"' : ''?>>system</option>
 				<option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
@@ -174,20 +176,22 @@ function sortdata($asortby,$sortname) {
 			</select>    
 		</div>
 		<?php if(!$loggedin) { ?> 
-			<p style='float:left;width:100%;font-weight:bold;'>Please Login</p>
-			<?php } elseif($loggedin && $logtype != 0) { ?>
-		<form action='<? echo "logreader.php?logtype=$logtype"; ?>' name="search" method='POST' onsubmit="return validate()" style="float:left;margin:0 0 0 20px;" >
-			<div class="input-append">
-			  <input type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
-			  <button type="submit" class="btn">Search</button>
-			  <a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn" >X</a>
+		<p style='float:left;width:100%;font-weight:bold;'>Please Login</p>
+		<?php } elseif($loggedin && $logtype != 0) { ?>
+		<form action='<? echo "logreader.php?logtype=$logtype"; ?>' name="search" method='POST' onsubmit="return validate()" class="col-lg-4">
+			<div class="input-group">
+				<input class="form-control" aria-label="Search" type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
+				<div class="input-group-btn">
+					<button type="submit" class="btn btn-default">Search</button>
+					<a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn btn-default" ><span aria-hidden='true'>&times;</span></a>
+				</div>
 			</div>
 		</form>
 		<form action='<? echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort"; ?>' method='POST'>			
-			<div class="btn-group" style="float:right;" >
-				<a href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort&log2db" ?>" title="Refresh Logs" data-toggle="modal" class="btn" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
-				<a href="<?php echo "logreader.php?cleanoldrec&logtype=$logtype"."&page=$page"."&sortby=$sortby"; ?>" title="Clear Old Logs" data-toggle="modal" class="btn" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
-				<input type='submit' value='Delete Selected' class="btn" onclick="return confirm('Are you sure you want to delete selected entries ?')">
+			<div class="btn-group" class="col-lg-4" style="float:right;" >
+				<a href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort&log2db" ?>" title="Refresh Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
+				<a href="<?php echo "logreader.php?cleanoldrec&logtype=$logtype"."&page=$page"."&sortby=$sortby"; ?>" title="Clear Old Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
+				<input type='submit' value='Delete Selected' class="btn btn-default" onclick="return confirm('Are you sure you want to delete selected entries ?')">
 			</div>
 			<table class='table logs' style="float:left;">
 				<tr>
@@ -199,11 +203,7 @@ function sortdata($asortby,$sortname) {
 				<?php displaylogs(); ?>
 			</table>
 		</form>
-		<div class="pagination" style="float:left;">  
-			<ul>
-				<?php pagination(); ?>
-			</ul> 
-		</div>    
+		<?php pagination(); ?>
 		<div class="pagination" style="float:right;">  
 			Total records: <?php echo $count[0]; ?>
 		</div>

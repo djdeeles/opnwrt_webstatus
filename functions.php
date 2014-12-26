@@ -55,10 +55,10 @@ function servicestate($process)
 function servicestatus($servicename) {
 	$dir = '/etc/rc.d/';
 	if( glob("{$dir}/***{$servicename}") ) {
-		echo "<li><a href='?service=$servicename&saction=disable' title='disable' onclick=\"return confirm('Are you sure you want to disable service ?')\"><i class='icon-remove'></i>Disable service</a></li>";
+		echo "<li><a href='?service=$servicename&saction=disable' title='disable' onclick=\"return confirm('Are you sure you want to disable service ?')\"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>Disable service</a></li>";
 	}
 	else {
-		echo "<li><a href='?service=$servicename&saction=enable' title='enable' onclick=\"return confirm('Are you sure you want to enable service ?')\"><i class='icon-ok'></i>Enable service</a></li>";
+		echo "<li><a href='?service=$servicename&saction=enable' title='enable' onclick=\"return confirm('Are you sure you want to enable service ?')\"><span class='glyphicon glyphicon-ok' aria-hidden='true'></span>Enable service</a></li>";
 	}
 }
 function service($servicename, $saction)  
@@ -72,48 +72,47 @@ function serviceControl($name, $servicename, $pid)
 { 
 	if (servicestate($pid)) { 
 		echo "
-		<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><i class='icon-cog'></i></a>
+		<a href='#' class='btn btn-default' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
 		<ul class='dropdown-menu'>
-			<li><a href='?service=$servicename&saction=stop' title='$saction' onclick=\"return confirm('Are you sure you want to stop service ?')\"><i class='icon-stop'></i>Stop service</a></li>
-			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><i class='icon-refresh'></i>Restart service</a></li>";
+			<li><a href='?service=$servicename&saction=stop' title='$saction' onclick=\"return confirm('Are you sure you want to stop service ?')\"><span class='glyphicon glyphicon-stop' aria-hidden='true'></span>Stop service</a></li>
+			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><span class='glyphicon glyphicon-refresh' aria-hidden='true'></span>Restart service</a></li>";
 			if($servicename=="minidlna") { 
-				echo "<li><a href='?cleanminidlna' title='Clean Cache' onclick=\"return confirm('Are you sure you want to clean minidlna cache ?')\"><i class='icon-trash'></i>Clean cache</a></li>";
+				echo "<li><a href='?cleanminidlna' title='Clean Cache' onclick=\"return confirm('Are you sure you want to clean minidlna cache ?')\"><span class='glyphicon glyphicon-trash' aria-hidden='true'></span>Clean cache</a></li>";
 			}
 			servicestatus($servicename);
-		echo "</ul>";
-	} 
-	else { echo "
-		<a href='#' class='btn' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><i class='icon-cog'></i></a>
+			echo "</ul>";
+		} 
+		else { echo "
+			<a href='#' class='btn btn-default' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
 		<ul class='dropdown-menu'>
-			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><i class='icon-play'></i>Start service</a></li>";
+			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><span class='glyphicon glyphicon-play' aria-hidden='true'></span>Start service</a></li>";
 			servicestatus($servicename);
-		echo "</ul>";
+			echo "</ul>";
+		}
 	}
-}
-function rrmdir($path) {
-    return is_file($path)? @unlink($path): array_map(__NAMESPACE__ . '\rrmdir',glob($path.'/*'))==@rmdir($path);
-}
-function ping($hostname, $host, $timeout ) {
-	if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
-	$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
-	$socket  = socket_create(AF_INET, SOCK_RAW, 1);
-	socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeoutsec, 'usec' => $timeoutms));
-	socket_connect($socket, $host, null);
-	$timer = microtime(1);
-	socket_send($socket, $package, strlen($package), 0);
-	if (socket_read($socket, 255)) {
-		$result = round((microtime(1) - $timer) * 1000, 0);
-		if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
-		else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
-		else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
+	function rrmdir($path) {
+		return is_file($path)? @unlink($path): array_map(__NAMESPACE__ . '\rrmdir',glob($path.'/*'))==@rmdir($path);
 	}
-	else {
-		$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
+	function ping($hostname, $host, $timeout ) {
+		if ($timeout != null) { $timeoutsec = "0"; $timeoutms = $timeout;} else { $timeoutsec = "1"; $timeoutms = "0";}
+		$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+		$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeoutsec, 'usec' => $timeoutms));
+		socket_connect($socket, $host, null);
+		$timer = microtime(1);
+		socket_send($socket, $package, strlen($package), 0);
+		if (socket_read($socket, 255)) {
+			$result = round((microtime(1) - $timer) * 1000, 0);
+			if ($result < 150){ $colorresult = "<span class='server'>$hostname: </span><font color='green'>$result ms</font>"; }
+			else if ($result < 300){ $colorresult = "<span class='server'>$hostname: </span><font color='orange'>$result ms</font>"; }
+			else if ($result > 300){ $colorresult = "<span class='server'>$hostname: </span><font color='red'>$result ms</font>"; }	
+		}
+		else {
+			$colorresult = "<span class='server'>$hostname: </span><font color='red'>Offline</font>"; 
+		}
+		return $colorresult;
 	}
-	return $colorresult;
-}
-function color($percent, $field){
-	if ( $field =="label" ) {
+	function color($percent){	
 		switch (true){
 			case ($percent > 85): $type = 'danger';
 			break;
@@ -121,67 +120,57 @@ function color($percent, $field){
 			break;
 			case ($percent > 25): $type = 'success';    
 			break;
-			default: $type = 'info';
+			case ($percent < 25): $type = 'info';    
+			break;
+			default: $type = 'default';
 		}
+		return $type;
 	}
-	else if ( $field == "progress" ) {
+	function formatSize($size){
 		switch (true){
-			case ($percent > 85): $type = 'important';
+			case ($size > 1099511627776): $size /= 1099511627776; $suffix = ' TB';
 			break;
-			case ($percent > 60): $type = 'warning';
+			case ($size > 1073741824): $size /= 1073741824; $suffix = ' GB';
 			break;
-			case ($percent > 25): $type = 'success';    
+			case ($size > 1048576): $size /= 1048576; $suffix = ' MB';    
 			break;
-			default: $type = 'info';
+			case ($size > 1024): $size /= 1024; $suffix = ' KB';
+			break;
+			default: $suffix = ' B';
 		}
+		return round($size, 2).$suffix;
 	}
-	return $type;
-}
-function formatSize($size){
-	switch (true){
-		case ($size > 1099511627776): $size /= 1099511627776; $suffix = ' TB';
-		break;
-		case ($size > 1073741824): $size /= 1073741824; $suffix = ' GB';
-		break;
-		case ($size > 1048576): $size /= 1048576; $suffix = ' MB';    
-		break;
-		case ($size > 1024): $size /= 1024; $suffix = ' KB';
-		break;
-		default: $suffix = ' B';
+	function formatMem($size){
+		switch (true){
+			case ($size > 1073741824): $size /= 1073741824; $suffix = ' TB';
+			break;
+			case ($size > 1048576): $size /= 1048576; $suffix = ' GB';
+			break;
+			default: $suffix = ' Kb';
+		}
+		return round($size, 2).$suffix;
 	}
-	return round($size, 2).$suffix;
-}
-function formatMem($size){
-	switch (true){
-		case ($size > 1073741824): $size /= 1073741824; $suffix = ' TB';
-		break;
-		case ($size > 1048576): $size /= 1048576; $suffix = ' GB';
-		break;
-		default: $suffix = ' Kb';
+	function get_string_between($string, $start, $end){
+		$string = " ".$string;
+		$ini = strpos($string,$start);
+		if ($ini == 0) return "";
+		$ini += strlen($start);  
+		$len = strpos($string,$end,$ini) - $ini;
+		return substr($string,$ini,$len);
 	}
-	return round($size, 2).$suffix;
-}
-function get_string_between($string, $start, $end){
-	$string = " ".$string;
-	$ini = strpos($string,$start);
-	if ($ini == 0) return "";
-	$ini += strlen($start);  
-	$len = strpos($string,$end,$ini) - $ini;
-	return substr($string,$ini,$len);
-}
-function read_file($filename){
-    $buffer = array();
-    $source_file = fopen( $filename, "r" ) or die("Couldn't open $filename");
-    while (!feof($source_file)) {
+	function read_file($filename){
+		$buffer = array();
+		$source_file = fopen( $filename, "r" ) or die("Couldn't open $filename");
+		while (!feof($source_file)) {
         $buffer[] = fread($source_file, 4096);  // use a buffer of 4KB
     }
     return $buffer;
 }
 function multiexplode ($delimiters,$string) {
-    
-    $ready = str_replace($delimiters, $delimiters[0], $string);
-    $launch = explode($delimiters[0], $ready);
-    return  $launch;
+
+	$ready = str_replace($delimiters, $delimiters[0], $string);
+	$launch = explode($delimiters[0], $ready);
+	return  $launch;
 }
 function vpninfo(){	
 	$interface = get_string_between(@exec("ifconfig pptp-vpn,$vpn")[1], "inet addr:", "  ");
@@ -262,12 +251,16 @@ function getdata() {
 	$WANtxstart = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
 	$LANrxstart = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
 	$LANtxstart = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
+	$WLANrxstart = @exec("cat /sys/class/net/wlan0/statistics/rx_bytes");
+	$WLANtxstart = @exec("cat /sys/class/net/wlan0/statistics/tx_bytes");
 	usleep(250000);
 	$transfertime = microtime(true) - $transfertime;
 	$WANrxend = @exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
 	$WANtxend = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
 	$LANrxend = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
 	$LANtxend = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
+	$WLANrxend = @exec("cat /sys/class/net/wlan0/statistics/rx_bytes");
+	$WLANtxend = @exec("cat /sys/class/net/wlan0/statistics/tx_bytes");
 	//wan
 	$WANtx = round((($WANtxend - $WANtxstart) / $transfertime) / 1024, 2);
 	$WANrx = round((($WANrxend - $WANrxstart) / $transfertime) / 1024, 2);
@@ -282,59 +275,62 @@ function getdata() {
 	if( $LANrxpercent > 100){ $LANrxpercent = "100";}
 	$LANtxpercent = round($LANtx/$GLOBALS['LANtxlimit']*100,0);
 	if( $LANtxpercent > 100){ $LANtxpercent = "100";}
+	//wlan
+	$WLANtx = round((($WLANtxend - $WLANtxstart) / $transfertime) / 1024, 2);
+	$WLANrx = round((($WLANrxend - $WLANrxstart) / $transfertime) / 1024, 2);
+	$WLANrxpercent = round($WLANrx/$GLOBALS['WLANrxlimit']*100,0);
+	if( $WLANrxpercent > 100){ $WLANrxpercent = "100";}
+	$WLANtxpercent = round($WLANtx/$GLOBALS['WLANtxlimit']*100,0);
+	if( $WLANtxpercent > 100){ $WLANtxpercent = "100";}
 //result
 	$results = array($totalMem,
 		$usedMem,
 		$availMem,
 		$memPercent,
-		color($memPercent,"label"),
-		color($memPercent,"progress"),
+		color($memPercent),
 		$totalSwap,
 		$usedSwap,
 		$availSwap,
 		$swapPercent,
-		color($swapPercent,"label"),
-		color($swapPercent,"progress"),
+		color($swapPercent),
 		$totalDisk1,
 		$usedDisk1,
 		$availDisk1,
 		$diskPercent1,
-		color($diskPercent1,"label"),
-		color($diskPercent1,"progress"),
+		color($diskPercent1),
 		$totalDisk2,
 		$usedDisk2,
 		$availDisk2,
 		$diskPercent2,
-		color($diskPercent2,"label"),
-		color($diskPercent2,"progress"),
+		color($diskPercent2),
 		$load1M,
 		$load5M,
 		$load15M,
 		$loadPercent,
-		color($loadPercent,"label"),
-		color($loadPercent,"progress"),
+		color($loadPercent),
 		$uptime,
 		$connections,
 		$connPercent,
-		color($connPercent,"label"),
-		color($connPercent,"progress"),
+		color($connPercent),
 		$runningthreads,
 		$WANrx,
 		$WANrxpercent,
-		color($WANrxpercent,"label"),
-		color($WANrxpercent,"progress"),
+		color($WANrxpercent),
 		$WANtx,
 		$WANtxpercent,
-		color($WANtxpercent,"label"),
-		color($WANtxpercent,"progress"),
+		color($WANtxpercent),
 		$LANrx,
 		$LANrxpercent,
-		color($LANrxpercent,"label"),
-		color($LANrxpercent,"progress"),
+		color($LANrxpercent),
 		$LANtx,
 		$LANtxpercent,
-		color($LANtxpercent,"label"),
-		color($LANtxpercent,"progress"),
+		color($LANtxpercent),
+		$WLANrx,
+		$WLANrxpercent,
+		color($WLANrxpercent),
+		$WLANtx,
+		$WLANtxpercent,
+		color($WLANtxpercent),
 		//ping(VPN, vpninfo()),
 		ping(US, "8.8.4.4",null),
 		ping(EU, "80.231.131.1",null),

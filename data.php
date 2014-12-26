@@ -110,6 +110,6 @@ if (isset($_GET['refreshtoggle'])) {
 }
 if ( $_COOKIE['dynamicUpdates'] == true && $loggedin ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
 elseif ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; $refreshRate = "60000"; }
-else { $refreshtoggle = "<span class='label label-inverse'>Off</span>"; $refreshRate = "86400000"; }
+else { $refreshtoggle = "<span class='label label-default'>Off</span>"; $refreshRate = "86400000"; }
 
 ?>

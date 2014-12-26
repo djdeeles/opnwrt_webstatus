@@ -1,21 +1,20 @@
 body {
   background-image: url(../img/back.png);
   background-repeat: repeat;
-  font-size: 14px;
 }
-.container {
-  margin: 0 auto;
-  max-width: 980px;
+@media (min-width: 980px) and (max-width: 980px) {
+   .collapse {
+       display: none !important;
+   }
 }
 .container > hr {
   margin: 30px 0;
 }
-.masterhead {
-  text-align: center;
-}
 .jumbotron {
-  margin: 30px 0 60px 0;
+  margin: 60px 0 30px 0 ;
+  background: none;
   text-align: center;
+  padding:0 !important;
 }
 .jumbotron h1 {
   font-size: 80px;
@@ -30,8 +29,7 @@ body {
   display: inline-block;
   font-weight: normal;
   text-align: left;
-  width: 136px;
-  height: 20px;
+  width: 180px;
   margin: 5px 3px;
   padding: 10px 8px;
   white-space: normal;
@@ -43,28 +41,18 @@ body {
 .jumbotron .btn .server {
   font-weight: bold;
 }
-.jumbotron .btn i {
-  vertical-align: center;
+.jumbotron .btn .glyphicon {
+  vertical-align: center;  
+  margin-right: 0px;
+  top: 4px;
   float: right;
 }
-.navbar .nav li a {
-  border-left: 1px solid rgba(255, 255, 255, 0.75);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+.navbar-nav { margin:0;}
+.navbar-default {
+  box-shadow: 0px 2px 2px #ccc;
 }
-[class^="icon-"],[class*=" icon-"] {
-  margin: 3px 5px 0 0;
-}
-.navbar .nav li:first-child a {
-  border-left: 0;
-}
-.navbar .nav li:last-child a {
-  border-right: 0;
-}
-.dropdown-menu li a {
-  padding: 3px 10px;
-}
-.dropdown-menu li {
-  text-align: left;
+.glyphicon {
+  margin-right: 10px;
 }
 .percentage {
   font-size: 20px;
