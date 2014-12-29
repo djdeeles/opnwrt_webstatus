@@ -1,6 +1,5 @@
-<?php 
-include 'login.php';
-?>
+<?php require_once 'data.php'; ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- 
   Pretty automatically updating lighttpd server status by Markus Olsson 
@@ -12,7 +11,6 @@ include 'login.php';
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="js/jquery-2.1.1.min.js"></script>
@@ -20,8 +18,8 @@ include 'login.php';
 	<script src="js/lighttpd.js"></script>	
 </head>
 <body>
-	<?php if ($loggedin == true) { ?>
 	<div class="container">
+		<?php if ($loggedin == true) { ?>	
 		<div id="header" class="section">
 			<div id="last-update"></div>
 			<div id="server-name">unknown</div>
@@ -72,7 +70,8 @@ include 'login.php';
 		</div>
 		<div id="connections" class="section">
 			<h2>Connections</h2>
-			<table id="connectionsTable">
+			<div class="table-responsive">
+					<table id="connectionsTable" class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th>Client</th>
@@ -84,8 +83,9 @@ include 'login.php';
 				<tbody>
 				</tbody>
 			</table>
+			</div>
 		</div>
+	<?php } else { include 'login.php'; } ?>	
 	</div>
-	<?php } else { echo "<div class='container'><div class='jumbotron'><h2>You need to login to see stats.</h2><div><div>"; } ?>
 </body>
 </html>
