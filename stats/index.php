@@ -220,8 +220,8 @@ $start =  microtime(true);
 			}
 	     } ?>
 		</div>
-		<div class="row footer"><a href="http://www.cetincone.tk">aCC Stats</a> 2.0 <br/>
-			<small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?></small>
+		<div class="row footer"><a href="http://www.cetincone.tk">aCC Stats 2.0</a><br/>
+			<small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
 		</div>
         <?php if (isset($graph_data)) { ?>
 		<script type="text/javascript">
