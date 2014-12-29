@@ -12,8 +12,7 @@ function logger($action)
 function checkuser($username, $password){
 	$result = mysql_query("SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
 	if(mysql_num_rows($result)) {
-		$user = mysql_fetch_row($result);
-		return $user;
+		return mysql_fetch_row($result);
 	} 
 	else {
 		return 0;
@@ -21,7 +20,7 @@ function checkuser($username, $password){
 }
 function checklogin() {
 	if ($_SESSION['authenticated'] == true) {
-		$loggedin = true;		
+		return true;		
 	}
 	else {
 		$logincookie = unserialize($_COOKIE["authentication"]);
@@ -31,13 +30,28 @@ function checklogin() {
 			$_SESSION['user'] = $user;
 			$loggedin = true;
 			setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $GLOBALS['host']));
-			header("Location: ". $_SERVER['HTTP_REFERER']);
+			return true;
 		}
 		else {
-			$loggedin = false;
+			return false;
 		}
 	}
-	return $loggedin;
+}
+function login($username, $password) {	
+	$user = checkuser($username, $password);
+	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
+		$_SESSION['authenticated'] = true;
+		$_SESSION['user'] = $user;
+		logger('login');
+		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
+		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
+		header("Location: ". $_SERVER['HTTP_REFERER']);
+	}
+	else {
+		logger('wrong password');
+		$loggedin = false ;
+		return '<div class="alert alert-danger" role="alert">Incorrect username or password.</div>';
+	}
 }
 function setoption($userid, $option, $value){
 	$query = mysql_query("UPDATE Options SET $option=$value WHERE id=$userid");
@@ -336,8 +350,7 @@ function getdata() {
 		ping(EU, "80.231.131.1",null),
 		ping(Gateway, "gateway",null),
 		ping(Ap, "192.168.1.2", "500000"),
-		//"<span class='server'>Ap: </span><font color='green'>N/A</font>",
-		ping(" ",$_SERVER["REMOTE_ADDR"],"500000")
+		//"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
 	return $results;
 }

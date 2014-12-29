@@ -1,38 +1,20 @@
-<?php
-require_once 'config.php';
-require_once 'functions.php';
+<?php require_once 'data.php'; ?>
 
-if( session_id() == null ) { session_start(); }
-
-if (isset($_GET['logout'])) {
-	logger('logout');
-	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $host));
-	session_destroy();
-	$loggedin = false;
-	header("Location: ". $_SERVER['HTTP_REFERER']);
-	return;
-}
-
-if (!empty($_POST)){
-	$username = $_POST["username"];
-	$password = sha1($_POST["password"]);
-	$user = checkuser($username, $password);
-	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
-		$_SESSION['authenticated'] = true;
-		$_SESSION['user'] = $user; 
-		$loggedin = true;
-		logger('login');
-		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
-		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
-		header("Location: ". $_SERVER['HTTP_REFERER']);
-	}
-	else {
-		$error = '<div class="alert alert-danger" role="alert">Incorrect username or password.</div>';
-		logger('wrong password');
-		$loggedin = false ;
-	}
-}
-
-$loggedin = checklogin();
-
-?>
+<div class="row">
+	<div class="col-md-6">		
+		<h4><img class="img-responsive" src="img/cc.png" alt="aCC Server"></h4>
+		<h4><b>Please Login</b></h4>
+		<p><b>Staff:</b> Please login using the credentials supplied . If you do not have an account or need to reset your password, please send an email to the ServiceDesk.</p>
+		<p><small>(Cookies must be enabled in your browser)</small></p>
+	</div>
+	<div class="col-md-6">
+		<form class="form" method="post" id="login_form">
+			<h4><b>Login here using your username and password</b></h4>
+			<?=$error?>
+			<input class="form-control" style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username">
+			<input class="form-control" style="margin-bottom: 10px;" type="password" placeholder="Password" id="password" name="password">
+			<input style="float: left; margin-right: 10px;" type="checkbox" name="remember" id="remember" value="yes"><label class="string optional" for="remember"> Remember me</label>	
+			<input class="btn btn-default btn-primary btn-block" type="submit" id="submit" name="Submit" value="Sign In">
+		</form>
+	</div>
+</div>

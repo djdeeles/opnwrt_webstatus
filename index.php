@@ -1,6 +1,5 @@
 <?php  
 $start =  microtime(true);
-require_once 'login.php';
 require_once 'data.php';
 ?>
 <!DOCTYPE html>
@@ -12,23 +11,15 @@ require_once 'data.php';
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/custom.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="favicon.ico">
-	<style type="text/css">
-		@media (min-width: 980px) {
-			body {
-				padding-top: 50px;
-				padding-bottom: 42px;
-			}
-		}
-	</style>
 	<!--<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>-->
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/loader.js" type="text/javascript"></script>
 	<script type="text/javascript">		
 		$(document).ready(function() {
-			//clear modal on close
+			//clear and insert loading message modal on close
 			$(document).on("hidden.bs.modal", function (e) {
-				$(e.target).removeData("bs.modal").find(".modal-content").empty();
+				$(e.target).removeData("bs.modal").find(".modal-content").replaceWith("<div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button><h4>Please wait</h4></div><div class='modal-body'>Content is loading...</div><div class='modal-footer'><a class='btn btn-default' data-dismiss='modal'>Close</a></div></div>");
 			});
 
 			//menü aktif
@@ -46,6 +37,14 @@ require_once 'data.php';
 			loadInfo();
 		});
 	</script>
+	<style type="text/css">
+		@media (min-width: 980px) {
+			body {
+				padding-top: 50px;
+				padding-bottom: 42px;
+			}
+		}
+	</style>
 </head>
 <body>
 	<div class="navbar-nav navbar-default navbar-fixed-top">
@@ -57,7 +56,7 @@ require_once 'data.php';
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
+				<a class="navbar-brand hidden-sm" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
 			</div>
 			<div class="collapse navbar-collapse" id="menu">
 				<ul class="nav navbar-nav">
@@ -116,7 +115,7 @@ require_once 'data.php';
 	<div class="container">
 		<div class="jumbotron">
 			<h1>Status</h1>
-			<h3 class="lead"><?=$hostname?></h3>        
+			<h2 class="lead"><?=$hostname?></h2>        
 		</div>
 		<div class="jumbotron">
 			<div class='btn btn-default' id='usping' onclick='loadInfo()'><span class='server'>US: </span><font color='green'>___</font></div>
@@ -242,15 +241,24 @@ require_once 'data.php';
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
+				<div class="modal-content">					
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4>Please wait</h4>
+					</div>
+					<div class="modal-body">
+						Content is loading...
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-default" data-dismiss="modal">Close</a>
+					</div>
 				</div>
 			</div>
 		</div>
 		<?php } ?>
 		<hr>                
 		<div class="footer">
-			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.
-				<br><?php echo "Your IP Address: " . $_SERVER["REMOTE_ADDR"]; ?> <span id="visitorlatency"></span></small><br/>
+			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.<br/>
 				<small>Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small></div>
 			</div>
 		</div>

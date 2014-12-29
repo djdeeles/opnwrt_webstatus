@@ -3,6 +3,27 @@
 require_once 'functions.php';
 require_once 'config.php';
 
+if( session_id() == null ) { session_start(); }
+$loggedin = checklogin();
+
+//login
+if (!empty($_POST)) {
+	if (!empty($_POST)){
+		$username = $_POST["username"];
+		$password = sha1($_POST["password"]);
+		$error = login($username, $password);
+	}
+}
+
+//logout
+if (isset($_GET['logout'])) {
+	logger('logout');
+	setcookie("authentication", null, time()-1 , "/" , ".".preg_replace('/^www\./','', $host));
+	session_destroy();
+	$loggedin = false;
+	header("Location: ". $_SERVER['HTTP_REFERER']);
+}
+
 //Refresh
 if (isset($_GET['refresh'])) {
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -40,7 +61,8 @@ if (isset($_GET['listonline']))
 	$clients = explode("Nmap scan report for ", get_string_between($response, "EET", "Nmap done"));
 	$result = explode("Nmap done: ", $response);
 	echo "<div class='modal-header'>
-	<h3>Online Clients</h3>
+	<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+	<h4>Online Clients</h4>
 </div>
 <div class='modal-body'>";
 	$clientid = "0";
@@ -52,7 +74,7 @@ if (isset($_GET['listonline']))
 	}
 	echo "<p style='margin:8px 0;text-align:right;'><b>" . (count($clients)-1) . " Hosts up.</b><br/><small>Scanned in " . round((microtime(true) - $datatime), 2) . " seconds.</small></p></div>
 	<div class='modal-footer'>
-		<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn btn-default' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }
@@ -62,7 +84,8 @@ if (isset($_GET['logread']))
 { 
 	@exec("logread",$response);
 	echo "<div class='modal-header'>
-	<h3>Logs</h3>
+	<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+	<h4>Logs</h4>
 </div>
 <div class='modal-body'>";
 	foreach ($response as $key => $value) {
@@ -71,7 +94,7 @@ if (isset($_GET['logread']))
 
 	echo "</div>
 	<div class='modal-footer'>
-		<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn btn-default' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }
@@ -82,7 +105,7 @@ if (isset($_GET['dlna'])) {
 	echo file_get_contents("http://192.168.1.1:8200");
 	echo "</div>
 	<div class='modal-footer'>
-		<a class='btn' data-dismiss='modal'>Close</a>
+		<a class='btn btn-default' data-dismiss='modal'>Close</a>
 	</div>";
 	exit;
 }

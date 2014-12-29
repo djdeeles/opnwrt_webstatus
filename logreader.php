@@ -2,8 +2,7 @@
 
 $start =  microtime(true);
 require_once 'conn.php';
-require_once 'login.php';
-require('data.php');
+require_once 'data.php';
 $per_page = 20; 
 $logtype  = 0;
 $page     = 1;
@@ -63,7 +62,7 @@ function displaylogs() {
 			<td>$id</td>
 			<td>$log</td>
 			<td>$logdate</td>
-			<td><input type='checkbox' name='checkbox[]' value='$id' style='margin:0;'></td>
+			<td class='text-center'><input type='checkbox' name='checkbox[]' value='$id' style='margin:0;'></td>
 		</tr>";
       } //End while
   } else {
@@ -160,55 +159,69 @@ function sortdata($asortby,$sortname) {
 	</script>
 </head>
 <body> 
-	<div class="container" style="margin-top:20px;">
-		<?php if($alert) { echo "<div class='alert alert-warning alert-dismissible' role='alert'>$alert <button type='button' class='close' aria-label='Close' data-dismiss='alert'><span aria-hidden='true'>&times;</span></button></div>"; } ?>
-		<div style="float:left;margin-bottom:10px;">
-			<select class="form-control" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
-				<option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>Select log type</option>
-				<option value="6"<?php echo $logtype == '6' ? ' selected="selected"' : ''?>>system</option>
-				<option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
-				<option value="2"<?php echo $logtype == '2' ? ' selected="selected"' : ''?>>php_errors</option>
-				<option value="3"<?php echo $logtype == '3' ? ' selected="selected"' : ''?>>minidlna</option>
-				<option value="4"<?php echo $logtype == '4' ? ' selected="selected"' : ''?>>wifimanager</option>
-				<option value="5"<?php echo $logtype == '5' ? ' selected="selected"' : ''?>>adblock</option>
-				<option value="7"<?php echo $logtype == '7' ? ' selected="selected"' : ''?>>pyload</option>
-				<option value="8"<?php echo $logtype == '8' ? ' selected="selected"' : ''?>>log2db</option>
-			</select>    
-		</div>
-		<?php if(!$loggedin) { ?> 
-		<p style='float:left;width:100%;font-weight:bold;'>Please Login</p>
-		<?php } elseif($loggedin && $logtype != 0) { ?>
-		<form action='<? echo "logreader.php?logtype=$logtype"; ?>' name="search" method='POST' onsubmit="return validate()" class="col-lg-4">
-			<div class="input-group">
-				<input class="form-control" aria-label="Search" type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
-				<div class="input-group-btn">
-					<button type="submit" class="btn btn-default">Search</button>
-					<a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn btn-default" ><span aria-hidden='true'>&times;</span></a>
+	<div class="container">
+		<?php if($alert) { echo "<div class='alert alert-warning alert-dismissible' role='alert'>$alert <button type='button' class='close' aria-label='Close' data-dismiss='alert'><span aria-hidden='true'>&times;</span></button></div>"; }
+		if($loggedin) { ?>
+		<form action='<? echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort"; ?>' name='search' method='POST'>
+			<div class="row" style="margin-left:-15px; margin-right:-15px;">
+				<div class="col-md-3">
+					<select class="form-control" onchange="if (this.value) window.location.href='<?php echo $_SERVER['PHP_SELF']; ?>?logtype=' + this.value">
+						<option value="0"<?php echo $logtype == '0' ? ' selected="selected" disabled' : ' disabled'?>>Select log type</option>
+						<option value="6"<?php echo $logtype == '6' ? ' selected="selected"' : ''?>>system</option>
+						<option value="1"<?php echo $logtype == '1' ? ' selected="selected"' : ''?>>lighttpd</option>
+						<option value="2"<?php echo $logtype == '2' ? ' selected="selected"' : ''?>>php_errors</option>
+						<option value="3"<?php echo $logtype == '3' ? ' selected="selected"' : ''?>>minidlna</option>
+						<option value="4"<?php echo $logtype == '4' ? ' selected="selected"' : ''?>>wifimanager</option>
+						<option value="5"<?php echo $logtype == '5' ? ' selected="selected"' : ''?>>adblock</option>
+						<option value="7"<?php echo $logtype == '7' ? ' selected="selected"' : ''?>>pyload</option>
+						<option value="8"<?php echo $logtype == '8' ? ' selected="selected"' : ''?>>log2db</option>
+					</select>    
+				</div>
+				<div class="col-md-3">
+				<?php if ($logtype!=0) { ?>
+					<div class="input-group">
+						<input class="form-control" aria-label="Search" type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
+						<div class="input-group-btn">
+							<button type="submit" class="btn btn-default" onclick="return validate()">Search</button>
+							<a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn btn-default" ><span aria-hidden='true'>&times;</span></a>
+						</div>
+					</div>
+				<?php } ?>
+				</div>
+				<div class="col-md-6 text-right">
+					<div class="btn-group">
+						<a href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort&log2db" ?>" title="Refresh Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
+						<a href="<?php echo "logreader.php?cleanoldrec&logtype=$logtype"."&page=$page"."&sortby=$sortby"; ?>" title="Clear Old Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
+						<?php if ($logtype!=0) { ?>
+						<input type='submit' value='Delete Selected' class="btn btn-default" onclick="return confirm('Are you sure you want to delete selected entries ?')">
+						<?php } ?>
+					</div>
+				</div>
+			</div><br>
+			<?php if ($logtype!=0) { ?>
+			<div class="row">
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover table-striped">
+						<tr>
+							<th><?php sortdata("id","Id"); ?></th>
+							<th><?php sortdata("log","Log"); ?></th>
+							<th><?php sortdata("logdate","Date"); ?></th>
+							<th class="text-center"><input type='checkbox' name='select-all' id='select-all' style='margin:0;'></th>
+						</tr>
+						<?php displaylogs(); ?>
+					</table>
 				</div>
 			</div>
-		</form>
-		<form action='<? echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort"; ?>' method='POST'>			
-			<div class="btn-group" class="col-lg-4" style="float:right;" >
-				<a href="<?php echo "logreader.php?logtype=$logtype"."&page=$page"."&sortby=$sortby"."&sort=$sort&log2db" ?>" title="Refresh Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to refresh logs ?')">Refresh Logs</a>
-				<a href="<?php echo "logreader.php?cleanoldrec&logtype=$logtype"."&page=$page"."&sortby=$sortby"; ?>" title="Clear Old Logs" class="btn btn-default" onclick="return confirm('Are you sure you want to delete entries older than 6 months ?')">Delete Older Than 6 Months</a>
-				<input type='submit' value='Delete Selected' class="btn btn-default" onclick="return confirm('Are you sure you want to delete selected entries ?')">
-			</div>
-			<table class='table logs' style="float:left;">
-				<tr>
-					<th width="4%"><?php sortdata("id","Id"); ?></th>
-					<th width="79%"><?php sortdata("log","Log"); ?></th>
-					<th width="14%"><?php sortdata("logdate","Date"); ?></th>
-					<th width="3%" align="center"><input type='checkbox' name='select-all' id='select-all' style='margin:0;'></th>
-				</tr>
-				<?php displaylogs(); ?>
-			</table>
 		</form>
 		<?php pagination(); ?>
 		<div class="pagination" style="float:right;">  
 			Total records: <?php echo $count[0]; ?>
 		</div>
-		<?php } ?>    
+		<?php } ?>
 		<p style="float:left;width:100%;"><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></p>
+		<?php } else { 
+			include_once 'login.php'; 
+		} ?>
 	</div>
 </body>
 </html>
