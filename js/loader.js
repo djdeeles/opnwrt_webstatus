@@ -139,10 +139,8 @@ function loadInfo() {
 	    $("#gtping").html(gtping);
 	    var apping = result[51];
 	    $("#apping").html(apping);
-	    var visitorlatency = result[52];
-	    $("#visitorlatency").html(visitorlatency);
 	    // Refresh time
-	    var refreshtime = result[53];
+	    var refreshtime = result[52];
 	    $("#refreshtime").html(refreshtime);
 	});
 }

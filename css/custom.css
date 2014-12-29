@@ -2,13 +2,29 @@ body {
   background-image: url(../img/back.png);
   background-repeat: repeat;
 }
-@media (min-width: 980px) and (max-width: 980px) {
-   .collapse {
-       display: none !important;
-   }
+@media (max-width: 1000px) {
+  .container { 
+    padding: 20px;
+    width: 100%;
+  }
+  .row div[class^='col-md-'] {
+    margin:5px 0 0 0;
+  }
+}
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.navbar-nav .container {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.navbar-nav { margin:0;}
+.navbar-default {
+  box-shadow: 0px 2px 2px #ccc;
 }
 .container > hr {
-  margin: 30px 0;
+  margin: 20px 0;
 }
 .jumbotron {
   margin: 60px 0 30px 0 ;
@@ -29,7 +45,7 @@ body {
   display: inline-block;
   font-weight: normal;
   text-align: left;
-  width: 180px;
+  width: 176px;
   margin: 5px 3px;
   padding: 10px 8px;
   white-space: normal;
@@ -47,9 +63,9 @@ body {
   top: 4px;
   float: right;
 }
-.navbar-nav { margin:0;}
-.navbar-default {
-  box-shadow: 0px 2px 2px #ccc;
+.row { 
+	margin-left:0;
+	margin-right:0;
 }
 .glyphicon {
   margin-right: 10px;
@@ -61,7 +77,7 @@ body {
   margin-bottom: 10px;
 }
 
-/*
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -80,7 +96,7 @@ body {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(113, 112, 107, 0.1);
 }
-*/
+
 
 /* Lighttpd page */ 
 #last-update { 
@@ -116,103 +132,14 @@ body {
   font-size: 26px;
   font-weight: bold;
 }
-#connectionsTable {
-  width: 100%;
-  font-size: x-small;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-#connectionsTable tr th {
-  background-color: #003366;
-  color: #ffffff;
-  font-weight: bold;
-  text-align: left;
-  padding: 0.5em;
-  border-left: 1px dotted #cccccc;
-  margin: 0;
-}
-#connectionsTable th:first-child {
-  border-left: 0;
-}
-#connectionsTable tr th:hover {
-  background-color: #2d5e92;
-}
-/* Table cells: general */
-#connectionsTable td:first-child {
-  border-left: 0;
-}
-#connectionsTable tr td {
-  padding: 0.5em;
-  border-left: 1px dotted #cccccc;
-  margin: 0;
-}
-/* Optional alternating colours */
-#connectionsTableEven td {
-  background-color: #fff;
-}
-#connectionsTableOdd td {
-  background-color: #eeeeee;
-}
-
-/*
-legend {
-  padding-right: 0.5em;
-  border: 1px solid;
-}
-
-
-div#terminal textarea { 
-  font-size: 100%;
-  width: 100%;
-  border: none;
-}
-
-fieldset {
-  padding: 0.5em;
-}
-
-label {
-  float: left;
-  width: 20%;
-  margin-right: 1em;
-  text-align: right;
-  font-weight: bold;
-}
-
-.error {
-  color: red;
-}
-
-div.warning {
-  background-color: rgb(255, 150, 150);
-  border: medium solid rgb(255, 60, 60);
-  padding: 0.5em;
-  margin: 0.25em;
-}
-.pwd {
-  font-family: monospace;
-  padding: 0.5em;
-  margin: 0.25em;
-}
-a.pwd {
-  font-weight: bold;
-}
-*/
-
-.logs table { border:1px solid #C8C8C8; } 
-.logs th { background-color: #fff !important; } 
-.logs td,th { font-size: 0.85em; padding:3px !important; } 
-.logs tr:hover { border:0px; background-color: #fff !important; } 
-.logs tr:nth-child(even) {background: #F0F0F0}
-.logs tr:nth-child(odd) {background: #ddd}
 
 .caret.caret-reversed {
-    border-top-width: 0;
-    border-bottom: 4px solid #aaa;
+  border-top-width: 0;
+  border-bottom: 4px solid #aaa;
 }
 .caret {
 
-    border-top: 4px solid #aaa;
-    vertical-align: middle;
-    margin-top: -3px;
-
+  border-top: 4px solid #aaa;
+  vertical-align: middle;
+  margin-top: -3px;
+}

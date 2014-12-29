@@ -1,4 +1,4 @@
-<?php include 'data.php'; include 'login.php'; ?>
+<?php include 'data.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -35,7 +35,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
+				<a class="navbar-brand hidden-sm" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
 			</div>
 			<div class="collapse navbar-collapse" id="menu">
 				<ul class="nav navbar-nav">
