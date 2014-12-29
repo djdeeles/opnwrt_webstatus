@@ -1,0 +1,22 @@
+
+.vnstat .graph {
+    background: #fff;
+    padding: 10px;
+    margin:10px 0px;
+}
+.vnstat .graph #chart {
+    width: 100%;
+    height: 250px;
+}
+.vnstat div.ratio {
+    display: inline-block;
+    height: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    background-color: #5cb85c;
+    overflow: hidden;
+}
+.vnstat div.ratio > div {
+    height: 10px;
+    background-color: #222;
+}

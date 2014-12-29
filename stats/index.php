@@ -1,51 +1,32 @@
 <?php
 $start =  microtime(true);
-    //
-    // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
-    //
-    // This program is free software; you can redistribute it and/or modify
-    // it under the terms of the GNU General Public License as published by
-    // the Free Software Foundation; either version 2 of the License, or
-    // (at your option) any later version.
-    //
-    // This program is distributed in the hope that it will be useful,
-    // but WITHOUT ANY WARRANTY; without even the implied warranty of
-    // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    // GNU General Public License for more details.
-    //
-    // You should have received a copy of the GNU General Public License
-    // along with this program; if not, write to the Free Software
-    // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    //
-    //
-    // see file COPYING or at http://www.gnu.org/licenses/gpl.html
-    // for more information.
-    //
+
     require 'config.php';
     require 'localize.php';
     require 'vnstat.php';
 
     validate_input();
 
-    require "./themes/$style/theme.php";
-
-    function write_side_bar()
+    function write_menu()
     {
-        global $iface, $page, $graph, $script, $style;
+        global $iface, $page, $script;
         global $iface_list, $iface_title;
         global $page_list, $page_title;
+        global $defaultpage;
 
-        $p = "&amp;graph=$graph&amp;style=$style";
-
-        print "<ul class=\"iface\">\n";
+        print "<div class=\"btn-group btn-block\" role=\"group\" aria-label=\"options\">";
+        if (!$defaultpage) {   
+            	print "<a class=\"btn btn-default\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></a>";
+        } else {        	
+            	print "<a class=\"btn btn-default active\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></a>";
+        }
         foreach ($iface_list as $if)
         {
-            if ($iface == $if) {
-                print "<li class=\"iface active\">";
+            if ($iface == $if && !$defaultpage) {
+            	print "<a class=\"btn btn-default active\" href=\"$script?if=$if\">";
             } else {
-                print "<li class=\"iface\">";
+            	print "<a class=\"btn btn-default\" href=\"$script?if=$if\">";
             }
-            print "<a href=\"$script?if=$if$p\">";
             if (isset($iface_title[$if]))
             {
                 print $iface_title[$if];
@@ -54,17 +35,22 @@ $start =  microtime(true);
             {
                 print $if;
             }
-            print "</a>";
-            print "<ul class=\"page\">\n";
+            print "</a>";            
+        }
+        print "</div>";
+        if(!$defaultpage) {
+            print "<div class=\"btn-group btn-block\" role=\"group\" aria-label=\"options\">";
             foreach ($page_list as $pg)
             {
-                print "<li class=\"page\"><a href=\"$script?if=$if$p&amp;page=$pg\">".$page_title[$pg]."</a></li>\n";
+            	if ($page == $pg) {
+            		print "<a class=\"btn btn-default active\" href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a>\n";
+            	} else {
+                	print "<a class=\"btn btn-default\" href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a>\n";
+            	}
             }
-            print "</ul></li>\n";
+            print "</div>";        	
         }
-        print "</ul>\n";
     }
-
 
     function kbytes_to_string($kb)
     {
@@ -80,7 +66,7 @@ $start =  microtime(true);
         return sprintf("%0.2f %s", ($kb/$scale),$units[$ui]);
     }
 
-    function write_summary()
+    function write_summary($topdays)
     {
         global $summary,$top,$day,$hour,$month;
 
@@ -111,20 +97,20 @@ $start =  microtime(true);
         $sum[3]['tx'] = $ttx;
 
         write_data_table(T('Summary'), $sum);
-        print "<br/>\n";
-        write_data_table(T('Top 10 days'), $top);
+        if($topdays) { 
+        	write_data_table(T('Top 10 days'), $top);
+        }
     }
-
 
     function write_data_table($caption, $tab)
     {
-        print "<table width=\"100%\" cellspacing=\"0\">\n";
-        print "<caption>$caption</caption>\n";
+        print "<div class='table-responsive'> <table class=\"table table-bordered table-hover table-striped\">\n";
         print "<tr>";
-        print "<th class=\"label\" style=\"width:120px;\">&nbsp;</th>";
-        print "<th class=\"label\">".T('In')."</th>";
-        print "<th class=\"label\">".T('Out')."</th>";
-        print "<th class=\"label\">".T('Total')."</th>";
+        print "<th class=\"active\">$caption</th>";
+        print "<th class=\"active\">".T('In')."</th>";
+        print "<th class=\"active\">".T('Out')."</th>";
+        print "<th class=\"active\">".T('Total')."</th>";
+        print "<th class=\"active ratio\">".T('Ratio')."</th>";
         print "</tr>\n";
 
         for ($i=0; $i<count($tab); $i++)
@@ -135,70 +121,136 @@ $start =  microtime(true);
                 $rx = kbytes_to_string($tab[$i]['rx']);
                 $tx = kbytes_to_string($tab[$i]['tx']);
                 $total = kbytes_to_string($tab[$i]['rx']+$tab[$i]['tx']);
-                $id = ($i & 1) ? 'odd' : 'even';
+                $ratio = $tab[$i]['rx'] / ($tab[$i]['rx'] + $tab[$i]['tx']) * 100;
+                
                 print "<tr>";
-                print "<td class=\"label_$id\">$t</td>";
-                print "<td class=\"numeric_$id\">$rx</td>";
-                print "<td class=\"numeric_$id\">$tx</td>";
-                print "<td class=\"numeric_$id\">$total</td>";
+                print "<td>$t</td>";
+                print "<td>$rx</td>";
+                print "<td>$tx</td>";
+                print "<td>$total</td>";
+                print "<td class=\"ratio\"><div class=\"ratio\"><div style=\"width: $ratio%;\"></div></div></td>";
                 print "</tr>\n";
              }
         }
-        print "</table>\n";
+        print "</table></div>\n";
+    }
+    
+    function write_graph_data($data)
+    {
+        $receivedData = [
+            'className' => '.received',
+            'data'      => [],
+        ];
+        $sentData = [
+            'className' => '.sent',
+            'data'      => [],
+        ];
+        foreach ($data as $line) {                  
+            $receivedData['data'][] = ['x' => $line['img_label'], 'y' => $line['rx']*1024];
+            $sentData['data'][] = ['x' => $line['img_label'], 'y' => $line['tx']*1024];
+        }
+        $receivedData['data'] = array_reverse($receivedData['data']);
+        $sentData['data'] = array_reverse($sentData['data']);
+        return json_encode($receivedData) . "," . json_encode($sentData); 
     }
 
-    get_vnstat_data();
+    if (!$defaultpage) { 
+    	get_vnstat_data();
+    }
 
     //
     // html start
     //
     header('Content-type: text/html; charset=utf-8');
-    print '<?xml version="1.0"?>';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>aCC Server Statistics</title>
-  <link rel="stylesheet" type="text/css" href="themes/<?php echo $style ?>/style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/vnstat.css" rel="stylesheet" type="text/css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../css/custom.css" rel="stylesheet" type="text/css">
+  <script src="../js/jquery-2.1.1.min.js" type="text/javascript"></script>
+  <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+  </style>
 </head>
 <body>
-
-<div id="wrap">
-  <div id="sidebar"><?php write_side_bar(); ?></div>
-   <div id="content">
-    <div id="header"><?php print T('Traffic data for')." $iface_title[$iface]";?></div>
-    <div id="main">
-    <?php
-    $graph_params = "if=$iface&amp;page=$page&amp;style=$style";
-    if ($page != 's')
-        if ($graph_format == 'svg') {
-	     print "<object type=\"image/svg+xml\" width=\"100%\" height=\"100%\" data=\"graph_svg.php?$graph_params\"></object>\n";
-        } else {
-	     print "<img src=\"graph.php?$graph_params\" alt=\"graph\"/>\n";
-        }
-
-    if ($page == 's')
-    {
-        write_summary();
-    }
-    else if ($page == 'h')
-    {
-        write_data_table(T('Last 24 hours'), $hour);
-    }
-    else if ($page == 'd')
-    {
-        write_data_table(T('Last 30 days'), $day);
-    }
-    else if ($page == 'm')
-    {
-        write_data_table(T('Last 12 months'), $month);
-    }
-    ?>
-    </div>
-    <div id="footer"><a href="http://www.cetincone.tk/">aCC Stats</a> 1.5.2 <br/>
-        <small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?></small>
-    </div>
-  </div>
-</div>
-
-</body></html>
+	<div class="container vnstat">
+		<div class="row">
+        <?php write_menu(); ?>
+        </div>
+		<div class="row">
+		<?php if (!$defaultpage) { ?>
+			<h2>
+                <b><?php print T('Traffic data for')." $iface_title[$iface]";?></b>
+            </h2>
+			<?php                
+			if ($page == 's') {
+                    write_summary(true);
+            } else { ?>
+            <div class="graph table-bordered">
+                <link href="css/xcharts.min.css" rel="stylesheet" />
+                <script type="text/javascript" src="js/d3.min.js"></script>
+                <script type="text/javascript" src="js/xcharts.min.js"></script>
+                <figure id="chart"></figure>
+            </div>            
+            <?php				
+				if ($page == 'h')
+				{
+					$graph_data = write_graph_data($hour);
+					write_data_table(T('Last 24 hours'), $hour);
+				}
+				else if ($page == 'd')
+				{
+					$graph_data = write_graph_data($day);
+					write_data_table(T('Last 30 days'), $day);
+				}
+				else if ($page == 'm')
+				{
+					$graph_data = write_graph_data($month);
+					write_data_table(T('Last 12 months'), $month);
+				}
+            }
+	     } else { 
+			foreach ($iface_list as $iface) {
+				get_vnstat_data();
+				print "<h2><b>$iface_title[$iface]</b></h2>" ;
+				write_summary(false);
+			}
+	     } ?>
+		</div>
+		<div class="row footer"><a href="http://www.cetincone.tk">aCC Stats</a> 2.0 <br/>
+			<small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?></small>
+		</div>
+        <?php if (isset($graph_data)) { ?>
+		<script type="text/javascript">
+            var chart = new xChart(
+                'bar',
+                {
+                    "xScale": "ordinal", //ordinal,linear,time,exponential
+                    "yScale": "linear", //ordinal,linear,time,exponential
+                    "type": "line-dotted", //bar, cumulative,line,line-dotted
+                    "main": [ <?php echo $graph_data; ?> ]
+                },
+                '#chart',
+                {
+                    "tickHintX": -24,
+                    "tickHintY": 8,
+                    "paddingTop" : "5",
+                    "paddingBottom" : "15",
+                    "paddingLeft" : "60",
+                    "paddingRight" : "0",
+                    "tickFormatY": function (y) {
+                        var units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+                        var pow   = Math.floor((y ? Math.log(y) : 0) / Math.log(1024));
+                        pow = Math.min(pow, units.length - 1);
+                        return (Math.round(y / (1 << (10 * pow)) * 10) / 10) + ' ' + units[pow];
+                    }
+                }
+            );
+        </script>        
+        <?php } ?>
+	</div>
+</body>
+</html>

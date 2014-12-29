@@ -1,32 +1,5 @@
 <?php
-    //
-    // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
-    //
-    // This program is free software; you can redistribute it and/or modify
-    // it under the terms of the GNU General Public License as published by
-    // the Free Software Foundation; either version 2 of the License, or
-    // (at your option) any later version.
-    //
-    // This program is distributed in the hope that it will be useful,
-    // but WITHOUT ANY WARRANTY; without even the implied warranty of
-    // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    // GNU General Public License for more details.
-    //
-    // You should have received a copy of the GNU General Public License
-    // along with this program; if not, write to the Free Software
-    // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-    //
-    //
-    // see file COPYING or at http://www.gnu.org/licenses/gpl.html
-    // for more information.
-    //
 
-    //
-    // Valid values for other parameters you can pass to the script.
-    // Input parameters will always be limited to one of the values listed here.
-    // If a parameter is not provided or invalid it will revert to the default,
-    // the first parameter in the list.
-    //
     if (isset($_SERVER['PHP_SELF']))
     {
 	$script = $_SERVER['PHP_SELF'];
@@ -42,30 +15,21 @@
 
     $page_list  = array('s','h','d','m');
 
-    $graph_list = array('large','small','none');
-
     $page_title['s'] = T('summary');
     $page_title['h'] = T('hours');
     $page_title['d'] = T('days');
     $page_title['m'] = T('months');
 
-
-    //
-    // functions
-    //
     function validate_input()
     {
         global $page,  $page_list;
         global $iface, $iface_list;
-        global $graph, $graph_list;
-	global $colorscheme, $style;
+        global $defaultpage;
         //
         // get interface data
         //
         $page = isset($_GET['page']) ? $_GET['page'] : '';
         $iface = isset($_GET['if']) ? $_GET['if'] : '';
-        $graph = isset($_GET['graph']) ? $_GET['graph'] : '';
-        $style = isset($_GET['style']) ? $_GET['style'] : '';
 
         if (!in_array($page, $page_list))
         {
@@ -73,26 +37,15 @@
         }
 
         if (!in_array($iface, $iface_list))
-        {
+        {            
+            $defaultpage = 1;
             $iface = $iface_list[0];
-        }
-
-        if (!in_array($graph, $graph_list))
-        {
-            $graph = $graph_list[0];
-        }
-
-	$tp = "./themes/$style";
-        if (!is_dir($tp) || !file_exists("$tp/theme.php"))
-        {
-	    $style = DEFAULT_COLORSCHEME;
         }
     }
 
-
     function get_vnstat_data($use_label=true)
     {
-        global $iface, $vnstat_bin, $data_dir;
+        global $iface, $vnstat_bin, $data_dir, $page;
         global $hour,$day,$month,$top,$summary;
 
         if (!isset($vnstat_bin) || $vnstat_bin == '')
@@ -123,13 +76,11 @@
         $month = array();
         $top = array();
 
-        //
         // extract data
-        //
         foreach($vnstat_data as $line)
         {
             $d = explode(';', trim($line));
-            if ($d[0] == 'd')
+            if ($d[0] == 'd' && $page != 'm' && $page != 'h')
             {
                 $day[$d[1]]['time']  = $d[2];
                 $day[$d[1]]['rx']    = $d[3] * 1024 + $d[5];
@@ -146,7 +97,7 @@
                     $day[$d[1]]['img_label'] = '';
                 }
             }
-            else if ($d[0] == 'm')
+            else if ($d[0] == 'm' && $page != 'd' && $page != 'h')
             {
                 $month[$d[1]]['time'] = $d[2];
                 $month[$d[1]]['rx']   = $d[3] * 1024 + $d[5];
@@ -163,7 +114,7 @@
                     $month[$d[1]]['img_label'] = '';
                 }
             }
-            else if ($d[0] == 'h')
+            else if ($d[0] == 'h' && $page != 'd' && $page != 'm')
             {
                 $hour[$d[1]]['time'] = $d[2];
                 $hour[$d[1]]['rx']   = $d[3];
@@ -199,6 +150,7 @@
                 $summary[$d[0]] = isset($d[1]) ? $d[1] : '';
             }
         }
+
         if (count($day) == 0)
             $day[0] = 'nodata';
         rsort($day);
