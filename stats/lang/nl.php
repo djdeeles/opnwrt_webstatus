@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Afgelopen 12 maanden';
 $L['In'] = 'In';
 $L['Out'] = 'Uit';
 $L['Total'] = 'Totaal';
+$L['Ratio'] = 'Verhouding';
 
 // summary rows
 $L['This hour'] = 'Dit uur';

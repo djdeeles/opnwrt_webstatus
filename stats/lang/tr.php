@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Son 12 Ay';
 $L['In'] = 'Giriş';
 $L['Out'] = 'Çıkış';
 $L['Total'] = 'Toplam';
+$L['Ratio'] = 'Oran';
 
 // summary rows
 $L['This hour'] = 'Bu Saat';

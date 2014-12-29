@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Posledných 12 mesiacov';
 $L['In'] = 'Sťahovanie';
 $L['Out'] = 'Posielanie';
 $L['Total'] = 'Celkom';
+$L['Ratio'] = 'Pomer';
 
 // summary rows
 $L['This hour'] = 'Túto hodinu';

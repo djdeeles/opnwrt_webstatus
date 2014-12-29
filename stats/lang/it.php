@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Ultimi 12 mesi';
 $L['In'] = 'Entrata';
 $L['Out'] = 'Uscita';
 $L['Total'] = 'Totale';
+$L['Ratio'] = 'Rapporto';
 
 // summary rows
 $L['This hour'] = 'Quest ora';

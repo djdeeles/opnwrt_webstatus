@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Utolsó 12 hónap';
 $L['In'] = 'Bejövő';
 $L['Out'] = 'Kimenő';
 $L['Total'] = 'Összesen';
+$L['Ratio'] = 'Arány';
 
 // summary rows
 $L['This hour'] = 'Ebben az órában';

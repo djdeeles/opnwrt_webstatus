@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Viimeiset 12 kuukautta';
 $L['In'] = 'Sisään';
 $L['Out'] = 'Ulos';
 $L['Total'] = 'Yhteensä';
+$L['Ratio'] = 'Suhde';
 
 // summary rows
 $L['This hour'] = 'Viimeisin tunti';

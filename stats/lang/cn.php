@@ -17,6 +17,7 @@ $L['Last 12 months'] = '过去12个月';
 $L['In'] = '流入';
 $L['Out'] = '流出';
 $L['Total'] = '总流量';
+$L['Ratio'] = '比';
 
 // summary rows
 $L['This hour'] = '本小时';

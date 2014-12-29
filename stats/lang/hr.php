@@ -17,6 +17,7 @@ $L['Last 12 months'] = 'Zadnjih 12 mjeseci';
 $L['In'] = 'Primljeno';  
 $L['Out'] = 'Poslano'; 
 $L['Total'] = 'Ukupno'; // Total
+$L['Ratio'] = 'Omjer';
 
 // summary rows
 $L['This hour'] = 'Tekući sat';
