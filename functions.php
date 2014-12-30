@@ -134,7 +134,7 @@ function serviceControl($name, $servicename, $pid)
 			break;
 			case ($percent > 25): $type = 'success';    
 			break;
-			case ($percent < 25): $type = 'info';    
+			case ($percent <= 25): $type = 'info';    
 			break;
 			default: $type = 'default';
 		}
