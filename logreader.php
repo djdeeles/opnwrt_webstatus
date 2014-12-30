@@ -178,7 +178,7 @@ function sortdata($asortby,$sortname) {
 					</select>    
 				</div>
 				<div class="col-md-3">
-				<?php if ($logtype!=0) { ?>
+					<?php if ($logtype!=0) { ?>
 					<div class="input-group">
 						<input class="form-control" aria-label="Search" type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
 						<div class="input-group-btn">
@@ -186,7 +186,7 @@ function sortdata($asortby,$sortname) {
 							<a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn btn-default" ><span aria-hidden='true'>&times;</span></a>
 						</div>
 					</div>
-				<?php } ?>
+					<?php } ?>
 				</div>
 				<div class="col-md-6 text-right">
 					<div class="btn-group">
@@ -197,7 +197,8 @@ function sortdata($asortby,$sortname) {
 						<?php } ?>
 					</div>
 				</div>
-			</div><br>
+			</div>
+			<br/>
 			<?php if ($logtype!=0) { ?>
 			<div class="row">
 				<div class="table-responsive">
@@ -212,12 +213,12 @@ function sortdata($asortby,$sortname) {
 					</table>
 				</div>
 			</div>
+			<?php pagination(); ?>
+			<div class="pagination" style="float:right;">  
+				Total records: <?php echo $count[0]; ?>
+			</div>
+			<?php } ?>		
 		</form>
-		<?php pagination(); ?>
-		<div class="pagination" style="float:right;">  
-			Total records: <?php echo $count[0]; ?>
-		</div>
-		<?php } ?>
 		<p style="float:left;width:100%;"><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></p>
 		<?php } else { 
 			include_once 'login.php'; 

@@ -16,9 +16,9 @@ $start =  microtime(true);
 
         print "<div class=\"btn-group btn-block\" role=\"group\" aria-label=\"options\">";
         if (!$defaultpage) {   
-            	print "<a class=\"btn btn-default\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></a>";
+            	print "<a class=\"btn btn-default\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></a>";
         } else {        	
-            	print "<a class=\"btn btn-default active\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></a>";
+            	print "<a class=\"btn btn-default active\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></a>";
         }
         foreach ($iface_list as $if)
         {	
@@ -67,7 +67,7 @@ $start =  microtime(true);
         return sprintf("%0.2f %s", ($kb/$scale),$units[$ui]);
     }
 
-    function write_summary($topdays)
+    function write_summary()
     {
         global $summary,$top,$day,$hour,$month;
 
@@ -98,9 +98,6 @@ $start =  microtime(true);
         $sum[3]['tx'] = $ttx;
 
         write_data_table(T('Summary'), $sum);
-        if($topdays) { 
-        	write_data_table(T('Top 10 days'), $top);
-        }
     }
 
     function write_data_table($caption, $tab)
@@ -215,11 +212,18 @@ $start =  microtime(true);
 		<div class="row">
 		<?php if (!$defaultpage) { ?>
 			<h2>
-                <b><?php print T('Traffic data for')." $iface_title[$iface]";?></b>
+                <b><?php print T('Traffic data for')." $iface_title[$iface]"; ?></b>
             </h2>
 			<?php                
 			if ($page == 's') {
-                    write_summary(true);
+                    write_summary();
+					print "<p><b>".T('Last 12 months')."</b></p>" ;
+					write_graph_data($month,"month","cumulative");
+					print "<p><b>".T('Last 30 days')."</b></p>" ;
+					write_graph_data($day,"day","cumulative");
+					print "<p><b>".T('Last 24 hours')."</b></p>" ;
+					write_graph_data($hour,"hour","cumulative");
+        			write_data_table(T('Top 10 days'), $top);
             } else { 		
 				if ($page == 'h')
 				{
@@ -241,8 +245,7 @@ $start =  microtime(true);
 			foreach ($iface_list as $iface) {
 				get_vnstat_data();
 				print "<h2><b>$iface_title[$iface]</b></h2>" ;
-				write_graph_data($month,$iface_title[$iface],"cumulative");
-				write_summary(false);
+				write_summary();
 			}
 	     } ?>
 		</div>

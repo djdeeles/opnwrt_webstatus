@@ -259,10 +259,9 @@ require_once 'data.php';
 		<hr>                
 		<div class="footer">
 			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.<br/>
-				<small>Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small></div>
+				Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 </html>

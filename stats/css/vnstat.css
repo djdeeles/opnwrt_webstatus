@@ -2,7 +2,7 @@
 .vnstat .graph-wrapper {
     background: #fff;
     padding: 10px;
-    margin:10px 0px;
+    margin-bottom: 20px;
 }
 .vnstat .graph-wrapper .graph {
     width: 100%;
