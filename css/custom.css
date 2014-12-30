@@ -76,6 +76,7 @@ body {
 .footer { 
   margin-bottom: 10px;
 }
+table { background-color: #fff; }
 
 
 ::-webkit-scrollbar {
