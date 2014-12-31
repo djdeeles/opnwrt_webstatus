@@ -235,9 +235,9 @@ require_once 'data.php';
 		<?php if ($loggedin == true) { ?>
 		<hr> 
 		<div class="row">
-			<p class="col-md-1"><a href="?logread" title="Read Logs" data-toggle="modal" data-target="#myModal" class="btn btn-default">Read Logs</a></p>
-			<p class="col-md-1"><a href="?listonline" title="List Online" data-toggle="modal" data-target="#myModal" class="btn btn-default">List Online</a></p>
-			<p class="col-md-1"><a href="?dlna" title="DLNA Info" data-toggle="modal" data-target="#myModal" class="btn btn-default">DLNA Info</a></p>
+			<a href="?logread" title="Read Logs" data-toggle="modal" data-target="#myModal" class="btn btn-default">Read Logs</a>
+			<a href="?listonline" title="List Online" data-toggle="modal" data-target="#myModal" class="btn btn-default">List Online</a>
+			<a href="?dlna" title="DLNA Info" data-toggle="modal" data-target="#myModal" class="btn btn-default">DLNA Info</a>
 		</div>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">

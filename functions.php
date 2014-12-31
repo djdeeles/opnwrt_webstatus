@@ -82,8 +82,7 @@ function service($servicename, $saction)
 	header('Location: '.dirname($_SERVER['PHP_SELF']));
 	exit;
 }
-function serviceControl($name, $servicename, $pid)  
-{ 
+function serviceControl($name, $servicename, $pid) { 
 	if (servicestate($pid)) { 
 		echo "
 		<a href='#' class='btn btn-default' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
@@ -179,6 +178,86 @@ function serviceControl($name, $servicename, $pid)
         $buffer[] = fread($source_file, 4096);  // use a buffer of 4KB
     }
     return $buffer;
+}
+function split_on($string, $num) {
+	$length = strlen($string);
+	$output[0] = substr($string, 0, $num);
+	$output[1] = substr($string, $num, $length );
+	return $output;
+}
+function log2db() {	
+	$count=0;
+	$totalcount=0;
+	$message="";
+	// Open directory, and proceed to read its contents  
+	foreach(glob("/www/log/*") as $filename) {
+		$count = 0;
+		if (filesize($filename) != 0) {
+
+			$cleanup = array('[',']');
+
+			switch ($filename) {
+				case "/www/log/lighttpd.log":
+				$logtype = "1";
+				$dateparse = 21;
+				$cleanup = array('[',']',':');
+				break;
+				case "/www/log/php_errors.log":
+				$logtype = "2";
+				$dateparse = 39;
+				break;
+				case "/www/log/minidlna.log":
+				$logtype = "3";
+				$dateparse = 22;
+				break;
+				case "/www/log/wifimanager.log":
+				$logtype = "4";
+				$dateparse = 22;
+				break;
+				case "/www/log/adblock.log":
+				$logtype = "5";
+				$dateparse = 22;
+				break;
+				case "/www/log/system.log":
+				$logtype = "6";
+				$dateparse = 25;
+				break;
+				case "/www/log/log.txt":
+				$logtype = "7";
+				$dateparse = 20;
+				break;
+				default:
+				$logtype = "0";
+				break;
+			}
+			if($logtype != "0") {
+				foreach (file($filename) as $line) {        
+					$line = split_on($line, $dateparse);
+					$logdate = date('Y-m-d H:i:s',strtotime(str_replace($cleanup, "", $line[0])));
+					$log = mysql_real_escape_string($line[1]);
+					$count++;
+					$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
+				}
+
+				if(!$query) { 
+					mysql_query("INSERT INTO System_Logs (logtype,log) VALUES ('8','$mysql_error')");
+					$message .= "Fail <font color='red'>$filename </font><br/>
+					<p>$mysql_error</p>";
+				}
+				else { 
+					$message .= "$filename --> $count enries added.<br/>";
+					file_put_contents($filename, "");
+					$totalcount .= $count;
+				}
+			}
+		}
+	}
+	if ($totalcount != 0 ) {  
+		$message .= "<p style='font-weight:bold;'>Total $totalcount enries added.</p>";
+	} else {
+		$message = "Nothing new :)";
+}
+return $message;
 }
 function multiexplode ($delimiters,$string) {
 
@@ -352,7 +431,7 @@ function getdata() {
 		ping(Ap, "192.168.1.2", "500000"),
 		//"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
-	return $results;
+return $results;
 }
 
 ?>
