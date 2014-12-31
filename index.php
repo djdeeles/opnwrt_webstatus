@@ -14,24 +14,8 @@ require_once 'data.php';
 	<!--<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>-->
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/loader.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 	<script type="text/javascript">		
-		$(document).ready(function() {
-			//clear and insert loading message modal on close
-			$(document).on("hidden.bs.modal", function (e) {
-				$(e.target).removeData("bs.modal").find(".modal-content").replaceWith("<div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button><h4>Please wait</h4></div><div class='modal-body'>Content is loading...</div><div class='modal-footer'><a class='btn btn-default' data-dismiss='modal'>Close</a></div></div>");
-			});
-
-			//menü aktif
-			var url = window.location;
-			//$('ul.nav a[href="' + this.location.pathname + '"]').parent().addClass('active');
-			var active = $('ul.nav a').filter(function() {
-				return this.href == url;
-			});
-			active.parent().addClass('active');
-			active.parent().parent().parent().addClass('active');
-
-		});
 		$(function() {
 			setInterval(loadInfo, <?=$refreshRate?>);
 			loadInfo();
