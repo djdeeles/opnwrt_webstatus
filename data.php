@@ -106,6 +106,12 @@ if (isset($_GET['dlna'])) {
 	echo "</div>
 	<div class='modal-footer'>
 		<a class='btn btn-default' data-dismiss='modal'>Close</a>
+		<script type='text/javascript'>
+			var myList = document.getElementById('myModal').getElementsByTagName('table');
+			for (var i = 0; i < myList .length; i++) {
+			    myList[i].className='table table-bordered table-hover table-striped';
+			}
+		</script>
 	</div>";
 	exit;
 }
