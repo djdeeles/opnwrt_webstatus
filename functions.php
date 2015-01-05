@@ -248,7 +248,7 @@ function log2db() {
 				else { 
 					$message .= "$filename --> $count enries added.<br/>";
 					file_put_contents($filename, "");
-					$totalcount .= $count;
+					$totalcount += $count;
 				}
 			}
 		}
