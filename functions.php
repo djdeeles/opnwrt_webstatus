@@ -2,8 +2,8 @@
 require_once 'conn.php';
 require_once 'config.php';
 
-function logger($action)
-{
+function logger($action){
+	global $host;
 	$uri = $host.$_SERVER['REQUEST_URI'];
 	$ip = $_SERVER['REMOTE_ADDR'];
 	$userid = $_SESSION['user'][0];
@@ -19,6 +19,7 @@ function checkuser($username, $password){
 	}
 }
 function checklogin() {
+	global $host;
 	if ($_SESSION['authenticated'] == true) {
 		return true;		
 	}
@@ -28,8 +29,6 @@ function checklogin() {
 		if ($user[0] > 0 && $user[0] != null && $user[0] != 0) {
 			$_SESSION['authenticated'] = true;
 			$_SESSION['user'] = $user;
-			$loggedin = true;
-			setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $GLOBALS['host']));
 			return true;
 		}
 		else {
@@ -37,27 +36,29 @@ function checklogin() {
 		}
 	}
 }
-function login($username, $password) {	
+function login($username, $password) {
+	global $host;
 	$user = checkuser($username, $password);
 	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
 		$_SESSION['user'] = $user;
 		logger('login');
-		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); 
-		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".preg_replace('/^www\./','', $host)); }
+		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".$host);
+		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".$host); }
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
 		logger('wrong password');
-		$loggedin = false ;
 		return '<div class="alert alert-danger" role="alert">Incorrect username or password.</div>';
 	}
 }
 function setoption($userid, $option, $value){
+	$userid = $_SESSION['user'][0];
 	$query = mysql_query("UPDATE Options SET $option=$value WHERE id=$userid");
 	if(!$query){ return false; } else { return true; }
 }
 function getoption($userid, $option){
+	$userid = $_SESSION['user'][0];
 	$value = mysql_query("SELECT $option FROM Options WHERE userid=$userid");
 	return mysql_fetch_row($value);  
 }

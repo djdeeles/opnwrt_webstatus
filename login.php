@@ -8,7 +8,7 @@
 		<p><small>(Cookies must be enabled in your browser)</small></p>
 	</div>
 	<div class="col-md-6">
-		<form class="form" method="post" id="login_form">
+		<form class="form" method="post" id="login_form" onsubmit="return validate(this);">
 			<h4><b>Login here using your username and password</b></h4>
 			<?=$error?>
 			<input class="form-control" style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username">

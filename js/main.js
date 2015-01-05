@@ -144,3 +144,55 @@ function loadInfo() {
 	    $("#refreshtime").html(refreshtime);
 	});
 }
+
+$(document).ready(function() {
+	//clear and insert loading message modal on close
+	$(document).on("hidden.bs.modal", function (e) {
+		$(e.target).removeData("bs.modal").find(".modal-content").replaceWith("<div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button><h4>Please wait</h4></div><div class='modal-body'>Content is loading...</div><div class='modal-footer'><a class='btn btn-default' data-dismiss='modal'>Close</a></div></div>");
+	});	
+	//resize modal height after show
+	$('#myModal').on('shown.bs.modal', function () {
+		$('.modal .modal-body').css('overflow-y', 'auto'); 
+		$('.modal .modal-body').css('height',$( window ).height()*0.7);
+	});
+	//menü aktif
+	var url = window.location;
+	//$('ul.nav a[href="' + this.location.pathname + '"]').parent().addClass('active');
+	var active = $('ul.nav a').filter(function() {
+		return this.href == url;
+	});
+	active.parent().addClass('active');
+	active.parent().parent().parent().addClass('active');
+
+});
+
+function validate(form) {
+	var returnValue=true;
+	if(login_form.username.value.length < 4)
+	{
+		returnValue = false;
+		alert("Your username must be at least characters long. Please try again.");
+		login_form.username.value = "";
+		login_form.username.focus();
+		return returnValue;
+	}
+	if (login_form.password.value.length < 4)
+	{
+		returnValue = false;
+		alert("Your password must be at least 6 characters long. Please try again.");
+		login_form.password.value = "";
+		login_form.password.value = "";
+		login_form.password.focus();
+		return returnValue;
+	}
+}
+
+function validateSearch() {
+	obj = document.search;
+	if (obj.search.value.length < 4) {
+		alert("Minimum 4 characters needed.");
+		return false;
+	} else {
+		return true;
+	}
+}

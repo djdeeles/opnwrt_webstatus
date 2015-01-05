@@ -9,18 +9,15 @@ $page     = 1;
 $sortby	  = "id";
 $sort 	  = "desc";
 
+if (isset($_GET['log2db'])) { 
+	$alert = log2db();
+}
 if ($loggedin) {
 
 	if ($_GET['page']) { $page= $_GET['page']; }
 	if ($_GET['logtype']) { $logtype= $_GET['logtype']; }
 	if ($_GET['sortby']) { $sortby= $_GET['sortby']; }
 	if ($_GET['sort']) { $sort= $_GET['sort']; }
-	if (isset($_GET['log2db'])) { 
-		ob_start();
-		include( 'log2db.php' );
-		$alert = ob_get_contents();
-		ob_end_clean();
-	}
 
 	if($_POST["checkbox"]) {
 		$del = $_POST['checkbox'];
@@ -121,14 +118,14 @@ function sortdata($asortby,$sortname) {
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<title><?=$hostname?> Logreader</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/custom.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="favicon.ico">
-	<!--<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>-->
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('#select-all').click(function(event) {   
@@ -146,16 +143,6 @@ function sortdata($asortby,$sortname) {
 	        }
 	    });
 		});
-
-		function validate() {
-			obj = document.search;
-			if (obj.search.value.length < 4) {
-				alert("Minimum 4 characters needed.");
-				return false;
-			} else {
-				return true;
-			}
-		}
 	</script>
 </head>
 <body> 
@@ -182,7 +169,7 @@ function sortdata($asortby,$sortname) {
 					<div class="input-group">
 						<input class="form-control" aria-label="Search" type="text" name="search" class="input-medium" value="<?php echo $search; ?>">
 						<div class="input-group-btn">
-							<button type="submit" class="btn btn-default" onclick="return validate()">Search</button>
+							<button type="submit" class="btn btn-default" onclick="return validateSearch()">Search</button>
 							<a href="<?php echo "logreader.php?logtype=$logtype" ?>" title="X" data-toggle="modal" class="btn btn-default" ><span aria-hidden='true'>&times;</span></a>
 						</div>
 					</div>

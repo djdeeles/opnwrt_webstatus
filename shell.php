@@ -268,12 +268,14 @@ if ($_SESSION['authenticated']) {
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<title>aCC Server Shell</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script> 
+	<script src="js/main.js"></script> 
 	<link rel="shortcut icon" href="favicon.ico">
 
 	<script type="text/javascript">

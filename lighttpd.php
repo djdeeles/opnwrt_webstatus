@@ -9,13 +9,14 @@
 <head>
 	<title>Server status</title>
 	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>	
 	<script src="js/lighttpd.js"></script>	
+	<script src="js/main.js"></script>	
 </head>
 <body>
 	<div class="container">

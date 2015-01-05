@@ -78,7 +78,7 @@ body {
 }
 table { background-color: #fff; }
 
-
+/*
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -97,7 +97,7 @@ table { background-color: #fff; }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(113, 112, 107, 0.1);
 }
-
+*/
 
 /* Lighttpd page */ 
 #last-update { 

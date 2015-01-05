@@ -3,15 +3,15 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<title><?=$hostname?></title>
 	<link rel="shortcut icon" href="favicon.ico">
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/custom.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/iframe.css" type="text/css">
-	<!--<script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>-->
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 	<script src="js/iframe.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -76,8 +76,8 @@
 						<?php } else { ?>
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign In<span class="caret"></span></a>                                                
 						<div class="dropdown-menu" style="padding:17px;">
-							<form class="form" method="post" id="login_form"> 
-								<?=$error?>
+							<form class="form" method="post" id="login_form" onsubmit="return validate(this);"> 
+								<?=$login?>
 								<input class="form-control" style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username">
 								<input class="form-control" style="margin-bottom: 10px;" type="password" placeholder="Password" id="password" name="password">
 								<input style="float: left; margin-right: 10px;" type="checkbox" name="remember" id="remember" value="yes"><label class="string optional" for="remember"> Remember me</label>	

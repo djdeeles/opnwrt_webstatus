@@ -1,8 +1,9 @@
 <?php
 
+error_reporting(0);
+
 $host = str_replace("www.", "", $_SERVER['HTTP_HOST']);
 $workingdir = dirname($_SERVER['PHP_SELF']);
-$userid = $_SESSION['user'][0];
 
 $hostname = "aCC Server";
 $refreshRate = "2500"; // ms
