@@ -228,7 +228,7 @@ require_once 'data.php';
 				<div class="modal-content">					
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4>Please wait</h4>
+						<h2>Please wait</h2>
 					</div>
 					<div class="modal-body">
 						Content is loading...

@@ -78,7 +78,7 @@ if (isset($_GET['listonline']))
 	$result = explode("Nmap done: ", $response);
 	echo "<div class='modal-header'>
 	<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-	<h4>Online Clients</h4>
+	<h2>Online Clients</h2>
 </div>
 <div class='modal-body'>";
 	$clientid = "0";
@@ -101,7 +101,7 @@ if (isset($_GET['logread']))
 	@exec("logread",$response);
 	echo "<div class='modal-header'>
 	<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-	<h4>Logs</h4>
+	<h2>Logs</h2>
 </div>
 <div class='modal-body'>";
 	foreach ($response as $key => $value) {
@@ -117,6 +117,7 @@ if (isset($_GET['logread']))
 
 // dlna info
 if (isset($_GET['dlna'])) { 
+	echo "<div class='modal-header'></div>";
 	echo "<div class='modal-body'>";
 	echo file_get_contents("http://192.168.1.1:8200");
 	echo "</div>
@@ -127,6 +128,9 @@ if (isset($_GET['dlna'])) {
 			for (var i = 0; i < myList .length; i++) {
 			    myList[i].className='table table-bordered table-hover table-striped';
 			}
+			$('.modal-body h2').appendTo('.modal-header');
+			$('.modal-body title').remove();
+			$('.modal-body div').remove();
 		</script>
 	</div>";
 	exit;

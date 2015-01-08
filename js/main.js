@@ -148,12 +148,12 @@ function loadInfo() {
 $(document).ready(function() {
 	//clear and insert loading message modal on close
 	$(document).on("hidden.bs.modal", function (e) {
-		$(e.target).removeData("bs.modal").find(".modal-content").replaceWith("<div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button><h4>Please wait</h4></div><div class='modal-body'>Content is loading...</div><div class='modal-footer'><a class='btn btn-default' data-dismiss='modal'>Close</a></div></div>");
+		$(e.target).removeData("bs.modal").find(".modal-content").replaceWith("<div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button><h2>Please wait</h2></div><div class='modal-body'>Content is loading...</div><div class='modal-footer'><a class='btn btn-default' data-dismiss='modal'>Close</a></div></div>");
 	});	
 	//resize modal height after show
 	$('#myModal').on('shown.bs.modal', function () {
 		$('.modal .modal-body').css('overflow-y', 'auto'); 
-		$('.modal .modal-body').css('height',$( window ).height()*0.7);
+		$('.modal .modal-body').css('max-height',$( window ).height()*0.7);
 	});
 	//menü aktif
 	var url = window.location;
