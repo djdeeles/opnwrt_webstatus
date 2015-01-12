@@ -119,8 +119,11 @@ require_once 'data.php';
 			<div class='btn-group'><?php serviceControl(MySQL,mysqld,mysqld); ?></div>
 			<div class='btn-group'><?php serviceControl(Samba,samba,smbd); ?></div>
 			<div class='btn-group'><?php serviceControl(Torrent,transmission,'transmission-daemon'); ?></div>
-			<div class='btn-group'><?php serviceControl(pyLoad,pyload,'python /usr/share/python/pyload/pyLoadCore.py'); ?></div>
+			<div class='btn-group'><?php serviceControl(pyLoad,pyload,'pyLoadCore'); ?></div>
 			<div class='btn-group'><?php serviceControl(DLNa,minidlna,minidlna); ?></div>
+			<div class='btn-group'><?php serviceControl(Proxy,polipo,polipo); ?></div>
+			<div class='btn-group'><?php serviceControl(UsbOverIP,vhusb,vhusbdmipsf); ?></div>
+			<div class='btn-group'><?php serviceControl(UPnP,miniupnpd,miniupnpd); ?></div>
 			<?php } ?>                        
 		</div>
 		<div class="row">

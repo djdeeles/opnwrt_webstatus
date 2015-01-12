@@ -64,12 +64,14 @@ function getoption($userid, $option){
 }
 function servicestate($process)
 {
-	@exec("pidof $process",$response);
-	if ($response){ return true; } else	{ return false; }
+	//@exec("pgrep -f '$process'",$response);
+	//if ($response){ return true; } else	{ return false; }
+	global $ps;
+	if (!isset($ps)) { $ps = @shell_exec("ps"); }
+	if (strstr($ps,$process)){ return true; } else	{ return false; }
 }
 function servicestatus($servicename) {
-	$dir = '/etc/rc.d/';
-	if( glob("{$dir}/***{$servicename}") ) {
+	if( glob("/etc/rc.d/***{$servicename}") ) {
 		echo "<li><a href='?service=$servicename&saction=disable' title='disable' onclick=\"return confirm('Are you sure you want to disable service ?')\"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>Disable service</a></li>";
 	}
 	else {
