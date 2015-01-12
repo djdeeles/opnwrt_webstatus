@@ -343,20 +343,20 @@ function getdata() {
 	$runningthreads = @exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
 //Transfer info
 	$transfertime =  microtime(true);
-	$WANrxstart = @exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
-	$WANtxstart = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
-	$LANrxstart = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
-	$LANtxstart = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
-	$WLANrxstart = @exec("cat /sys/class/net/wlan0/statistics/rx_bytes");
-	$WLANtxstart = @exec("cat /sys/class/net/wlan0/statistics/tx_bytes");
-	usleep(250000);
+	$WANrxstart = file_get_contents("/sys/class/net/eth0.2/statistics/rx_bytes");
+	$WANtxstart = file_get_contents("/sys/class/net/eth0.2/statistics/tx_bytes");
+	$LANrxstart = file_get_contents("/sys/class/net/br-lan/statistics/rx_bytes");
+	$LANtxstart = file_get_contents("/sys/class/net/br-lan/statistics/tx_bytes");
+	$WLANrxstart = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes");
+	$WLANtxstart = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes");
+	usleep(100000);
 	$transfertime = microtime(true) - $transfertime;
-	$WANrxend = @exec("cat /sys/class/net/eth0.2/statistics/rx_bytes");
-	$WANtxend = @exec("cat /sys/class/net/eth0.2/statistics/tx_bytes");
-	$LANrxend = @exec("cat /sys/class/net/br-lan/statistics/rx_bytes");
-	$LANtxend = @exec("cat /sys/class/net/br-lan/statistics/tx_bytes");
-	$WLANrxend = @exec("cat /sys/class/net/wlan0/statistics/rx_bytes");
-	$WLANtxend = @exec("cat /sys/class/net/wlan0/statistics/tx_bytes");
+	$WANrxend = file_get_contents("/sys/class/net/eth0.2/statistics/rx_bytes");
+	$WANtxend = file_get_contents("/sys/class/net/eth0.2/statistics/tx_bytes");
+	$LANrxend = file_get_contents("/sys/class/net/br-lan/statistics/rx_bytes");
+	$LANtxend = file_get_contents("/sys/class/net/br-lan/statistics/tx_bytes");
+	$WLANrxend = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes");
+	$WLANtxend = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes");
 	//wan
 	$WANtx = round((($WANtxend - $WANtxstart) / $transfertime) / 1024, 2);
 	$WANrx = round((($WANrxend - $WANrxstart) / $transfertime) / 1024, 2);
@@ -379,7 +379,8 @@ function getdata() {
 	$WLANtxpercent = round($WLANtx/$GLOBALS['WLANtxlimit']*100,0);
 	if( $WLANtxpercent > 100){ $WLANtxpercent = "100";}
 //result
-	$results = array($totalMem,
+	$results = array(
+		$totalMem,
 		$usedMem,
 		$availMem,
 		$memPercent,
@@ -431,7 +432,7 @@ function getdata() {
 		ping(US, "8.8.4.4",null),
 		ping(EU, "80.231.131.1",null),
 		ping(Gateway, "gateway",null),
-		ping(Ap, "192.168.1.2", "500000"),
+		ping(Ap, "192.168.1.2", "500000")
 		//"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
 return $results;
