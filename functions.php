@@ -315,29 +315,23 @@ function getdata() {
 	$totalDisk2 = formatSize($totalDisk2); 
 	$availDisk2 = formatSize($availDisk2);
 	$usedDisk2 = formatSize($usedDisk2);
-
 	if ($usedDisk1 == $usedDisk2 ) 	{ 
 		$totalDisk2 = "N/A"; 
 		$availDisk2 = "N/A";
 		$usedDisk2  = "N/A";
 		$diskPercent2 = "0";
-	} 
-	
+	}	
 //Uptime Info
-	$loadresult = @exec("uptime");
-	preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$loadresult,$avgs);
-	$load1M = "$avgs[1]";
-	$load5M = "$avgs[2]";
-	$load15M = "$avgs[3]\n";
-	$uptime = explode(' up ', $loadresult);
-	$uptime = explode(',  load', $uptime[1]);
-	$uptime = $uptime[0];
-	$loadPercent = $avgs[1]*100;
+	$uptime = @exec("uptime");
+	preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$uptime,$load);
+	$load1M = $load[1];
+	$load5M = $load[2];
+	$load15M = $load[3];
+	$uptime = get_string_between($uptime, " up ", ",  load");
+	$loadPercent = $load1M*100;
 	if( $loadPercent > 100){ $loadPercent = "100";}
 //Connection Info
-	$connresult = @exec("wc -l /proc/net/nf_conntrack");
-	$connections = explode(" ", $connresult);
-	$connections = $connections[0];
+	$connections = intval(@exec("wc -l /proc/net/nf_conntrack"));
 	$connPercent = round($connections/$GLOBALS['connectionlimit']*100, 0);
 //Process Info
 	$runningthreads = @exec("grep -s '^Threads' /proc/[0-9]*/status | awk '{ sum += $2; } END { print sum; }'");
