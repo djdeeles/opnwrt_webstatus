@@ -3,11 +3,6 @@ include 'data.php';
 $start =  microtime(true); 
 header("Content-Type: text/html; charset=utf-8");
 
-function logout()
-{
-	$_SESSION = array('authenticated' => false);
-}
-
 /* Clear screen */
 function clearscreen() 
 {
@@ -28,10 +23,7 @@ if (get_magic_quotes_gpc()) {
 }
 
 /* Initialize some variables we need again and again. */
-$username = isset($_POST['username']) ? $_POST['username'] : '';
-$password = isset($_POST['password']) ? $_POST['password'] : '';
 $nounce   = isset($_POST['nounce'])   ? $_POST['nounce']   : '';
-
 $command  = isset($_POST['command'])  ? $_POST['command']  : '';
 $rows     = isset($_POST['rows'])     ? $_POST['rows']     : 24;
 $columns  = isset($_POST['columns'])  ? $_POST['columns']  : 80;
@@ -54,20 +46,9 @@ $default_settings = array('home-directory' => '.',
 /* Merge settings. */
 $ini['settings'] = array_merge($default_settings, $ini['settings']);
 
-/* Delete the session data if the user requested a logout. This leaves
- * the session cookie at the user, but this is not important since we
- * authenticates on $_SESSION['authenticated']. */
-if (isset($_POST['logout'])) {
-	logout();
-}
-
 /* Clear screen if submitted */
 if (isset($_POST['clear'])) {
 	clearscreen();
-}
-
-if (!isset($_SESSION['authenticated'])) {
-	$_SESSION['authenticated'] = false;
 }
 
 if ($_SESSION['authenticated']) {  
@@ -327,8 +308,8 @@ if ($_SESSION['authenticated']) {
 
 <body onload="init()">
 	<div class="container">
-		<form style="float:left;" name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
-			<?php
+		<form name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
+			<?php 
 			if (!$_SESSION['authenticated']) {
 				include_once 'login.php'; 
 			} else { /* Authenticated. */ ?>
@@ -397,11 +378,12 @@ if ($_SESSION['authenticated']) {
 						</div>
 					</div>
 				</div> 
+				<div style="clear:both;"></div>
+		        <div class="row footer"><small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
+		            <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
+		        </div>
 			<?php } ?>
-		</form>     	  
-        <div class="row footer"><small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
-            <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
-        </div>
+		</form>  
 	</div>   
 </body>
 </html>
