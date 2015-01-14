@@ -217,12 +217,12 @@ $start =  microtime(true);
 			<?php                
 			if ($page == 's') {
                     write_summary();
-					print "<p><b>".T('Last 12 months')."</b></p>" ;
-					write_graph_data($month,"month","cumulative");
-					print "<p><b>".T('Last 30 days')."</b></p>" ;
-					write_graph_data($day,"day","cumulative");
-					print "<p><b>".T('Last 24 hours')."</b></p>" ;
-					write_graph_data($hour,"hour","cumulative");
+					//print "<p><b>".T('Last 12 months')."</b></p>" ;
+					//write_graph_data($month,"month","cumulative");
+					//print "<p><b>".T('Last 30 days')."</b></p>" ;
+					//write_graph_data($day,"day","cumulative");
+					//print "<p><b>".T('Last 24 hours')."</b></p>" ;
+					//write_graph_data($hour,"hour","cumulative");
         			write_data_table(T('Top 10 days'), $top);
             } else { 		
 				if ($page == 'h')
