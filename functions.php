@@ -6,7 +6,7 @@ function logger($action){
 	global $host;
 	$uri = $host.$_SERVER['REQUEST_URI'];
 	$ip = $_SERVER['REMOTE_ADDR'];
-	$userid = $_SESSION['user'][0];
+	$userid = $_SESSION['userid'];
 	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
 }
 function checkuser($username, $password){
@@ -24,7 +24,8 @@ function checklogin() {
 		$user = checkuser($logincookie[1], $logincookie[2]);
 		if ($user[0] > 0 && $user[0] != null && $user[0] != 0) {
 			$_SESSION['authenticated'] = true;
-			$_SESSION['user'] = $user;
+			$_SESSION['userid'] = $user[0];
+			$_SESSION['username'] = $user[1];
 			$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 			return true;
 		}
@@ -45,7 +46,8 @@ function login($username, $password) {
 	$user = checkuser($username, $password);
 	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
-		$_SESSION['user'] = $user;
+		$_SESSION['userid'] = $user[0];
+		$_SESSION['username'] = $user[1];
 		$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".$host); }
 		logger('login');
@@ -57,12 +59,12 @@ function login($username, $password) {
 	}
 }
 function setoption($userid, $option, $value){
-	$userid = $_SESSION['user'][0];
+	$userid = $_SESSION['userid'];
 	$query = mysql_query("UPDATE Options SET $option=$value WHERE id=$userid");
 	if(!$query){ return false; } else { return true; }
 }
 function getoption($userid, $option){
-	$userid = $_SESSION['user'][0];
+	$userid = $_SESSION['userid'];
 	$value = mysql_query("SELECT $option FROM Options WHERE userid=$userid");
 	return mysql_fetch_row($value);  
 }
@@ -86,7 +88,7 @@ function service($servicename, $saction)
 { 	
 	logger('service');
 	@exec("/etc/init.d/$servicename $saction");
-	header('Location: '.dirname($_SERVER['PHP_SELF']));
+	header("Location: ". $_SERVER['HTTP_REFERER']);
 	exit;
 }
 function serviceControl($name, $servicename, $pid) { 
@@ -267,7 +269,6 @@ function log2db() {
 return $message;
 }
 function multiexplode ($delimiters,$string) {
-
 	$ready = str_replace($delimiters, $delimiters[0], $string);
 	$launch = explode($delimiters[0], $ready);
 	return  $launch;

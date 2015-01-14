@@ -78,7 +78,7 @@ require_once 'data.php';
 					<li><a href="?refreshtoggle">Auto Refresh: <?=$refreshtoggle?></a></li>
 					<li class="dropdown">
 						<?php if ($loggedin == true) { ?>
-						<a href="?logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Out(<?php echo $_SESSION['user'][1]; ?>)</a>
+						<a href="?logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Out(<?php echo $_SESSION['username']; ?>)</a>
 						<?php } else { ?>
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign In<span class="caret"></span></a>                                                
 						<div class="dropdown-menu" style="padding:17px;">
@@ -246,7 +246,7 @@ require_once 'data.php';
 		<hr>                
 		<div class="footer">
 			<div><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds. Refresh response time <span id="refreshtime"></span> seconds.<br/>
-				Made by <a href="mailto:djdeeles@gmail.com">Çetin ÇÖNE</a>.<br/>aCC Stats <?=$version?></small>
+				<a href="http://www.cetincone.com" target="_blank">aCC Stats <?=$version?></a></small>
 			</div>
 		</div>
 	</div>

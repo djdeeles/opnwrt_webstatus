@@ -249,8 +249,8 @@ $start =  microtime(true);
 			}
 	     } ?>
 		</div>
-		<div class="row footer"><a href="http://www.cetincone.tk">aCC Stats 2.0</a><br/>
-			<small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
+		<div class="row footer"><small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
+			<b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
 		</div>
 	</div>
 </body>

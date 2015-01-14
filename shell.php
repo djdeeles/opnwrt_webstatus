@@ -1,5 +1,6 @@
 <?php
 include 'data.php';
+$start =  microtime(true); 
 header("Content-Type: text/html; charset=utf-8");
 
 function logout()
@@ -326,7 +327,7 @@ if ($_SESSION['authenticated']) {
 
 <body onload="init()">
 	<div class="container">
-		<form name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
+		<form style="float:left;" name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
 			<?php
 			if (!$_SESSION['authenticated']) {
 				include_once 'login.php'; 
@@ -335,18 +336,17 @@ if ($_SESSION['authenticated']) {
 					<div id="terminal" class="panel panel-default">
 	  					<div class="panel-heading">
 							<b>Current Working Directory: </b>
-							<span class="pwd"><?php
+							<span class="pwd">
+								<?php
 								$parts = explode('/', $_SESSION['cwd']);
 								for ($i=1; $i<count($parts); $i=$i+1) {
 									echo '/' . htmlspecialchars($parts[$i], ENT_COMPAT, 'UTF-8');
-
-									echo '</span>';
 								}
 								?>
 							</span>
 	  					</div>
-						<div <div class="panel-body">
-							<textarea name="output" class="form-control" style="width:100%;" readonly="readonly" width="100%" cols="<?php echo $columns ?>" rows="<?php echo $rows ?>">
+						<div class="panel-body">
+							<textarea name="output" class="form-control" style="width:100%;" readonly width="100%" cols="<?php echo $columns ?>" rows="<?php echo $rows ?>">
 								<?php
 								$lines = substr_count($_SESSION['output'], "\n");
 								$padding = str_repeat("\n", max(0, $rows+1 - $lines));
@@ -396,10 +396,12 @@ if ($_SESSION['authenticated']) {
 							
 						</div>
 					</div>
-				</div>
-			</div>
+				</div> 
 			<?php } ?>
-		</form>
-	</div>
+		</form>     	  
+        <div class="row footer"><small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
+            <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
+        </div>
+	</div>   
 </body>
 </html>

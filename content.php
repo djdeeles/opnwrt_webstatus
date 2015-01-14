@@ -72,7 +72,7 @@
 				<ul class="nav navbar-nav navbar-right" data-no-collapse="true">
 					<li class="dropdown">
 						<?php if ($loggedin == true) { ?>
-						<a href="?logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Out(<?php echo $_SESSION['user'][1]; ?>)</a>
+						<a href="?logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Out(<?php echo $_SESSION['username']; ?>)</a>
 						<?php } else { ?>
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign In<span class="caret"></span></a>                                                
 						<div class="dropdown-menu" style="padding:17px;">

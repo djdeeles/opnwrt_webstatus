@@ -80,7 +80,7 @@ function pagination() {
 	$pages  = ceil($count[0]/$per_page);
 	if ($search) { $ifsearch = "&search=$search"; }
 	if ($pages > 1) {
-		$pagination = "<ul class='pagination' style='float:left;'>";
+		$pagination = "<ul class='pagination'>";
 		//show prev & first
 		if ($page > 1) { $pagination .= "<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=1"."&sortby=$sortby"."&sort=$sort".$ifsearch."'>First</a></li>
 			<li class='prev'><a href='logreader.php?logtype=$logtype"."&page=".($page -1)."&sortby=$sortby"."&sort=$sort".$ifsearch."'>«</a></li>"; }
@@ -201,12 +201,13 @@ function sortdata($asortby,$sortname) {
 				</div>
 			</div>
 			<?php pagination(); ?>
-			<div class="pagination" style="float:right;">  
-				Total records: <?php echo $count[0]; ?>
-			</div>
 			<?php } ?>		
 		</form>
-		<p style="float:left;width:100%;"><small><b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small></p>
+		<div class="row footer">
+            <span class="small" style="float:right;"> <?php if ($logtype!=0) { echo "Total records: " . $count[0]; } ?></span>
+            <small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
+            <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
+		</div>
 		<?php } else { 
 			include_once 'login.php'; 
 		} ?>

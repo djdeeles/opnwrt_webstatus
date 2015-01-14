@@ -15,11 +15,11 @@ if (!empty($_POST)) {
 //dynamic update
 if (isset($_GET['refreshtoggle'])) {
 	if ($_SESSION['dynamicUpdates'] ) { 
-		if($loggedin) { setoption($_SESSION['user'][0],"refresh",0); }
+		if($loggedin) { setoption($_SESSION['userid'],"refresh",0); }
 		$_SESSION['dynamicUpdates'] = false;
 	}
 	else { 
-		if($loggedin) { setoption($_SESSION['user'][0],"refresh",1); }
+		if($loggedin) { setoption($_SESSION['userid'],"refresh",1); }
 		$_SESSION['dynamicUpdates'] = true;
 	}	
 	header("Location: ". $_SERVER['HTTP_REFERER']);

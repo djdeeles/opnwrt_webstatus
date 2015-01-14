@@ -4,6 +4,7 @@
 
     $locale = 'tr_TR.UTF-8';
     $language = 'en';
+    $version = '2.0';
 
     // Set local timezone
     date_default_timezone_set("Europe/Istanbul");
