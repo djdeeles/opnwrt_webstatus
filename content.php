@@ -8,7 +8,7 @@
 	<link rel="shortcut icon" href="favicon.ico">
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/custom.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="css/iframe.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="css/iframe.css">
 	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/main.js" type="text/javascript"></script>
@@ -35,7 +35,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand hidden-sm" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
+				<a class="navbar-brand /*hidden-sm*/" href="<?=$workingdir?>"><img class="img-responsive" style="float:left; max-height:20px; vertical-align:middle; margin-right:5px;" src="img/cc.png" alt="aCC Server"><?=$hostname?></a>
 			</div>
 			<div class="collapse navbar-collapse" id="menu">
 				<ul class="nav navbar-nav">
@@ -61,29 +61,36 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">Management<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
+							<li><a href="content.php?iframe=<?=$host?>/shell.php"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Shell</a></li>
+							<li><a href="content.php?iframe=<?=$host?>/adminer"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Adminer</a></li>
+							<li class="divider"></li>
 							<li><a href="content.php?iframe=modem.<?=$host?>/RgSwInfo.asp"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>Modem</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/router"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Router</a></li>
 							<li><a href="content.php?iframe=ap.<?=$host?>"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Access Point</a></li>
-							<li><a href="content.php?iframe=<?=$host?>/shell.php"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Shell</a></li>
-							<li><a href="content.php?iframe=<?=$host?>/adminer"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Adminer</a></li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" data-no-collapse="true">
 					<li class="dropdown">
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php if ($loggedin == true) { echo $_SESSION['username']; } else { echo "Sign In"; } ?><span class="caret"></span></a>
 						<?php if ($loggedin == true) { ?>
-						<a href="?logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Out(<?php echo $_SESSION['username']; ?>)</a>
-						<?php } else { ?>
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign In<span class="caret"></span></a>                                                
-						<div class="dropdown-menu" style="padding:17px;">
-							<form class="form" method="post" id="login_form" onsubmit="return validate(this);"> 
+						<ul class="dropdown-menu" role="menu">
+							<li class="disabled"><a href="?refreshtoggle">Auto Refresh: <?=$refreshtoggle?></a></li>
+							<li class="divider"></li>
+							<li><a href="?logout">Sign Out</a></li>
+						</ul>						
+						<?php } else { ?>						
+						<ul class="dropdown-menu">
+							<li class="disabled"><a href="?refreshtoggle">Auto Refresh: <?=$refreshtoggle?></a></li>
+							<li class="divider"></li>
+							<form class="form" method="post" id="login_form" onsubmit="return validate(this);" style="padding:8px 15px;">
 								<?=$login?>
 								<input class="form-control" style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username">
 								<input class="form-control" style="margin-bottom: 10px;" type="password" placeholder="Password" id="password" name="password">
 								<input style="float: left; margin-right: 10px;" type="checkbox" name="remember" id="remember" value="yes"><label class="string optional" for="remember"> Remember me</label>	
 								<input class="btn btn-default btn-primary btn-block" type="submit" id="submit" name="Submit" value="Sign In">
-							</form>                              
-						</div>
+							</form>
+						</ul>
 						<?php } ?>
 					</li>					
 					<li><a id="close" class="close" href="javascript:void(0);"><span aria-hidden='true'>&times;</span></a></li>
@@ -91,7 +98,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="iframe" name="iframe"><iframe></iframe>
+	<div id="iframe" name="iframe"><iframe id="iframecontent"></iframe>
 	</div>
 </body>
 </html>
