@@ -5,7 +5,7 @@ require_once 'config.php';
 if( session_id() == null ) { session_start(); }
 
 //login
-$loggedin = checklogin();
+if (!isset($_SESSION['authenticated'])) { $loggedin = checklogin(); } else { $loggedin = $_SESSION['authenticated']; }
 if (!empty($_POST)) {
 	if (!empty($_POST)){
 		$login = login($_POST["username"], sha1($_POST["password"]));
@@ -13,23 +13,24 @@ if (!empty($_POST)) {
 }
 
 //dynamic update
-if (!isset($_COOKIE['dynamicUpdates']) && !$loggedin) { 
-		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".$host); 
-}
 if (isset($_GET['refreshtoggle'])) {
-	if ($_COOKIE['dynamicUpdates'] == true) { 
-		setoption($_SESSION['user'][0],"refresh",0);
-		setcookie("dynamicUpdates", 0, time()+60*60*24*30 , "/" , ".".$host);
+	if ($_SESSION['dynamicUpdates'] ) { 
+		if($loggedin) { setoption($_SESSION['user'][0],"refresh",0); }
+		$_SESSION['dynamicUpdates'] = false;
 	}
 	else { 
-		setoption($_SESSION['user'][0],"refresh",1);
-		setcookie("dynamicUpdates", 1, time()+60*60*24*30 , "/" , ".".$host);
+		if($loggedin) { setoption($_SESSION['user'][0],"refresh",1); }
+		$_SESSION['dynamicUpdates'] = true;
 	}	
 	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
-if ( $_COOKIE['dynamicUpdates'] == true && $loggedin ) { $refreshtoggle = "<span class='label label-success'>On</span>"; }
-elseif ( $_COOKIE['dynamicUpdates'] == true ) { $refreshtoggle = "<span class='label label-success'>On</span>"; $refreshRate = "60000"; }
-else { $refreshtoggle = "<span class='label label-default'>Off</span>"; $refreshRate = "86400000"; }
+if ( $_SESSION['dynamicUpdates'] ) { 
+	$refreshtoggle = "<span class='label label-success'>On</span>"; 
+	if (!$loggedin) { $refreshRate = "60000"; }
+} 
+else { 
+	$refreshtoggle = "<span class='label label-default'>Off</span>"; $refreshRate = "86400000"; 
+}
 
 //logout
 if (isset($_GET['logout'])) {

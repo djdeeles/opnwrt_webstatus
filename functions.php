@@ -19,21 +19,25 @@ function checkuser($username, $password){
 	}
 }
 function checklogin() {
-	global $host;
-	if ($_SESSION['authenticated'] == true) {
-		return true;		
-	}
-	else {
+	if (isset($_COOKIE["authentication"])) {
 		$logincookie = unserialize($_COOKIE["authentication"]);
 		$user = checkuser($logincookie[1], $logincookie[2]);
 		if ($user[0] > 0 && $user[0] != null && $user[0] != 0) {
 			$_SESSION['authenticated'] = true;
 			$_SESSION['user'] = $user;
+			$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 			return true;
 		}
 		else {
+			$_SESSION['dynamicUpdates'] = false;
+			$_SESSION['authenticated'] = false;
 			return false;
 		}
+	}
+	else {
+		$_SESSION['authenticated'] = false;
+		$_SESSION['dynamicUpdates'] = false;
+		return false;
 	}
 }
 function login($username, $password) {
@@ -42,9 +46,9 @@ function login($username, $password) {
 	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
 		$_SESSION['user'] = $user;
-		logger('login');
-		setcookie("dynamicUpdates", getoption($user[0],"refresh")[0], time()+60*60*24*30 , "/" , ".".$host);
+		$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".$host); }
+		logger('login');
 		header("Location: ". $_SERVER['HTTP_REFERER']);
 	}
 	else {
