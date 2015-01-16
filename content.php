@@ -75,13 +75,13 @@
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php if ($loggedin == true) { echo $_SESSION['username']; } else { echo "Sign In"; } ?><span class="caret"></span></a>
 						<?php if ($loggedin == true) { ?>
 						<ul class="dropdown-menu" role="menu">
-							<li class="disabled"><a href="?refreshtoggle">Auto Refresh: <?=$refreshtoggle?></a></li>
+							<li class="disabled"><a href="?refreshtoggle"><span class='glyphicon glyphicon-time' aria-hidden='true'></span>Auto Refresh: <?=$refreshtoggle?></a></li>
 							<li class="divider"></li>
-							<li><a href="?logout">Sign Out</a></li>
+							<li><a href="?logout"><span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>Sign Out</a></li>
 						</ul>						
 						<?php } else { ?>						
 						<ul class="dropdown-menu">
-							<li class="disabled"><a href="?refreshtoggle">Auto Refresh: <?=$refreshtoggle?></a></li>
+							<li class="disabled"><a href="?refreshtoggle"><span class='glyphicon glyphicon-time' aria-hidden='true'></span>Auto Refresh: <?=$refreshtoggle?></a></li>
 							<li class="divider"></li>
 							<form class="form" method="post" id="login_form" onsubmit="return validate(this);" style="padding:8px 15px;">
 								<?=$login?>
