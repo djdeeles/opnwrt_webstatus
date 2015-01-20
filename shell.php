@@ -257,7 +257,6 @@ if ($_SESSION['authenticated']) {
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script> 
-	<script src="js/main.js"></script> 
 	<link rel="shortcut icon" href="favicon.ico">
 
 	<script type="text/javascript">
@@ -307,12 +306,11 @@ if ($_SESSION['authenticated']) {
 </head>
 
 <body onload="init()">
-	<div class="container">
-		<form name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
-			<?php 
-			if (!$_SESSION['authenticated']) {
-				include_once 'login.php'; 
-			} else { /* Authenticated. */ ?>
+	<div class="container"><?php 
+		if (!$_SESSION['authenticated']) {
+			include_once 'login.php'; 
+		} else { /* Authenticated. */ ?>
+		<form name="shell" enctype="multipart/form-data" action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">			
 				<div class="col-md-8">
 					<div id="terminal" class="panel panel-default">
 	  					<div class="panel-heading">
@@ -382,8 +380,8 @@ if ($_SESSION['authenticated']) {
 		        <div class="row footer"><small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
 		            <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
 		        </div>
-			<?php } ?>
-		</form>  
+		</form>  		
+		<?php } ?>
 	</div>   
 </body>
 </html>

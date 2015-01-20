@@ -1,5 +1,5 @@
 <?php require_once 'data.php'; ?>
-
+<script src="js/main.js"></script>	
 <div class="row">
 	<div class="col-md-6">		
 		<h4><img class="img-responsive" src="img/cc.png" alt="aCC Server"></h4>
@@ -10,7 +10,7 @@
 	<div class="col-md-6">
 		<form class="form" method="post" id="login_form" onsubmit="return validate(this);">
 			<h4><b>Login here using your username and password</b></h4>
-			<?=$error?>
+			<?=$login?>
 			<input class="form-control" style="margin-bottom: 10px;" type="text" placeholder="Username" id="username" name="username">
 			<input class="form-control" style="margin-bottom: 10px;" type="password" placeholder="Password" id="password" name="password">
 			<input style="float: left; margin-right: 10px;" type="checkbox" name="remember" id="remember" value="yes"><label class="string optional" for="remember"> Remember me</label>	

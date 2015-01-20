@@ -17,8 +17,7 @@ $start =  microtime(true);
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>	
-	<script src="js/lighttpd.js"></script>	
-	<script src="js/main.js"></script>	
+	<script src="js/lighttpd.js"></script>
 </head>
 <body>
 	<div class="container">
