@@ -45,7 +45,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="content.php?iframe=<?=$host?>/stats/"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Network Stats</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/lighttpd.php"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>Lighttpd Status</a></li>
-							<li><a href="content.php?iframe=<?=$host?>/apc.php"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>APC Status</a></li>
+							<li><a href="content.php?iframe=<?=$host?>/apc/"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>APC Status</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/logreader.php"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>Log Reader</a></li>
 						</ul>
 					</li>
