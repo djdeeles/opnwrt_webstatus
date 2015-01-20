@@ -10,6 +10,7 @@ function logger($action){
 	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
 }
 function checkuser($username, $password){
+	$username = mysql_real_escape_string($username);
 	$result = mysql_query("SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
 	if(mysql_num_rows($result)) {
 		return mysql_fetch_row($result);
@@ -89,7 +90,6 @@ function service($servicename, $saction)
 	logger('service');
 	@exec("/etc/init.d/$servicename $saction");
 	header("Location: ". $_SERVER['HTTP_REFERER']);
-	exit;
 }
 function serviceControl($name, $servicename, $pid) { 
 	if (servicestate($pid)) { 
@@ -173,7 +173,6 @@ function serviceControl($name, $servicename, $pid) {
 		return round($size, 2).$suffix;
 	}
 	function get_string_between($string, $start, $end){
-		$string = " ".$string;
 		$ini = strpos($string,$start);
 		if ($ini == 0) return "";
 		$ini += strlen($start);  
