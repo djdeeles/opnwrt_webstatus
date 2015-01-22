@@ -2,7 +2,7 @@
 
 error_reporting(0);
 
-$host = str_replace("www.", "", $_SERVER['HTTP_HOST']);
+$host = $_SERVER['HTTP_HOST'];
 $workingdir = dirname($_SERVER['PHP_SELF']);
 
 $hostname = "aCC Server";

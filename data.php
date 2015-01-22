@@ -34,12 +34,7 @@ else {
 
 //logout
 if (isset($_GET['logout']) or isset($_POST['logout'])) {
-	logger('logout');
-	setcookie("authentication", null, time()-1 , "/" , ".".$host);
-	$loggedin = false;
-	session_unset();
-	session_destroy();
-	header("Location: ". $_SERVER['HTTP_REFERER']);
+	logout();
 }
 
 //Refresh

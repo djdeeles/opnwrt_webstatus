@@ -43,7 +43,7 @@ function checklogin() {
 	}
 }
 function login($username, $password) {
-	global $host;
+	$host = str_replace("www.", "", $_SERVER['HTTP_HOST']);
 	$user = checkuser($username, $password);
 	if ($user[0] > 0 && $user[0] != null && $user[0] != 0 ) {
 		$_SESSION['authenticated'] = true;
@@ -58,6 +58,15 @@ function login($username, $password) {
 		logger('wrong password');
 		return '<div class="alert alert-danger" role="alert">Incorrect username or password.</div>';
 	}
+}
+function logout() {
+	$host = str_replace("www.", "", $_SERVER['HTTP_HOST']);
+	logger('logout');
+	setcookie("authentication", null, time()-1 , "/" , ".".$host);
+	$loggedin = false;
+	session_unset();
+	session_destroy();
+	header("Location: ". $_SERVER['HTTP_REFERER']);
 }
 function setoption($userid, $option, $value){
 	$userid = $_SESSION['userid'];
