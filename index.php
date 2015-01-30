@@ -112,7 +112,6 @@ require_once 'data.php';
 		<div class="jumbotron">
 			<div class='btn btn-default' id='usping' onclick='loadInfo()'><span class='server'>US: </span><font color='green'>___</font></div>
 			<div class='btn btn-default' id='euping' onclick='loadInfo()'><span class='server'>EU: </span><font color='green'>___</font></div>
-			<div class='btn btn-default' id='gtping' onclick='loadInfo()'><span class='server'>Gateway: </span><font color='green'>___</font></div>
 			<div class='btn btn-default' id='apping' onclick='loadInfo()'><span class='server'>Ap: </span><font color='green'>___</font></div>
 			<?php if ($loggedin == true) { ?>
 			<div class='btn-group'><?php serviceControl(Http,lighttpd,lighttpd); ?></div>
@@ -129,9 +128,7 @@ require_once 'data.php';
 			<div class='btn-group'><?php serviceControl(Torrent,transmission,'transmission-daemon'); ?></div>
 			<div class='btn-group'><?php serviceControl(pyLoad,pyload,'pyLoadCore'); ?></div>
 			<div class='btn-group'><?php serviceControl(DLNa,minidlna,minidlna); ?></div>
-			<div class='btn-group'><?php serviceControl(Proxy,polipo,polipo); ?></div>
 			<div class='btn-group'><?php serviceControl(UsbOverIP,vhusb,vhusbdmipssf); ?></div>
-			<div class='btn-group'><?php serviceControl(UPnP,miniupnpd,miniupnpd); ?></div>
 			<?php } ?>                        
 		</div>
 		<div class="row">

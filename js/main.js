@@ -135,12 +135,10 @@ function loadInfo() {
 	    $("#usping").html(usping);
 	    var euping = result[49];
 	    $("#euping").html(euping);
-	    var gtping = result[50];
-	    $("#gtping").html(gtping);
-	    var apping = result[51];
+	    var apping = result[50];
 	    $("#apping").html(apping);
 	    // Refresh time
-	    var refreshtime = result[52];
+	    var refreshtime = result[51];
 	    $("#refreshtime").html(refreshtime);
 	});
 }

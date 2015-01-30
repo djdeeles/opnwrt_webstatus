@@ -281,16 +281,12 @@ function multiexplode ($delimiters,$string) {
 	$launch = explode($delimiters[0], $ready);
 	return  $launch;
 }
-function vpninfo(){	
-	$interface = get_string_between(@exec("ifconfig pptp-vpn,$vpn")[1], "inet addr:", "  ");
-	return $interface;
-}
 function getdata() {
 //Memory Info
 	foreach(file("/proc/meminfo") as $ri)
 		$m[strtok($ri, ':')] = strtok('');
 	$totalMem = $m["MemTotal"];
-	$availMem = $m["MemFree"] + $m["Buffers"] + $m["Cached"];
+	$availMem = $m["MemFree"];
 	$usedMem =  $totalMem - $availMem;
 	$memPercent = round($usedMem/$totalMem*100, 0);
 	$usedMem = formatMem($usedMem);
@@ -435,10 +431,8 @@ function getdata() {
 		$WLANtx,
 		$WLANtxpercent,
 		color($WLANtxpercent),
-		//ping(VPN, vpninfo()),
 		ping(US, "8.8.4.4",null),
 		ping(EU, "80.231.131.1",null),
-		ping(Gateway, "gateway",null),
 		ping(Ap, "192.168.1.2", "500000")
 		//"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
