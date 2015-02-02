@@ -103,7 +103,7 @@ function service($servicename, $saction)
 function serviceControl($name, $servicename, $pid) { 
 	if (servicestate($pid)) { 
 		echo "
-		<a href='#' class='btn btn-default' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
+		<a href='#' class='btn btn-default dropdown-toggle' data-toggle='dropdown'><span class='server'>$name: </span><font color='green'>Online</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
 		<ul class='dropdown-menu'>
 			<li><a href='?service=$servicename&saction=stop' title='$saction' onclick=\"return confirm('Are you sure you want to stop service ?')\"><span class='glyphicon glyphicon-stop' aria-hidden='true'></span>Stop service</a></li>
 			<li><a href='?service=$servicename&saction=restart' title='restart' onclick=\"return confirm('Are you sure you want to restart service ?')\"><span class='glyphicon glyphicon-refresh' aria-hidden='true'></span>Restart service</a></li>";
@@ -114,7 +114,7 @@ function serviceControl($name, $servicename, $pid) {
 			echo "</ul>";
 		} 
 		else { echo "
-			<a href='#' class='btn btn-default' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
+			<a href='#' class='btn btn-default dropdown-toggle' data-toggle='dropdown'><span class='server'>$name: </span><font color='red'>Offline</font><span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a>
 		<ul class='dropdown-menu'>
 			<li><a href='?service=$servicename&saction=start' title='$saction' onclick=\"return confirm('Are you sure you want to start service ?')\"><span class='glyphicon glyphicon-play' aria-hidden='true'></span>Start service</a></li>";
 			servicestatus($servicename);
