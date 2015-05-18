@@ -68,10 +68,9 @@ if (isset($_GET['cleanminidlna']) && $loggedin) {
 //list online
 if (isset($_GET['listonline']))
 { 
-
 	$datatime =  microtime(true);
 	$response = @shell_exec("nmap -sPn 192.168.1.1-255 -T5 --host-timeout 5s");
-	$clients = explode("Nmap scan report for ", get_string_between($response, "EET", "Nmap done"));
+	$clients = explode("Nmap scan report for ", get_string_between($response, "EEST", "Nmap done"));
 	$result = explode("Nmap done: ", $response);
 	echo "<div class='modal-header'>
 	<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
