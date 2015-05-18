@@ -421,6 +421,10 @@ fieldset legend {
 	/* IE6-7 */
 
 }
+form .cbi-tab-descr {
+	line-height: 18px;
+	margin-bottom: 18px;
+}
 
 form .clearfix,
 form .cbi-value {
@@ -956,9 +960,9 @@ a.menu:after, .dropdown-toggle:after {
 .menu-dropdown, .dropdown-menu {
 	background-color: #ffffff;
 	float: left;
-	display: none;
 	position: absolute;
 	top: 40px;
+	left: -9999px;
 	z-index: 900;
 	min-width: 160px;
 	max-width: 220px;
@@ -1040,11 +1044,11 @@ header .dropdown-menu a.hover,
 .dropdown.open .menu-dropdown,
 .open .dropdown-menu,
 .dropdown.open .dropdown-menu {
-	display: block;
+	left: 0;
 }
 
 .dropdown:hover ul.dropdown-menu {
-	display: block;
+	left: 0;
 }
 
 .dropdown-menu .dropdown-menu {
@@ -1337,7 +1341,8 @@ footer {
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
-.cbi-input-invalid {
+.cbi-input-invalid,
+.cbi-value-error input {
 	color: #FF0000;
 	border-color: #FF0000;
 }
@@ -1771,6 +1776,20 @@ table.cbi-section-table td.cbi-section-table-cell select {
 
 .cbi-value-description img { vertical-align: middle; }
 
+.cbi-section-error {
+	border: 1px solid #FF0000;
+	border-radius: 3px;
+	background-color: #FCE6E6;
+	padding: 5px;
+}
+
+.cbi-section-error ul { margin: 0 0 0 20px; }
+
+.cbi-section-error ul li {
+	color: #FF0000;
+	font-weight: bold;
+}
+
 .ifacebox {
 	background-color: #FFFFFF;
 	border: 1px solid #CCCCCC;
@@ -1914,9 +1933,9 @@ td.cbi-value-field var {
 	float: left;
 }
 
-.uci-change-legend-label>ins,
-.uci-change-legend-label>del,
-.uci-change-legend-label>var {
+.uci-change-legend-label > ins,
+.uci-change-legend-label > del,
+.uci-change-legend-label > var {
 	float: left;
 	margin-right: 4px;
 	width: 10px;
