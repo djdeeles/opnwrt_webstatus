@@ -115,7 +115,7 @@ Options
 	- packageName: basename of the download package, null for current foldername
 	*/
 	"download": {
-		"enabled": false,
+		"enabled": true,
 		"type": "php-tar",
 		"packageName": null
 	},
@@ -320,7 +320,7 @@ Options
 	- exif: boolean, use included EXIF thumbs if possible
 	*/
 	"thumbnails": {
-		"enabled": true,
+		"enabled": false,
 		"img": ["bmp", "gif", "ico", "image", "jpg", "png"],
 		"mov": ["video"],
 		"doc": ["pdf", "ps"],
