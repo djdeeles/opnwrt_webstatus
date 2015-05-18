@@ -3,17 +3,19 @@ require_once 'conn.php';
 require_once 'config.php';
 
 function logger($action){
-	global $host;
+	global $host;	
+	$link = DB::getConnectionResource();
 	$uri = $host.$_SERVER['REQUEST_URI'];
 	$ip = $_SERVER['REMOTE_ADDR'];
 	$userid = $_SESSION['userid'];
-	mysql_query("INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
+	mysqli_query($link, "INSERT INTO Logs (userid,action,uri,ip) VALUES ('$userid','$action','$uri','$ip')");
 }
 function checkuser($username, $password){
-	$username = mysql_real_escape_string($username);
-	$result = mysql_query("SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
-	if(mysql_num_rows($result)) {
-		return mysql_fetch_row($result);
+	$link = DB::getConnectionResource();
+	$username = mysqli_real_escape_string($link, $username);
+	$result = mysqli_query($link, "SELECT * FROM Users WHERE user='$username' AND password='$password' AND active=true");
+	if(mysqli_num_rows($result)) {
+		return mysqli_fetch_row($result);
 	} 
 	else {
 		return 0;
@@ -27,6 +29,7 @@ function checklogin() {
 			$_SESSION['authenticated'] = true;
 			$_SESSION['userid'] = $user[0];
 			$_SESSION['username'] = $user[1];
+			$_SESSION['userhash'] = $user[4];
 			$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 			return true;
 		}
@@ -49,6 +52,7 @@ function login($username, $password) {
 		$_SESSION['authenticated'] = true;
 		$_SESSION['userid'] = $user[0];
 		$_SESSION['username'] = $user[1];
+		$_SESSION['userhash'] = $user[4];
 		$_SESSION['dynamicUpdates'] = getoption($user[0],"refresh")[0];
 		if (isset($_POST['remember'])) { setcookie("authentication", serialize($user), time()+60*60*24*30 , "/" , ".".$host); }
 		logger('login');
@@ -70,13 +74,15 @@ function logout() {
 }
 function setoption($userid, $option, $value){
 	$userid = $_SESSION['userid'];
-	$query = mysql_query("UPDATE Options SET $option=$value WHERE id=$userid");
+	$link = DB::getConnectionResource();
+	$query = mysqli_query($link, "UPDATE Options SET $option=$value WHERE id=$userid");
 	if(!$query){ return false; } else { return true; }
 }
 function getoption($userid, $option){
 	$userid = $_SESSION['userid'];
-	$value = mysql_query("SELECT $option FROM Options WHERE userid=$userid");
-	return mysql_fetch_row($value);  
+	$link = DB::getConnectionResource();
+	$value = mysqli_query($link, "SELECT $option FROM Options WHERE userid=$userid");
+	return mysqli_fetch_row($value);  
 }
 function servicestate($process)
 {
@@ -202,7 +208,8 @@ function split_on($string, $num) {
 	$output[1] = substr($string, $num, $length );
 	return $output;
 }
-function log2db() {	
+function log2db() {		
+	$link = DB::getConnectionResource();
 	$count=0;
 	$totalcount=0;
 	$message="";
@@ -251,15 +258,15 @@ function log2db() {
 				foreach (file($filename) as $line) {        
 					$line = split_on($line, $dateparse);
 					$logdate = date('Y-m-d H:i:s',strtotime(str_replace($cleanup, "", $line[0])));
-					$log = mysql_real_escape_string($line[1]);
+					$log = mysqli_real_escape_string($link, $line[1]);
 					$count++;
-					$query = mysql_query("INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysql_error = mysql_error();
+					$query = mysqli_query($link, "INSERT INTO System_Logs (logtype,log,logdate) VALUES ($logtype,'$log','$logdate')") or $mysqli_error = mysqli_error();
 				}
 
 				if(!$query) { 
-					mysql_query("INSERT INTO System_Logs (logtype,log) VALUES ('8','$mysql_error')");
+					mysqli_query($link, "INSERT INTO System_Logs (logtype,log) VALUES ('8','$mysqli_error')");
 					$message .= "Fail <font color='red'>$filename </font><br/>
-					<p>$mysql_error</p>";
+					<p>$mysqli_error</p>";
 				}
 				else { 
 					$message .= "$filename --> $count enries added.<br/>";
@@ -286,7 +293,7 @@ function getdata() {
 	foreach(file("/proc/meminfo") as $ri)
 		$m[strtok($ri, ':')] = strtok('');
 	$totalMem = $m["MemTotal"];
-	$availMem = $m["MemFree"];
+	$availMem = $m["MemFree"] + $m["Buffers"] + $m["Cached"];
 	$usedMem =  $totalMem - $availMem;
 	$memPercent = round($usedMem/$totalMem*100, 0);
 	$usedMem = formatMem($usedMem);
@@ -350,16 +357,16 @@ function getdata() {
 	$WANtxstart = file_get_contents("/sys/class/net/eth0.2/statistics/tx_bytes");
 	$LANrxstart = file_get_contents("/sys/class/net/br-lan/statistics/rx_bytes");
 	$LANtxstart = file_get_contents("/sys/class/net/br-lan/statistics/tx_bytes");
-	$WLANrxstart = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes");
-	$WLANtxstart = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes");
+	$WLANrxstart = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes") + file_get_contents("/sys/class/net/wlan1/statistics/rx_bytes");
+	$WLANtxstart = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes") + file_get_contents("/sys/class/net/wlan1/statistics/tx_bytes");
 	usleep(100000);
 	$transfertime = microtime(true) - $transfertime;
 	$WANrxend = file_get_contents("/sys/class/net/eth0.2/statistics/rx_bytes");
 	$WANtxend = file_get_contents("/sys/class/net/eth0.2/statistics/tx_bytes");
 	$LANrxend = file_get_contents("/sys/class/net/br-lan/statistics/rx_bytes");
 	$LANtxend = file_get_contents("/sys/class/net/br-lan/statistics/tx_bytes");
-	$WLANrxend = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes");
-	$WLANtxend = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes");
+	$WLANrxend = file_get_contents("/sys/class/net/wlan0/statistics/rx_bytes") + file_get_contents("/sys/class/net/wlan1/statistics/rx_bytes");
+	$WLANtxend = file_get_contents("/sys/class/net/wlan0/statistics/tx_bytes") + file_get_contents("/sys/class/net/wlan1/statistics/tx_bytes");
 	//wan
 	$WANtx = round((($WANtxend - $WANtxstart) / $transfertime) / 1024, 2);
 	$WANrx = round((($WANrxend - $WANrxstart) / $transfertime) / 1024, 2);
@@ -433,8 +440,8 @@ function getdata() {
 		color($WLANtxpercent),
 		ping(US, "8.8.4.4",null),
 		ping(EU, "80.231.131.1",null),
-		ping(Ap, "192.168.1.2", "500000")
-		//"<span class='server'>Ap: </span><font color='green'>N/A</font>"
+		//ping(Ap, "192.168.1.2", "500000")
+		"<span class='server'>Ap: </span><font color='green'>N/A</font>"
 		);
 return $results;
 }

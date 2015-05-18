@@ -2,6 +2,11 @@
 
 error_reporting(0);
 
+$dbhost = "";
+$dbuser = "";
+$dbpassword = "";
+$database = "status";
+
 $host = $_SERVER['HTTP_HOST'];
 $workingdir = dirname($_SERVER['PHP_SELF']);
 
@@ -15,6 +20,6 @@ $LANrxlimit = "125000"; // kb/s
 $LANtxlimit = "125000"; // kb/s
 $WLANrxlimit = "125000"; // kb/s
 $WLANtxlimit = "125000"; // kb/s
-$connectionlimit = "4096";
+$connectionlimit = "16384";
 
 ?>

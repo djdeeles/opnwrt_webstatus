@@ -3,6 +3,7 @@
 $start =  microtime(true);
 require_once 'conn.php';
 require_once 'data.php';
+$link = DB::getConnectionResource();
 $per_page = 20; 
 $logtype  = 0;
 $page     = 1;
@@ -22,13 +23,13 @@ if ($loggedin) {
 	if($_POST["checkbox"]) {
 		$del = $_POST['checkbox'];
 		$idsToDelete = implode($del, ', ');
-		$result = mysql_query("DELETE FROM System_Logs WHERE id in ($idsToDelete)");
+		$result = mysqli_query($link, "DELETE FROM System_Logs WHERE id in ($idsToDelete)");
 		$alert = count($del). " entries deleted.";
 	}
 
 	if(isset($_GET['cleanoldrec'])) {
-		mysql_query("DELETE FROM System_Logs WHERE logdate < DATE_SUB(NOW(), INTERVAL 6 MONTH)");
-		$alert = mysql_affected_rows() . " old entries deleted.";
+		mysqli_query($link, "DELETE FROM System_Logs WHERE logdate < DATE_SUB(NOW(), INTERVAL 6 MONTH)");
+		$alert = mysqli_affected_rows($link) . " old entries deleted.";
 	}
 
 	if(isset($_POST['search'])) {
@@ -40,16 +41,16 @@ if ($loggedin) {
 }
 
 function displaylogs() {
-	global $page,$logtype,$per_page,$sortby,$sort,$search;
+	global $page,$logtype,$per_page,$sortby,$sort,$search, $link;
 	//getting table contents
 	$start  = ($page-1)*$per_page;
 	if ($search) {
-		$result = mysql_query("select * from System_Logs where logtype=$logtype and log LIKE '%" . $search . "%' order by $sortby $sort limit $start,$per_page");
+		$result = mysqli_query($link, "select * from System_Logs where logtype=$logtype and log LIKE '%" . $search . "%' order by $sortby $sort limit $start,$per_page");
 	} else {
-		$result = mysql_query("select * from System_Logs where logtype=$logtype order by $sortby $sort limit $start,$per_page");
+		$result = mysqli_query($link, "select * from System_Logs where logtype=$logtype order by $sortby $sort limit $start,$per_page");
 	}
-	if( mysql_num_rows($result) > 0) {
-		while($row = mysql_fetch_array($result))
+	if( mysqli_num_rows($result) > 0) {
+		while($row = mysqli_fetch_array($result))
 		{
 			$id         = $row['id'];
 			$log        = $row['log'];
@@ -69,14 +70,14 @@ function displaylogs() {
 }
 
 function pagination() {
-	global $page,$logtype,$per_page,$sortby,$sort,$count,$search;
+	global $page,$logtype,$per_page,$sortby,$sort,$count,$search,$link;
 	//getting number of rows and calculating no of pages
 	if ($search) {
-		$result = mysql_query("select count(*) from System_Logs where logtype=$logtype and log LIKE '%" . $search . "%'");		
+		$result = mysqli_query($link, "select count(*) from System_Logs where logtype=$logtype and log LIKE '%" . $search . "%'");		
 	} else {
-		$result = mysql_query("select count(*) from System_Logs where logtype=$logtype");
+		$result = mysqli_query($link, "select count(*) from System_Logs where logtype=$logtype");
 	}
-	$count  = mysql_fetch_row($result);
+	$count  = mysqli_fetch_row($result);
 	$pages  = ceil($count[0]/$per_page);
 	if ($search) { $ifsearch = "&search=$search"; }
 	if ($pages > 1) {
@@ -204,7 +205,7 @@ function sortdata($asortby,$sortname) {
 			<?php } ?>		
 		</form>
 		<div class="row footer">
-            <span class="small" style="float:right;"> <?php if ($logtype!=0) { echo "Total records: " . $count[0]; } ?></span>
+            <span class="small" style="float:right;"> <?php if ($logtype!=0) { echo "Total records: " . $count[0]; } else { echo "Total records: " . mysqli_fetch_row(mysqli_query($link, "select count(*) from System_Logs"))[0]; } ?></span>
             <small><a href="http://www.cetincone.com" target="_blank">aCC Stats <?php echo $version; ?></a><br/>
             <b>Page generated in</b> <?php echo round((microtime(true) - $start), 2); ?> seconds.</small>
 		</div>
