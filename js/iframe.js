@@ -47,3 +47,8 @@ function getObjHeight(obj)
 	}		
 	return obj.clientHeight;
 }
+function title()
+{
+	var title = $("#iframecontent").contents( ).find( "title").html();
+	$( document).find("title").html(title);
+}
