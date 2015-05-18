@@ -14,7 +14,7 @@ $start =  microtime(true);
         global $page_list, $page_title;
         global $defaultpage;
 
-        print "<div class=\"btn-group btn-block\" role=\"group\" aria-label=\"options\">";
+        print "<div class='col-md-6'><div class=\"btn-group btn-block\" role=\"group\" aria-label=\"options\">";
         if (!$defaultpage) {   
             	print "<a class=\"btn btn-default\" href=\"$script\"><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></a>";
         } else {        	
@@ -22,32 +22,35 @@ $start =  microtime(true);
         }
         foreach ($iface_list as $if)
         {	
-	    $page = isset($_GET['page']) ? $_GET['page'] : 's';
+        	$page = isset($_GET['page']) ? $_GET['page'] : 's';
             if ($iface == $if && !$defaultpage) {
-            	print "<div class=\"btn-group\"><a class=\"btn btn-default active\" href=\"$script?if=$if&amp;page=$page\">";
-		if (isset($iface_title[$if])) { print $iface_title[$if];  } else { print $if; }
-		print "</a>";    
-		print "<button type=\"button\" class=\"btn btn-default dropdown-toggle active\" data-toggle=\"dropdown\" aria-expanded=\"false\">
-			    <span class=\"caret\"></span>
-			    <span class=\"sr-only\">Toggle Dropdown</span>
-			  </button>";
-		print "<ul class=\"dropdown-menu\" role=\"menu\">";
-		    foreach ($page_list as $pg)
-		    {
-			if ($page == $pg) {
-				print "<li class=\"active\"><a href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a></li>\n";
-			} else {
-				print "<li><a href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a></li>\n";
-			}
-		    }
-		 print "</ul></div>";
+            	print "<a class=\"btn btn-default active\" href=\"$script?if=$if&amp;page=$page\">";
             } else {
             	print "<a class=\"btn btn-default\" href=\"$script?if=$if&amp;page=$page\">";
-		if (isset($iface_title[$if])) { print $iface_title[$if];  } else { print $if; }
-		print "</a>";    
-            }        
+            }
+            if (isset($iface_title[$if]))
+            {
+                print $iface_title[$if];
+            }
+            else
+            {
+                print $if;
+            }
+            print "</a>";            
         }
-        print "</div>";
+        print "</div></div>";
+        if(!$defaultpage) {
+            print "<div class='col-md-6 text-right'><div class=\"btn-group btn-block \" role=\"group\" aria-label=\"options\">";
+            foreach ($page_list as $pg)
+            {
+            	if ($page == $pg) {
+            		print "<a class=\"btn btn-default active\" href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a>\n";
+            	} else {
+                	print "<a class=\"btn btn-default\" href=\"$script?if=$iface&amp;page=$pg\">".$page_title[$pg]."</a>\n";
+            	}
+            }
+            print "</div></div>";        	
+        }
     }
 
     function kbytes_to_string($kb)
@@ -163,7 +166,7 @@ $start =  microtime(true);
 			                '#$graph',
 			                {    
 			                    tickHintX: -25,
-					    paddingTop : 10,
+                                paddingTop : 5,
 			                    paddingBottom : 15,
 			                    paddingLeft : 60,
 			                    paddingRight : 0,

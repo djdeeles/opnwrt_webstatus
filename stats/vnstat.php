@@ -142,7 +142,7 @@
                 if($use_label)
                 {
                     $top[$d[1]]['label'] = strftime(T('datefmt_top'), $d[2]);
-                    $top[$d[1]]['img_label'] = '';
+                    $top[$d[1]]['img_label'] = strftime(T('datefmt_top'), $d[2]);
                 }
             }
             else

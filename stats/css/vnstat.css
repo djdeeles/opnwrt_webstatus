@@ -1,4 +1,10 @@
-
+.vnstat .col-md-6 {
+    padding-left: 0px; 
+    padding-right: 0px; 
+}
+.vnstat .col-md-6 .btn-group {
+    width: auto;
+}
 .vnstat .graph-wrapper {
     background: #fff;
     padding: 10px;
