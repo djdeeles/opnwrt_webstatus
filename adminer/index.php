@@ -13,6 +13,13 @@ function adminer_object() {
         new AdminerDumpZip,
         new AdminerFileUpload("data/"),
         new AdminerFrames,
+        new AdminerDumpDate,
+        new AdminerEditCalendar,
+        new AdminerDumpJson,
+        new AdminerDumpXml,
+        new AdminerForeignSystem,
+        new AdminerLinksDirect,
+        new AdminerDumpAlter,
     );
     
     /* It is possible to combine customization and plugins:
