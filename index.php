@@ -50,7 +50,7 @@ require_once 'data.php';
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="content.php?iframe=<?=$host?>/stats/"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Network Stats</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/lighttpd.php"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>Lighttpd Status</a></li>
-							<li><a href="content.php?iframe=<?=$host?>/apc/"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>APC Status</a></li>
+							<li><a href="content.php?iframe=<?=$host?>/opcache/"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>OPcache Status</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/logreader.php"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>Log Reader</a></li>
 						</ul>
 					</li>
@@ -69,7 +69,7 @@ require_once 'data.php';
 							<li><a href="content.php?iframe=<?=$host?>/shell.php"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>Shell</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/adminer"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Adminer</a></li>
 							<li class="divider"></li>
-							<li><a href="content.php?iframe=modem.<?=$host?>/RgSwInfo.asp"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>Modem</a></li>
+							<li><a href="content.php?iframe=modem.<?=$host?>"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>Modem</a></li>
 							<li><a href="content.php?iframe=<?=$host?>/router"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Router</a></li>
 							<li><a href="content.php?iframe=ap.<?=$host?>"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Access Point</a></li>
 						</ul>
@@ -77,8 +77,8 @@ require_once 'data.php';
 				</ul>
 				<ul class="nav navbar-nav navbar-right" data-no-collapse="true">
 					<li class="dropdown">
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php if ($loggedin == true) { echo $_SESSION['username']; } else { echo "Sign In"; } ?><span class="caret"></span></a>
 						<?php if ($loggedin == true) { ?>
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><div style="border-radius:17px; overflow:hidden; float:left; margin:-6px 5px 0 0;"><img src="http://www.gravatar.com/avatar/<? echo $_SESSION['userhash']; ?>?s=34" /></div><? echo $_SESSION['username']; ?><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a onclick='loadInfo()'><span class='glyphicon glyphicon-refresh' aria-hidden='true'></span>Refresh</a></li>
 							<li><a href="?refreshtoggle"><span class='glyphicon glyphicon-time' aria-hidden='true'></span>Auto Refresh: <?=$refreshtoggle?></a></li>
@@ -86,6 +86,7 @@ require_once 'data.php';
 							<li><a href="?logout"><span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>Sign Out</a></li>
 						</ul>						
 						<?php } else { ?>						
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><? echo "Sign In"; ?><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a onclick='loadInfo()'><span class='glyphicon glyphicon-refresh' aria-hidden='true'></span>Refresh</a></li>
 							<li><a href="?refreshtoggle"><span class='glyphicon glyphicon-time' aria-hidden='true'></span>Auto Refresh: <?=$refreshtoggle?></a></li>
