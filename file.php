@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 
 $_CONFIG = array();
 $_ERROR = "";
@@ -94,7 +94,7 @@ $_CONFIG['show_top'] = 1;
 // The title for the page
 // Default: $_CONFIG['main_title'] = "Encode Explorer";
 //
-$_CONFIG['main_title'] = "aCC Dosya Yöneticisi";
+$_CONFIG['main_title'] = "aCC Dosya YÃ¶neticisi";
 
 //
 // Pealkirjad, mida kuvatakse lehe pÃ¤ises, suvalises jÃ¤rjekorras.
@@ -138,7 +138,7 @@ $_CONFIG['time_format'] = "d.m.y H:i:s";
 // Charset. Use the one that suits for you. 
 // Default: $_CONFIG['charset'] = "UTF-8";
 //
-$_CONFIG['charset'] = "iso-8859-9";
+$_CONFIG['charset'] = "UTF-8";
 
 /*
 * PERMISSIONS
@@ -759,34 +759,34 @@ $_TRANSLATIONS["sv"] = array(
 
 // Turkish
 $_TRANSLATIONS["tr"] = array(
-	"file_name" => "Dosya Ýsmi",
+	"file_name" => "Dosya Ä°smi",
 	"size" => "Boyut",
-	"last_changed" => "Son Deðiþim",
-	"total_used_space" => "Toplam Kullanýlan Alan",
-	"free_space" => "Boþ Alan",
-	"password" => "Þifre",
-	"upload" => "Yükle",
-	"failed_upload" => "Dosya yüklenirken hata oluþtu!",
-	"failed_move" => "Dosya taþýnýrken hata oluþtu!",
-	"wrong_password" => "Yanlýþ þifre",
-	"make_directory" => "Yeni Klasör yarat",
-	"new_dir_failed" => "Klasör yaratýlýrken hata oluþtu!",
-	"chmod_dir_failed" => "Dosya haklarý deðiþtirilirken hata oluþtu!",
-	"unable_to_read_dir" => "Klasör okunurken hata oluþtu!",
+	"last_changed" => "Son DeÄŸiÅŸim",
+	"total_used_space" => "Toplam KullanÄ±lan Alan",
+	"free_space" => "BoÅŸ Alan",
+	"password" => "Åžifre",
+	"upload" => "YÃ¼kle",
+	"failed_upload" => "Dosya yÃ¼klenirken hata oluÅŸtu!",
+	"failed_move" => "Dosya taÅŸÄ±nÄ±rken hata oluÅŸtu!",
+	"wrong_password" => "YanlÄ±ÅŸ ÅŸifre",
+	"make_directory" => "Yeni KlasÃ¶r yarat",
+	"new_dir_failed" => "KlasÃ¶r yaratÄ±lÄ±rken hata oluÅŸtu!",
+	"chmod_dir_failed" => "Dosya haklarÄ± deÄŸiÅŸtirilirken hata oluÅŸtu!",
+	"unable_to_read_dir" => "KlasÃ¶r okunurken hata oluÅŸtu!",
 	"location" => "Yer",
-	"root" => "Kök",
-	"log_file_permission_error" => "The script does not have permissions to write the log file.",
-	"upload_not_allowed" => "The script configuration does not allow uploading in this directory.",
-	"upload_dir_not_writable" => "This directory does not have write permissions.",
-	"mobile_version" => "Mobil Görünüm",
-	"standard_version" => "Standart Görünüm",
-	"page_load_time" => "Sayfa %.2f ms'de yüklendi",
-	"wrong_pass" => "Yanlýþ kullanýcý adý veya þifre",
-	"username" => "Kullanýcý Adý",
-	"log_in" => "Giriþ",
-	"upload_type_not_allowed" => "Bu dosya türü yüklenemez!",
+	"root" => "KÃ¶k",
+	"log_file_permission_error" => "GÃ¼nlÃ¼k iÃ§in yazma hakkÄ± bulunmamaktadÄ±r.",
+	"upload_not_allowed" => "KarÅŸÄ±ya yÃ¼kleme kapalÄ±.",
+	"upload_dir_not_writable" => "Bu klasÃ¶rde yazma hakkÄ± bulunmamaktadÄ±r.",
+	"mobile_version" => "Mobil GÃ¶rÃ¼nÃ¼m",
+	"standard_version" => "Standart GÃ¶rÃ¼nÃ¼m",
+	"page_load_time" => "Sayfa %.2f ms'de yÃ¼klendi",
+	"wrong_pass" => "YanlÄ±ÅŸ kullanÄ±cÄ± adÄ± veya ÅŸifre",
+	"username" => "KullanÄ±cÄ± AdÄ±",
+	"log_in" => "GiriÅŸ",
+	"upload_type_not_allowed" => "Bu dosya tÃ¼rÃ¼ yÃ¼klenemez!",
 	"del" => "Sil", // short for Delete
-	"log_out" => "Çýkýþ"
+	"log_out" => "Ã‡Ä±kÄ±ÅŸ"
 );
 
 /***************************************************************************/
@@ -1083,9 +1083,9 @@ body.mobile #upload {
 /***************************************************************************/
 /*   PILTIDE KOODID                                                        */
 /*   Saad neid ise oma piltidest juurde genereerida base64 konverteriga    */
-/*   NÃ¤iteks siin: http://www.motobit.com/util/base64-decoder-encoder.asp  */
-/*   VÃµi siin: http://www.greywyvern.com/code/php/binary2base64            */
-/*   VÃµi kasuta lihtsalt PHP base64_encode() funktsiooni                   */
+/*   NÃƒÂ¤iteks siin: http://www.motobit.com/util/base64-decoder-encoder.asp  */
+/*   VÃƒÂµi siin: http://www.greywyvern.com/code/php/binary2base64            */
+/*   VÃƒÂµi kasuta lihtsalt PHP base64_encode() funktsiooni                   */
 /*                                                                         */
 /*   IMAGE CODES IN BASE64                                                 */
 /*   You can generate your own with a converter                            */
@@ -3004,7 +3004,7 @@ if($this->mobile == false && $this->getConfig("show_load_time") == true)
 	printf($this->getString("page_load_time")." | ", (microtime(TRUE) - $_START_TIME)*1000);
 }
 ?> 
-<a href="http://www.cetincone.com">Çetin ÇÖNE</a>
+<a href="http://www.cetincone.com">Ã‡etin Ã‡Ã–NE</a>
 </div>
 <!-- END: Info area -->
 </body>
